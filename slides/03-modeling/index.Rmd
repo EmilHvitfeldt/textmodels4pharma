@@ -83,6 +83,7 @@ sass(sass_file("theme.sass"), output = "theme.css")
 set.seed(1234)
 library(ggplot2)
 theme_set(theme_minimal())
+library(countdown)
 ```
 
 class: center, middle
@@ -209,11 +210,37 @@ library(textrecipes)
 
 ---
 
-# smltar.com
+.pull-left[
+# Modeling task
 
-```{r echo=FALSE, out.width="100%"}
-knitr::include_url("https://smltar.com/")
+You are a new zoo keeper and your job is to figure out what to feed each animal based on a written description and some other metrics
+]
+
+--
+
+.pull-right[
+## Question
+
+Is this a realistic problem to have?
+
+Would it be a good use-case for Machine learning?
+
+```{r, echo=FALSE}
+countdown(1, 0)
 ```
+
+]
+
+
+---
+
+# Notes
+
+- This could be better handled by an expert
+- Disastrous results with misclassifications
+- Overlap between classes
+- Has an "unknown" field
+- Uses both numeric/factor variables and text variables
 
 ---
 
@@ -221,7 +248,6 @@ knitr::include_url("https://smltar.com/")
 
 ```{r, echo=FALSE}
 animals %>%
-  mutate(diet = fct_rev(fct_infreq(factor(diet)))) %>%
   ggplot(aes(y = diet)) +
   geom_bar() +
   labs(x = NULL, y = NULL)
@@ -286,6 +312,23 @@ animals_split <- initial_split(animals)
 animals_training <- training(animals_split)
 animals_testing <- testing(animals_split)
 ```
+
+---
+
+class: inverse
+
+# What mistake have we made already?
+
+---
+
+class: inverse
+
+# What mistake have we made already?
+
+## We did EDA on the whole dataset
+
+## By not restricting to training set => data leakage
+
 
 ---
 

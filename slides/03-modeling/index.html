@@ -1,22 +1,25 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Predictive modeling with text using tidy data principles</title>
+    <title>Modeling</title>
     <meta charset="utf-8" />
-    <meta name="author" content="Julia Silge &amp; Emil Hvitfeldt" />
+    <meta name="author" content="Emil Hvitfeldt" />
+    <meta name="date" content="2020-10-09" />
     <script src="libs/header-attrs-2.3/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/font-awesome-5.3.1/css/fontawesome-all.min.css" rel="stylesheet" />
+    <link href="libs/countdown-0.3.5/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown-0.3.5/countdown.js"></script>
     <link rel="stylesheet" href="theme.css" type="text/css" />
   </head>
   <body>
     <textarea id="source">
 class: center, middle, title-slide
 
-# Predictive modeling with text using tidy data principles
-## useR2020
-### Julia Silge &amp; Emil Hvitfeldt
-### 2019-7-24
+# Modeling
+## R/Pharma 2020 Text modeling workshop
+### Emil Hvitfeldt
+### 2020-10-09
 
 ---
 
@@ -217,9 +220,37 @@ library(textrecipes)
 
 ---
 
-# smltar.com
+# Modeling task
 
-&lt;iframe src="https://smltar.com/" width="100%" height="400px"&gt;&lt;/iframe&gt;
+.pull-left[
+You are a new zoo keeper and your job is to figure out what to feed each animal based on a written description and some other metrics
+]
+
+--
+
+.pull-right[
+## Question
+
+Is this a realistic problem to have?
+
+Would it be a good use-case for Machine learning?
+
+<div class="countdown" id="timer_5f7c0ac8" style="right:0;bottom:0;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">01</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+]
+
+
+---
+
+# Notes
+
+- This could be better handled by an expert
+- Disastrous results with misclassifications
+- Overlap between classes
+- Has a "unknown" field
+- Uses both numeric/factor variables and text variables
 
 ---
 
@@ -2906,7 +2937,6 @@ class: center, middle
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script src="macros.js"></script>
 <script>var slideshow = remark.create({
-"highlightLanguage": "r",
 "ratio": "16:9",
 "highlightStyle": "github",
 "highlightLines": true,
