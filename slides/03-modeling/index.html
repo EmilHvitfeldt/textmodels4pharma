@@ -1,0 +1,3029 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Predictive modeling with text using tidy data principles</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Julia Silge &amp; Emil Hvitfeldt" />
+    <script src="libs/header-attrs-2.3/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/font-awesome-5.3.1/css/fontawesome-all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="theme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, title-slide
+
+# Predictive modeling with text using tidy data principles
+## useR2020
+### Julia Silge &amp; Emil Hvitfeldt
+### 2019-7-24
+
+---
+
+
+
+
+
+
+
+
+
+class: center, middle
+
+# Hello!
+
+.pull-left[
+&lt;img style="border-radius: 50%;" src="https://github.com/EmilHvitfeldt.png" width="150px"/&gt;  
+[<i class="fab  fa-github "></i> @EmilHvitfeldt](https://github.com/EmilHvitfeldt)  
+[<i class="fab  fa-twitter "></i> @Emil_Hvitfeldt](https://twitter.com/Emil_Hvitfeldt)  
+[<i class="fas  fa-link "></i> hvitfeldt.me](https://www.hvitfeldt.me/)
+]
+
+.pull-right[
+&lt;img style="border-radius: 50%;" src="https://github.com/juliasilge.png" width="150px"/&gt;  
+[<i class="fab  fa-github "></i> @juliasilge](https://github.com/juliasilge)  
+[<i class="fab  fa-twitter "></i> @juliasilge](https://twitter.com/juliasilge)  
+[<i class="fas  fa-link "></i> juliasilge.com](https://juliasilge.com)
+]
+
+---
+
+# Plan for today
+
+--
+
+- We will walk through our case study using slides and live coding
+
+
+
+--
+
+
+- After the tutorial, use the [materials on GitHub](https://github.com/EmilHvitfeldt/useR2020-text-modeling-tutorial) and YouTube recording to run the code yourself 💪
+
+---
+
+# Text as data
+
+Let's look at complaints submitted to the [United States Consumer Financial Protection Bureau (CFPB)](https://www.consumerfinance.gov/data-research/consumer-complaints/).
+
+--
+
+
+- An individual experiences a problem 😩 with a consumer financial product or service, like a bank, loan, or credit card 💰
+
+
+--
+
+
+- They submit a **complaint** to the CFPB explaining what happened 😡
+
+
+--
+
+
+- This complaint is sent to the company, which can respond or dispute
+
+
+---
+
+# Text as data
+
+Let's look at complaints submitted to the [United States Consumer Financial Protection Bureau (CFPB)](https://www.consumerfinance.gov/data-research/consumer-complaints/).
+
+
+```r
+library(tidyverse)
+library(animals)
+
+animals
+```
+
+```
+## # A tibble: 610 x 48
+##    text  colour lifespan weight kingdom class phylum diet  conservation_st…
+##    &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;           
+##  1 "Aar… Brown… 23 years 60kg … Animal… Mamm… Chord… Omni… Least Concern   
+##  2 "Aby… Fawn,… &lt;NA&gt;     &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;            
+##  3 "Ade… Black… 10 - 20… 3kg -… Animal… Aves  Chord… Carn… Least Concern   
+##  4 "Aff… Black… &lt;NA&gt;     &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;            
+##  5 "Afg… Black… &lt;NA&gt;     &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;            
+##  6 "Afr… Grey,… 60 - 70… 3,600… Animal… Mamm… Chord… Herb… Threatened      
+##  7 "Afr… Black… 15 - 20… 1.4kg… Animal… Mamm… Chord… Omni… Least Concern   
+##  8 "Afr… Brown… 8 - 15 … 25g -… Animal… Amph… Chord… Carn… Least Concern   
+##  9 "Afr… Grey,… 60 - 70… 900kg… Animal… Mamm… Chord… Herb… Endangered      
+## 10 "Afr… Black… 15 - 20… 1.4kg… Animal… Mamm… Chord… Omni… Least Concern   
+## # … with 600 more rows, and 39 more variables: order &lt;chr&gt;,
+## #   scientific_name &lt;chr&gt;, skin_type &lt;chr&gt;, habitat &lt;chr&gt;, predators &lt;chr&gt;,
+## #   family &lt;chr&gt;, lifestyle &lt;chr&gt;, average_litter_size &lt;chr&gt;, genus &lt;chr&gt;,
+## #   top_speed &lt;chr&gt;, favourite_food &lt;chr&gt;, main_prey &lt;chr&gt;, type &lt;chr&gt;,
+## #   common_name &lt;chr&gt;, group &lt;chr&gt;, size &lt;chr&gt;, distinctive_features &lt;chr&gt;,
+## #   size_l &lt;chr&gt;, origin &lt;chr&gt;, special_features &lt;chr&gt;, location &lt;chr&gt;,
+## #   number_of_species &lt;chr&gt;, average_clutch_size &lt;chr&gt;, size_h &lt;chr&gt;,
+## #   group_behaviour &lt;chr&gt;, fun_fact &lt;chr&gt;, age_of_sexual_maturity &lt;chr&gt;,
+## #   name_of_young &lt;chr&gt;, prey &lt;chr&gt;, estimated_population_size &lt;chr&gt;,
+## #   biggest_threat &lt;chr&gt;, average_lifespan &lt;chr&gt;,
+## #   most_distinctive_feature &lt;chr&gt;, other_name_s &lt;chr&gt;, gestation_period &lt;chr&gt;,
+## #   age_of_weaning &lt;chr&gt;, average_weight &lt;chr&gt;, temperament &lt;chr&gt;,
+## #   wingspan &lt;chr&gt;
+```
+
+```r
+names(animals)
+```
+
+```
+##  [1] "text"                      "colour"                   
+##  [3] "lifespan"                  "weight"                   
+##  [5] "kingdom"                   "class"                    
+##  [7] "phylum"                    "diet"                     
+##  [9] "conservation_status"       "order"                    
+## [11] "scientific_name"           "skin_type"                
+## [13] "habitat"                   "predators"                
+## [15] "family"                    "lifestyle"                
+## [17] "average_litter_size"       "genus"                    
+## [19] "top_speed"                 "favourite_food"           
+## [21] "main_prey"                 "type"                     
+## [23] "common_name"               "group"                    
+## [25] "size"                      "distinctive_features"     
+## [27] "size_l"                    "origin"                   
+## [29] "special_features"          "location"                 
+## [31] "number_of_species"         "average_clutch_size"      
+## [33] "size_h"                    "group_behaviour"          
+## [35] "fun_fact"                  "age_of_sexual_maturity"   
+## [37] "name_of_young"             "prey"                     
+## [39] "estimated_population_size" "biggest_threat"           
+## [41] "average_lifespan"          "most_distinctive_feature" 
+## [43] "other_name_s"              "gestation_period"         
+## [45] "age_of_weaning"            "average_weight"           
+## [47] "temperament"               "wingspan"
+```
+
+---
+
+# Text as data
+
+
+```r
+animals %&gt;%
+  sample_n(1) %&gt;%
+  pull(text)
+```
+
+```
+## [1] "The guppy (also known as the millionfish) is a small colourful species of freshwater tropical fish that is found naturally in the rivers and lakes of South America. There are nearly 300 different types of guppy spread throughout Barbados, Brazil, Guyana, Netherlands Antilles, Trinidad and Tobago, and Venezuela.\nThe guppy is one of the most popular types of aquarium tropical fish in the world as they are small, colourful and easier to keep than many other species of fish. The guppy generally lives from 3 to 5 years old in captivity and slightly less in the wild.\nThe guppy has been introduced to most other countries mainly as a method of mosquito prevention as the guppy eats the mosquito larva before they are able to fly, therefore slowing down the spread of malaria.\nThe guppy is an extremely colourful fish and often displays elaborate patterns on its tail fin. The female guppy and the male guppy can be identified quite easily as the female guppy has a small, patterned tail where the tail of the male guppy is much longer and generally has fewer markings. The female guppy also tends to be larger in size than the male guppy.\nThe guppy gives birth to live young, meaning that the eggs are first incubated inside the female guppy and hatch there too. The incubation period of the guppy is about a month after which the female guppy can give birth to up to 100 baby guppies, which are called fry. As soon as they are born, the guppy fry are able to eat and swim around freely. The guppy fry are also able to sense and avoid danger which is important when around older guppies as they often eat the fry. The guppy fry have matured in adult guppies within a couple of months.\nAfter mating just once with a male guppy, the female guppy is able to give birth numerous times. The female guppy stores the sperm of the male guppy inside her and just hours after giving birth to her fry, the female guppy is ready to become pregnant again and will do so using the stored sperm (hence why the guppy is often called the millionfish).\nThe guppy is an omnivorous animal and eats a wide range of organic matter that is available in the water. The guppy mainly feeds on algae and brine shrimp, and often eat particles of food from the water that have been left by a larger fish.\nThe guppy has many natural predators in the wild (and in tanks) mainly due to their small size and their elaborate fins often attract unwanted attention. Birds such as kingfishers and larger fish are the primary predators of the guppy, so naturally, guppies that are kept in a tank should be kept with other very small fish to prevent them from being eaten."
+```
+
+---
+
+# Text as data
+
+
+--
+
+- Text like this can be used for **supervised** or **predictive** modeling
+
+
+--
+
+
+- We can build both regression and classification models with text data
+
+
+--
+
+
+- We can use the ways language exhibits organization to create features for modeling
+
+
+---
+
+# Modeling Packages
+
+
+```r
+library(tidymodels)
+library(textrecipes)
+```
+
+- [tidymodels](https://www.tidymodels.org/) is a collection of packages for modeling and machine learning using tidyverse principles
+- [textrecipes](https://textrecipes.tidymodels.org/) extends the recipes package to handle text preprocessing
+
+---
+
+# Modeling workflow
+
+![](https://rviews.rstudio.com/post/2019-06-14-a-gentle-intro-to-tidymodels_files/figure-html/tidymodels.png)
+
+---
+
+# smltar.com
+
+&lt;iframe src="https://smltar.com/" width="100%" height="400px"&gt;&lt;/iframe&gt;
+
+---
+
+# Class imbalance
+
+&lt;img src="index_files/figure-html/unnamed-chunk-8-1.png" width="700px" style="display: block; margin: auto;" /&gt;
+
+---
+
+class: inverse, right, middle
+
+# Let's approach this as a **multiclass classification task**
+
+---
+
+---
+
+# Data splitting
+
+The testing set is a precious resource which can be used only once
+
+&lt;img src="index_files/figure-html/all-split-1.png" width="700px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Data splitting
+
+
+```r
+animals &lt;- animals::animals %&gt;%
+  select(diet, text) %&gt;%
+  mutate(diet = if_else(diet %in% c("Omnivore", "Carnivore"), diet, "Other"),
+         diet = factor(trimws(diet)))
+
+set.seed(1234)
+animals_split &lt;- initial_split(animals)
+
+animals_training &lt;- training(animals_split)
+animals_testing &lt;- testing(animals_split)
+```
+
+---
+
+# Which of these variables can we use?
+
+
+```r
+names(animals)
+```
+
+```
+## [1] "diet" "text"
+```
+
+---
+
+# Feature selection checklist
+
+--
+
+
+- Is it ethical to use this variable? (or even legal?)
+
+
+--
+
+
+- Will this variable be available at prediction time?
+
+
+--
+
+
+- Does this variable contribute to explainability?
+
+---
+
+# Which of these variables can we use?
+
+
+```r
+names(animals_training)
+```
+
+```
+## [1] "diet" "text"
+```
+
+---
+
+# Which of these variables can we use?
+
+- `date_received`
+- `tags`
+- `consumer_complaint_narrative` == 📃
+
+---
+
+# Preprocessing specification
+
+
+```r
+rec_spec &lt;- recipe(diet ~ text, animals_training) %&gt;%
+  # Tokenize to words
+  step_tokenize(text) %&gt;%
+  # Remove stopwords
+  step_stopwords(text) %&gt;%
+  # Remove less frequent words
+  step_tokenfilter(text) %&gt;%
+  # Calculate term frequencies
+  step_tf(text, weight_scheme = "binary")
+```
+
+---
+
+# Feature engineering
+
+
+```r
+rec_spec &lt;- recipe(diet ~ text, animals_training) %&gt;%
+  # Tokenize to words
+  step_tokenize(text) %&gt;%
+  # Remove stopwords
+  step_stopwords(text) %&gt;%
+  # Remove less frequent words
+  step_tokenfilter(text) %&gt;%
+  # Calculate term frequencies
+  step_tf(text, weight_scheme = "binary")
+```
+
+--
+
+Also, what does `tune()` mean here? 🤔
+
+---
+
+class: inverse, right, middle
+
+# You can **combine** text and non-text features in your model
+
+---
+
+# Feature engineering: handling dates
+
+
+```r
+#recipe(product ~ date_received + tags + text,
+#    data = complaints_train
+#  ) %&gt;%
+#  step_date(date_received, features = c("month", "dow"), role = "dates") %&gt;%
+#  step_rm(date_received)
+```
+
+---
+
+# Feature engineering: categorical data
+
+
+```r
+#recipe(product ~ date_received + tags + text,
+#    data = complaints_train
+#  ) %&gt;%
+#  step_unknown(tags) %&gt;%
+#  step_dummy(tags)
+```
+
+---
+
+class: inverse, right, middle
+
+# You can **combine** text and non-text features in your model
+
+
+---
+
+# Feature engineering: text
+
+
+```r
+# recipe(product ~ date_received + tags + text,
+#     data = complaints_train
+#   ) %&gt;%
+#   step_tokenize(text) %&gt;%
+#   step_stopwords(text) %&gt;%
+#   step_ngram(text, num_tokens = 3, min_num_tokens = 1) %&gt;%
+#   step_tokenfilter(text, max_tokens = tune(), min_times = 5) %&gt;%
+#   step_tfidf(text)
+```
+
+---
+
+# Feature engineering: text
+
+
+
+
+---
+
+class: inverse, right, middle
+
+# How do we create **features** from **natural language**?
+
+
+---
+
+# From natural language to ML features
+
+
+```r
+library(tidytext)
+
+animals %&gt;%
+  mutate(id = row_number()) %&gt;%
+  unnest_tokens(word, text) %&gt;%
+  anti_join(get_stopwords(), by = "word") %&gt;%
+  count(id, word) %&gt;%
+  bind_tf_idf(word, id, n) %&gt;%
+  cast_dfm(id, word, tf_idf)
+```
+
+```
+## Document-feature matrix of: 610 documents, 16,698 features (98.4% sparse).
+```
+
+---
+
+class: inverse, center, middle
+
+# 🛑 STOP WORDS 🛑
+
+---
+
+# Stop words
+
+
+```r
+library(stopwords)
+stopwords()
+```
+
+```
+##   [1] "i"          "me"         "my"         "myself"     "we"        
+##   [6] "our"        "ours"       "ourselves"  "you"        "your"      
+##  [11] "yours"      "yourself"   "yourselves" "he"         "him"       
+##  [16] "his"        "himself"    "she"        "her"        "hers"      
+##  [21] "herself"    "it"         "its"        "itself"     "they"      
+##  [26] "them"       "their"      "theirs"     "themselves" "what"      
+##  [31] "which"      "who"        "whom"       "this"       "that"      
+##  [36] "these"      "those"      "am"         "is"         "are"       
+##  [41] "was"        "were"       "be"         "been"       "being"     
+##  [46] "have"       "has"        "had"        "having"     "do"        
+##  [51] "does"       "did"        "doing"      "would"      "should"    
+##  [56] "could"      "ought"      "i'm"        "you're"     "he's"      
+##  [61] "she's"      "it's"       "we're"      "they're"    "i've"      
+##  [66] "you've"     "we've"      "they've"    "i'd"        "you'd"     
+##  [71] "he'd"       "she'd"      "we'd"       "they'd"     "i'll"      
+##  [76] "you'll"     "he'll"      "she'll"     "we'll"      "they'll"   
+##  [81] "isn't"      "aren't"     "wasn't"     "weren't"    "hasn't"    
+##  [86] "haven't"    "hadn't"     "doesn't"    "don't"      "didn't"    
+##  [91] "won't"      "wouldn't"   "shan't"     "shouldn't"  "can't"     
+##  [96] "cannot"     "couldn't"   "mustn't"    "let's"      "that's"    
+## [101] "who's"      "what's"     "here's"     "there's"    "when's"    
+## [106] "where's"    "why's"      "how's"      "a"          "an"        
+## [111] "the"        "and"        "but"        "if"         "or"        
+## [116] "because"    "as"         "until"      "while"      "of"        
+## [121] "at"         "by"         "for"        "with"       "about"     
+## [126] "against"    "between"    "into"       "through"    "during"    
+## [131] "before"     "after"      "above"      "below"      "to"        
+## [136] "from"       "up"         "down"       "in"         "out"       
+## [141] "on"         "off"        "over"       "under"      "again"     
+## [146] "further"    "then"       "once"       "here"       "there"     
+## [151] "when"       "where"      "why"        "how"        "all"       
+## [156] "any"        "both"       "each"       "few"        "more"      
+## [161] "most"       "other"      "some"       "such"       "no"        
+## [166] "nor"        "not"        "only"       "own"        "same"      
+## [171] "so"         "than"       "too"        "very"       "will"
+```
+
+
+---
+
+class: center, middle
+
+&lt;img src="index_files/figure-html/unnamed-chunk-20-1.png" width="700px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Stop words
+
+
+--
+
+
+- Stop words are context specific
+
+
+--
+
+
+- Stop word lexicons can have bias
+
+
+--
+
+
+- You can create your own stop word list
+
+
+--
+
+
+- See [Chapter 3](https://smltar.com/stopwords.html) for more! 🛑
+
+---
+
+class: inverse, right, middle
+
+## What kind of **models** work well for text?
+
+---
+
+# Text models
+
+Remember that text data is sparse! 😮
+
+--
+
+
+- Regularized linear models (glmnet)
+- Support vector machines
+- naive Bayes
+- Tree-based models like random forest? 
+
+---
+
+# Text models
+
+Remember that text data is sparse! 😮
+
+- Regularized linear models (glmnet)
+- Support vector machines
+- naive Bayes
+- Tree-based models like random forest?  🙅
+
+---
+
+class: inverse, right, middle
+
+# Does text data have to be **sparse**?
+
+---
+
+
+&gt;### You shall know a word by the company it keeps.
+#### [💬 John Rupert Firth](https://en.wikiquote.org/wiki/John_Rupert_Firth)
+
+
+
+--
+
+Learn more about word embeddings:
+
+- in [Chapter 5](https://smltar.com/embeddings.html)
+- at [juliasilge.github.io/why-r-webinar/](https://juliasilge.github.io/why-r-webinar/)
+
+
+---
+
+# To specify a model in tidymodels
+
+1\. Pick a **model**
+
+2\. Set the **mode** (if needed)
+
+3\. Set the **engine**
+
+---
+
+background-image: url(https://github.com/allisonhorst/stats-illustrations/raw/master/rstats-artwork/parsnip.png)
+background-size: cover
+
+.footnote[
+Art by [Allison Horst](https://github.com/allisonhorst/stats-illustrations)
+]
+
+---
+
+# To specify a model in tidymodels
+
+All available models are listed at &lt;https://tidymodels.org/find/parsnip&gt;
+
+&lt;iframe src="https://tidymodels.org/find/parsnip" width="100%" height="400px"&gt;&lt;/iframe&gt;
+
+---
+
+class: middle
+
+
+# `set_mode()`
+
+Some models can solve multiple types of problems
+
+
+
+```r
+svm_rbf() %&gt;% set_mode(mode = "regression")
+```
+
+```
+## Radial Basis Function Support Vector Machine Specification (regression)
+```
+
+---
+
+class: middle
+
+
+# `set_mode()`
+
+Some models can solve multiple types of problems
+
+
+
+```r
+svm_rbf() %&gt;% set_mode(mode = "classification")
+```
+
+```
+## Radial Basis Function Support Vector Machine Specification (classification)
+```
+
+---
+
+class: middle
+
+
+# `set_engine()`
+
+The same model can be implemented by multiple computational engines
+
+
+
+```r
+svm_rbf() %&gt;% set_engine("kernlab")
+```
+
+```
+## Radial Basis Function Support Vector Machine Specification (unknown)
+## 
+## Computational engine: kernlab
+```
+
+---
+
+class: middle
+
+
+# `set_engine()`
+
+The same model can be implemented by multiple computational engines
+
+
+
+```r
+svm_rbf() %&gt;% set_engine("liquidSVM")
+```
+
+```
+## Radial Basis Function Support Vector Machine Specification (unknown)
+## 
+## Computational engine: liquidSVM
+```
+
+---
+
+# What makes a model?
+
+
+```r
+lasso_spec &lt;- multinom_reg(penalty = tune(), mixture = 1) %&gt;%
+  set_mode("classification") %&gt;%
+  set_engine("glmnet")
+
+
+lasso_spec
+```
+
+```
+## Multinomial Regression Model Specification (classification)
+## 
+## Main Arguments:
+##   penalty = tune()
+##   mixture = 1
+## 
+## Computational engine: glmnet
+```
+
+
+--
+
+It's `tune()` again! 😟
+
+---
+
+## Parameters and... hyperparameters?
+
+- Some model parameters can be learned from data during fitting/training
+
+
+--
+
+
+- Some CANNOT 😱
+
+
+--
+
+
+- These are **hyperparameters** of a model, and we estimate them by training lots of models with different hyperparameters and comparing them
+
+
+---
+
+# A grid of possible hyperparameters
+
+
+```r
+param_grid &lt;- grid_regular(
+  penalty(range = c(-4, 0)),
+  max_tokens(range = c(500, 2000)),
+  levels = 50
+)
+```
+
+
+---
+
+# A grid of possible hyperparameters
+
+
+```
+## # A tibble: 2,500 x 2
+##     penalty max_tokens
+##       &lt;dbl&gt;      &lt;int&gt;
+##  1 0.0001          500
+##  2 0.000121        500
+##  3 0.000146        500
+##  4 0.000176        500
+##  5 0.000212        500
+##  6 0.000256        500
+##  7 0.000309        500
+##  8 0.000373        500
+##  9 0.000450        500
+## 10 0.000543        500
+## # … with 2,490 more rows
+```
+
+---
+
+class: inverse, right, middle
+
+# How can we **compare** and **evaluate** these different models?
+
+---
+
+background-image: url(https://www.tidymodels.org/start/resampling/img/resampling.svg)
+background-size: 60%
+
+---
+
+# Spend your data budget
+
+
+```r
+set.seed(123)
+animals_folds &lt;- vfold_cv(animals_training, v = 10, strata = diet)
+
+animals_folds
+```
+
+```
+## #  10-fold cross-validation using stratification 
+## # A tibble: 10 x 2
+##    splits           id    
+##    &lt;list&gt;           &lt;chr&gt; 
+##  1 &lt;split [411/47]&gt; Fold01
+##  2 &lt;split [411/47]&gt; Fold02
+##  3 &lt;split [411/47]&gt; Fold03
+##  4 &lt;split [412/46]&gt; Fold04
+##  5 &lt;split [412/46]&gt; Fold05
+##  6 &lt;split [413/45]&gt; Fold06
+##  7 &lt;split [413/45]&gt; Fold07
+##  8 &lt;split [413/45]&gt; Fold08
+##  9 &lt;split [413/45]&gt; Fold09
+## 10 &lt;split [413/45]&gt; Fold10
+```
+
+---
+class: middle, center, inverse
+
+# ✨ CROSS-VALIDATION ✨
+
+---
+background-image: url(images/cross-validation/Slide2.png)
+background-size: contain
+
+.footnote[
+Art by [Alison Hill](https://alison.rbind.io/)
+]
+---
+background-image: url(images/cross-validation/Slide3.png)
+background-size: contain
+
+.footnote[
+Art by [Alison Hill](https://alison.rbind.io/)
+]
+---
+background-image: url(images/cross-validation/Slide4.png)
+background-size: contain
+
+.footnote[
+Art by [Alison Hill](https://alison.rbind.io/)
+]
+---
+background-image: url(images/cross-validation/Slide5.png)
+background-size: contain
+
+.footnote[
+Art by [Alison Hill](https://alison.rbind.io/)
+]
+---
+background-image: url(images/cross-validation/Slide6.png)
+background-size: contain
+
+.footnote[
+Art by [Alison Hill](https://alison.rbind.io/)
+]
+---
+background-image: url(images/cross-validation/Slide7.png)
+background-size: contain
+
+.footnote[
+Art by [Alison Hill](https://alison.rbind.io/)
+]
+---
+background-image: url(images/cross-validation/Slide8.png)
+background-size: contain
+
+.footnote[
+Art by [Alison Hill](https://alison.rbind.io/)
+]
+---
+background-image: url(images/cross-validation/Slide9.png)
+background-size: contain
+
+.footnote[
+Art by [Alison Hill](https://alison.rbind.io/)
+]
+---
+background-image: url(images/cross-validation/Slide10.png)
+background-size: contain
+
+.footnote[
+Art by [Alison Hill](https://alison.rbind.io/)
+]
+---
+background-image: url(images/cross-validation/Slide11.png)
+background-size: contain
+
+.footnote[
+Art by [Alison Hill](https://alison.rbind.io/)
+]
+---
+
+class: inverse, right, middle
+
+# Spend your data wisely to create **simulated** validation sets
+
+---
+
+class: inverse, right, middle
+
+# Now we have **resamples**, **features**, plus a **model**
+
+---
+
+# Create a workflow
+
+
+```r
+wf_spec &lt;- workflow() %&gt;%
+  add_recipe(rec_spec) %&gt;%
+  add_model(lasso_spec)
+```
+
+---
+
+class: inverse, right, middle
+
+# What is a `workflow()`?
+
+---
+
+## Time to tune! ⚡
+
+
+```r
+set.seed(42)
+lasso_rs &lt;- tune_grid(
+  wf_spec,
+  resamples = animals_folds,
+  grid = select(param_grid, -max_tokens), 
+  control = control_grid(save_pred = TRUE)
+) 
+```
+
+```
+## Warning: Duplicate rows in grid of tuning combinations found and removed.
+```
+
+```
+## Loading required package: Matrix
+```
+
+```
+## 
+## Attaching package: 'Matrix'
+```
+
+```
+## The following objects are masked from 'package:tidyr':
+## 
+##     expand, pack, unpack
+```
+
+```
+## Loaded glmnet 4.0-2
+```
+
+```
+## ! Fold04: model 1/1: from glmnet Fortran code (error code -88); Convergence for 88...
+```
+
+---
+
+## Time to tune! ⚡
+
+
+```
+## Warning: This tuning result has notes. Example notes on model fitting include:
+## model 1/1: from glmnet Fortran code (error code -88); Convergence for 88th lambda value not reached after maxit=100000 iterations; solutions for larger lambdas returned
+```
+
+```
+## # Tuning results
+## # 10-fold cross-validation using stratification 
+## # A tibble: 10 x 5
+##    splits           id     .metrics          .notes          .predictions       
+##    &lt;list&gt;           &lt;chr&gt;  &lt;list&gt;            &lt;list&gt;          &lt;list&gt;             
+##  1 &lt;split [411/47]&gt; Fold01 &lt;tibble [100 × 5… &lt;tibble [0 × 1… &lt;tibble [2,350 × 8…
+##  2 &lt;split [411/47]&gt; Fold02 &lt;tibble [100 × 5… &lt;tibble [0 × 1… &lt;tibble [2,350 × 8…
+##  3 &lt;split [411/47]&gt; Fold03 &lt;tibble [100 × 5… &lt;tibble [0 × 1… &lt;tibble [2,350 × 8…
+##  4 &lt;split [412/46]&gt; Fold04 &lt;tibble [100 × 5… &lt;tibble [1 × 1… &lt;tibble [2,300 × 8…
+##  5 &lt;split [412/46]&gt; Fold05 &lt;tibble [100 × 5… &lt;tibble [0 × 1… &lt;tibble [2,300 × 8…
+##  6 &lt;split [413/45]&gt; Fold06 &lt;tibble [100 × 5… &lt;tibble [0 × 1… &lt;tibble [2,250 × 8…
+##  7 &lt;split [413/45]&gt; Fold07 &lt;tibble [100 × 5… &lt;tibble [0 × 1… &lt;tibble [2,250 × 8…
+##  8 &lt;split [413/45]&gt; Fold08 &lt;tibble [100 × 5… &lt;tibble [0 × 1… &lt;tibble [2,250 × 8…
+##  9 &lt;split [413/45]&gt; Fold09 &lt;tibble [100 × 5… &lt;tibble [0 × 1… &lt;tibble [2,250 × 8…
+## 10 &lt;split [413/45]&gt; Fold10 &lt;tibble [100 × 5… &lt;tibble [0 × 1… &lt;tibble [2,250 × 8…
+```
+
+---
+class: middle, center, inverse
+
+# 💫 TOKENIZATION 💫
+
+---
+
+# Tokenization
+
+- The process of splitting text in smaller pieces of text (_tokens_)
+
+
+--
+
+
+- Most common token == word, but sometimes we tokenize in a different way
+
+
+--
+
+
+- An essential part of most text analyses
+
+
+--
+
+
+- Many options to take into consideration 
+
+---
+
+# Tokenization: whitespace
+
+
+
+
+```r
+token_example
+```
+
+```
+## [1] "I am a long-time victim of identity theft. This debt doesn't belong to me."
+```
+
+--
+
+
+```r
+strsplit(token_example, "\\s")
+```
+
+```
+## [[1]]
+##  [1] "I"         "am"        "a"         "long-time" "victim"    "of"       
+##  [7] "identity"  "theft."    "This"      "debt"      "doesn't"   "belong"   
+## [13] "to"        "me."
+```
+
+---
+
+# Tokenization: [tokenizers](https://docs.ropensci.org/tokenizers/) package
+
+
+
+```r
+token_example
+```
+
+```
+## [1] "I am a long-time victim of identity theft. This debt doesn't belong to me."
+```
+
+
+```r
+library(tokenizers)
+
+tokenize_words(token_example)
+```
+
+```
+## [[1]]
+##  [1] "i"        "am"       "a"        "long"     "time"     "victim"  
+##  [7] "of"       "identity" "theft"    "this"     "debt"     "doesn't" 
+## [13] "belong"   "to"       "me"
+```
+
+---
+
+# Tokenization: [spaCy](https://spacy.io/) library
+
+
+
+```r
+token_example
+```
+
+```
+## [1] "I am a long-time victim of identity theft. This debt doesn't belong to me."
+```
+
+
+```r
+library(spacyr)
+
+spacy_tokenize(token_example)
+```
+
+
+```
+## [[1]]
+##  [1] "I"        "am"       "a"        "long"     "-"        "time"    
+##  [7] "victim"   "of"       "identity" "theft"    "."        "This"    
+## [13] "debt"     "does"     "n't"      "belong"   "to"       "me"      
+## [19] "."
+```
+
+---
+
+whitespace
+
+
+```
+## [[1]]
+##  [1] "I"         "am"        "a"         "long-time" "victim"    "of"       
+##  [7] "identity"  "theft."    "This"      "debt"      "doesn't"   "belong"   
+## [13] "to"        "me."
+```
+
+tokenizers package
+
+
+```
+## [[1]]
+##  [1] "i"        "am"       "a"        "long"     "time"     "victim"  
+##  [7] "of"       "identity" "theft"    "this"     "debt"     "doesn't" 
+## [13] "belong"   "to"       "me"
+```
+
+spaCy library
+
+
+```
+## [[1]]
+##  [1] "I"        "am"       "a"        "long"     "-"        "time"    
+##  [7] "victim"   "of"       "identity" "theft"    "."        "This"    
+## [13] "debt"     "does"     "n't"      "belong"   "to"       "me"      
+## [19] "."
+```
+
+---
+
+# Tokenization considerations
+
+- Should we turn UPPERCASE letters to lowercase?
+
+
+--
+
+
+- How should we handle punctuation⁉️
+
+
+--
+
+
+- What about non-word characters _inside_ words?
+
+
+--
+
+
+- Should compound words be split or multi-word ideas be kept together?
+
+---
+
+class: inverse, right, middle
+
+## Tokenization for English text is typically **much easier** than other languages.
+
+---
+
+# N-grams
+
+## A sequence of `n` sequential tokens
+
+--
+
+
+- Captures words that appear together often
+
+
+--
+
+
+- Can detect negations ("not happy")
+
+
+--
+
+
+- Larger cardinality
+
+
+---
+
+
+```r
+tokenize_ngrams(token_example, n = 1)
+```
+
+```
+## [[1]]
+##  [1] "i"        "am"       "a"        "long"     "time"     "victim"  
+##  [7] "of"       "identity" "theft"    "this"     "debt"     "doesn't" 
+## [13] "belong"   "to"       "me"
+```
+
+
+
+```r
+tokenize_ngrams(token_example, n = 2)
+```
+
+```
+## [[1]]
+##  [1] "i am"           "am a"           "a long"         "long time"     
+##  [5] "time victim"    "victim of"      "of identity"    "identity theft"
+##  [9] "theft this"     "this debt"      "debt doesn't"   "doesn't belong"
+## [13] "belong to"      "to me"
+```
+
+
+
+```r
+tokenize_ngrams(token_example, n = 3)
+```
+
+```
+## [[1]]
+##  [1] "i am a"              "am a long"           "a long time"        
+##  [4] "long time victim"    "time victim of"      "victim of identity" 
+##  [7] "of identity theft"   "identity theft this" "theft this debt"    
+## [10] "this debt doesn't"   "debt doesn't belong" "doesn't belong to"  
+## [13] "belong to me"
+```
+
+---
+
+# Tokenization
+
+See [Chapter 2](https://smltar.com/tokenization.html) for more!
+
+---
+
+# Look at the tuning results 👀
+
+
+
+```r
+collect_metrics(lasso_rs)
+```
+
+```
+## # A tibble: 100 x 7
+##     penalty .metric  .estimator  mean     n std_err .config
+##       &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;  
+##  1 0.0001   accuracy multiclass 0.599    10  0.0276 Model01
+##  2 0.0001   roc_auc  hand_till  0.775    10  0.0217 Model01
+##  3 0.000121 accuracy multiclass 0.601    10  0.0264 Model02
+##  4 0.000121 roc_auc  hand_till  0.775    10  0.0221 Model02
+##  5 0.000146 accuracy multiclass 0.601    10  0.0255 Model03
+##  6 0.000146 roc_auc  hand_till  0.776    10  0.0222 Model03
+##  7 0.000176 accuracy multiclass 0.596    10  0.0278 Model04
+##  8 0.000176 roc_auc  hand_till  0.777    10  0.0222 Model04
+##  9 0.000212 accuracy multiclass 0.594    10  0.0276 Model05
+## 10 0.000212 roc_auc  hand_till  0.777    10  0.0225 Model05
+## # … with 90 more rows
+```
+
+---
+
+
+```r
+autoplot(lasso_rs)
+```
+
+&lt;img src="index_files/figure-html/unnamed-chunk-47-1.png" width="700px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Look at the tuning results 👀
+
+
+```r
+lasso_rs %&gt;%
+  show_best("roc_auc")
+```
+
+```
+## # A tibble: 5 x 7
+##   penalty .metric .estimator  mean     n std_err .config
+##     &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;  
+## 1  0.0233 roc_auc hand_till  0.868    10  0.0179 Model30
+## 2  0.0193 roc_auc hand_till  0.866    10  0.0186 Model29
+## 3  0.0281 roc_auc hand_till  0.864    10  0.0170 Model31
+## 4  0.0160 roc_auc hand_till  0.863    10  0.0191 Model28
+## 5  0.0339 roc_auc hand_till  0.859    10  0.0168 Model32
+```
+
+---
+
+# The **best** 🥇 hyperparameters 
+
+
+```r
+best_roc_auc &lt;- select_best(lasso_rs, "roc_auc")
+
+best_roc_auc
+```
+
+```
+## # A tibble: 1 x 2
+##   penalty .config
+##     &lt;dbl&gt; &lt;chr&gt;  
+## 1  0.0233 Model30
+```
+
+---
+
+# Evaluate the best model 📏
+
+
+```r
+collect_predictions(lasso_rs, parameters = best_roc_auc)
+```
+
+```
+## # A tibble: 458 x 9
+##    id    .pred_Carnivore .pred_Omnivore .pred_Other  .row penalty .pred_class
+##    &lt;chr&gt;           &lt;dbl&gt;          &lt;dbl&gt;       &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;fct&gt;      
+##  1 Fold…          0.432          0.200        0.368     1  0.0233 Carnivore  
+##  2 Fold…          0.116          0.148        0.736    18  0.0233 Other      
+##  3 Fold…          0.0259         0.0496       0.924    21  0.0233 Other      
+##  4 Fold…          0.0589         0.199        0.742    27  0.0233 Other      
+##  5 Fold…          0.168          0.273        0.559    32  0.0233 Other      
+##  6 Fold…          0.0308         0.0640       0.905    36  0.0233 Other      
+##  7 Fold…          0.772          0.120        0.108    51  0.0233 Carnivore  
+##  8 Fold…          0.0625         0.195        0.742    59  0.0233 Other      
+##  9 Fold…          0.142          0.145        0.713    74  0.0233 Other      
+## 10 Fold…          0.536          0.326        0.137    76  0.0233 Carnivore  
+## # … with 448 more rows, and 2 more variables: diet &lt;fct&gt;, .config &lt;chr&gt;
+```
+
+---
+
+# Evaluate the best model 📏
+
+
+```r
+# collect_predictions(lasso_rs, parameters = best_roc_auc) %&gt;%
+#   group_by(id) %&gt;%
+#   roc_curve(truth = diet, .pred_Carnivore) %&gt;%
+#   autoplot()
+```
+
+---
+
+# Evaluate the best model 📐
+
+
+
+---
+
+# Update the workflow
+
+We can update our workflow with the best performing hyperparameters.
+
+
+```r
+wf_spec_final &lt;- finalize_workflow(wf_spec, best_roc_auc)
+```
+
+This workflow is ready to go! It can now be applied to new data.
+
+---
+
+class: inverse, right, middle
+
+# How is our model **thinking**?
+
+---
+
+## Variable importance
+
+
+```r
+library(vip)
+
+wf_spec_final %&gt;%
+  fit(animals_training) %&gt;%
+  pull_workflow_fit() %&gt;%
+  vi(lambda = best_roc_auc$penalty) %&gt;%
+  filter(!str_detect(Variable, "tfidf")) %&gt;%
+  filter(Importance != 0)
+```
+
+```
+## # A tibble: 67 x 3
+##    Variable        Importance Sign 
+##    &lt;chr&gt;                &lt;dbl&gt; &lt;chr&gt;
+##  1 tf_text_penguin       8.10 POS  
+##  2 tf_text_tiger         3.02 POS  
+##  3 tf_text_cat           2.94 POS  
+##  4 tf_text_prey          2.48 POS  
+##  5 tf_text_diet          2.35 POS  
+##  6 tf_text_hunt          2.16 POS  
+##  7 tf_text_large         1.87 POS  
+##  8 tf_text_fish          1.69 POS  
+##  9 tf_text_males         1.64 POS  
+## 10 tf_text_hunting       1.29 POS  
+## # … with 57 more rows
+```
+
+---
+
+## Variable importance
+
+
+```r
+vi_data &lt;- wf_spec_final %&gt;%
+  fit(animals_training) %&gt;%
+  pull_workflow_fit() %&gt;%
+  vi(lambda = best_roc_auc$penalty) %&gt;%
+  mutate(Variable = str_remove_all(Variable, "tfidf_text_")) %&gt;%
+  filter(Importance != 0)
+```
+
+---
+
+## Variable importance 
+
+
+```r
+vi_data
+```
+
+```
+## # A tibble: 67 x 3
+##    Variable        Importance Sign 
+##    &lt;chr&gt;                &lt;dbl&gt; &lt;chr&gt;
+##  1 tf_text_penguin       8.10 POS  
+##  2 tf_text_tiger         3.02 POS  
+##  3 tf_text_cat           2.94 POS  
+##  4 tf_text_prey          2.48 POS  
+##  5 tf_text_diet          2.35 POS  
+##  6 tf_text_hunt          2.16 POS  
+##  7 tf_text_large         1.87 POS  
+##  8 tf_text_fish          1.69 POS  
+##  9 tf_text_males         1.64 POS  
+## 10 tf_text_hunting       1.29 POS  
+## # … with 57 more rows
+```
+
+---
+
+class: center, middle
+
+
+
+&lt;img src="index_files/figure-html/unnamed-chunk-58-1.png" width="700px" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Credit Complaint #1
+
+&lt;span, style = 'color:green;'&gt;Credit&lt;/span&gt;
+&lt;span, style = 'color:black;'&gt;And&lt;/span&gt;
+&lt;span, style = 'color:blue;'&gt;Other&lt;/span&gt;
+
+<div>
+<span>aardvark</span>
+<span>classification</span>
+<span>and</span>
+<span>evolution</span>
+<span>aardvarks</span>
+<span>are</span>
+<span>small</span>
+<span>pig</span>
+<span>like</span>
+<span>mammals</span>
+<span>that</span>
+<span>are</span>
+<span>found</span>
+<span>inhabiting</span>
+<span>a</span>
+<span>wide</span>
+<span>range</span>
+<span>of</span>
+<span>different</span>
+<span>habitats</span>
+<span>throughout</span>
+<span>africa</span>
+<span>south</span>
+<span>of</span>
+<span>the</span>
+<span>sahara</span>
+<span>they</span>
+<span>are</span>
+<span>mostly</span>
+<span>solitary</span>
+<span>and</span>
+<span>spend</span>
+<span>their</span>
+<span>days</span>
+<span>sleeping</span>
+<span>in</span>
+<span>underground</span>
+<span>burrows</span>
+<span>to</span>
+<span>protect</span>
+<span>them</span>
+<span>from</span>
+<span>the</span>
+<span>heat</span>
+<span>of</span>
+<span>the</span>
+<span>african</span>
+<span>sun</span>
+<span>emerging</span>
+<span>in</span>
+<span>the</span>
+<span>cooler</span>
+<span>evening</span>
+<span>to</span>
+<span>search</span>
+<span>for</span>
+<span>food</span>
+<span>their</span>
+<span>name</span>
+<span>originates</span>
+<span>from</span>
+<span>the</span>
+<span>afrikaans</span>
+<span>language</span>
+<span>in</span>
+<span>south</span>
+<span>africa</span>
+<span>and</span>
+<span>means</span>
+<span>earth</span>
+<span>pig</span>
+<span>due</span>
+<span>to</span>
+<span>their</span>
+<span>long</span>
+<span>snout</span>
+<span>and</span>
+<span>pig</span>
+<span>like</span>
+<span>body</span>
+<span>aardvarks</span>
+<span>are</span>
+<span>unique</span>
+<span>among</span>
+<span>animals</span>
+<span>as</span>
+<span>they</span>
+<span>are</span>
+<span>the</span>
+<span>only</span>
+<span>surviving</span>
+<span>species</span>
+<span>in</span>
+<span>their</span>
+<span>animal</span>
+<span>family</span>
+<span>until</span>
+<span>recently</span>
+<span>it</span>
+<span>was</span>
+<span>widely</span>
+<span>believed</span>
+<span>that</span>
+<span>they</span>
+<span>were</span>
+<span>most</span>
+<span>closely</span>
+<span>related</span>
+<span>to</span>
+<span>other</span>
+<span>insectivores</span>
+<span>such</span>
+<span>as</span>
+<span>armadillos</span>
+<span>and</span>
+<span>pangolins</span>
+<span>but</span>
+<span>this</span>
+<span>is</span>
+<span>not</span>
+<span>the</span>
+<span>case</span>
+<span>with</span>
+<span>their</span>
+<span>closest</span>
+<span>living</span>
+<span>relatives</span>
+<span>actually</span>
+<span>thought</span>
+<span>to</span>
+<span>be</span>
+<span>elephants</span>
+<span>aardvark</span>
+<span>anatomy</span>
+<span>and</span>
+<span>appearance</span>
+<span>aardvarks</span>
+<span>have</span>
+<span>a</span>
+<span>unique</span>
+<span>appearance</span>
+<span>amongst</span>
+<span>mammals</span>
+<span>and</span>
+<span>indeed</span>
+<span>all</span>
+<span>animals</span>
+<span>as</span>
+<span>they</span>
+<span>display</span>
+<span>physical</span>
+<span>characteristics</span>
+<span>of</span>
+<span>a</span>
+<span>number</span>
+<span>of</span>
+<span>different</span>
+<span>animal</span>
+<span>species</span>
+<span>they</span>
+<span>have</span>
+<span>medium</span>
+<span>sized</span>
+<span>almost</span>
+<span>hairless</span>
+<span>bodies</span>
+<span>and</span>
+<span>long</span>
+<span>snouts</span>
+<span>that</span>
+<span>make</span>
+<span>them</span>
+<span>look</span>
+<span>distinctly</span>
+<span>pig</span>
+<span>like</span>
+<span>at</span>
+<span>first</span>
+<span>with</span>
+<span>thick</span>
+<span>skin</span>
+<span>that</span>
+<span>both</span>
+<span>protects</span>
+<span>them</span>
+<span>from</span>
+<span>the</span>
+<span>hot</span>
+<span>sun</span>
+<span>and</span>
+<span>also</span>
+<span>from</span>
+<span>being</span>
+<span>harmed</span>
+<span>by</span>
+<span>insect</span>
+<span>bites</span>
+<span>they</span>
+<span>are</span>
+<span>able</span>
+<span>to</span>
+<span>close</span>
+<span>their</span>
+<span>nostrils</span>
+<span>to</span>
+<span>stop</span>
+<span>dust</span>
+<span>and</span>
+<span>insects</span>
+<span>from</span>
+<span>entering</span>
+<span>their</span>
+<span>nose</span>
+<span>they</span>
+<span>have</span>
+<span>tubular</span>
+<span>rabbit</span>
+<span>like</span>
+<span>ears</span>
+<span>that</span>
+<span>can</span>
+<span>stand</span>
+<span>on</span>
+<span>end</span>
+<span>but</span>
+<span>can</span>
+<span>also</span>
+<span>be</span>
+<span>folded</span>
+<span>flat</span>
+<span>to</span>
+<span>prevent</span>
+<span>dirt</span>
+<span>from</span>
+<span>entering</span>
+<span>them</span>
+<span>when</span>
+<span>they</span>
+<span>are</span>
+<span>underground</span>
+<span>aardvarks</span>
+<span>have</span>
+<span>strong</span>
+<span>claws</span>
+<span>on</span>
+<span>each</span>
+<span>of</span>
+<span>their</span>
+<span>spade</span>
+<span>like</span>
+<span>feet</span>
+<span>that</span>
+<span>along</span>
+<span>with</span>
+<span>the</span>
+<span>fact</span>
+<span>that</span>
+<span>their</span>
+<span>hind</span>
+<span>legs</span>
+<span>are</span>
+<span>longer</span>
+<span>than</span>
+<span>their</span>
+<span>front</span>
+<span>legs</span>
+<span>makes</span>
+<span>them</span>
+<span>strong</span>
+<span>and</span>
+<span>capable</span>
+<span>diggers</span>
+<span>able</span>
+<span>to</span>
+<span>excavate</span>
+<span>vast</span>
+<span>amounts</span>
+<span>of</span>
+<span>earth</span>
+<span>at</span>
+<span>an</span>
+<span>alarming</span>
+<span>rate</span>
+<span>due</span>
+<span>to</span>
+<span>the</span>
+<span>fact</span>
+<span>that</span>
+<span>they</span>
+<span>spend</span>
+<span>most</span>
+<span>of</span>
+<span>their</span>
+<span>lives</span>
+<span>underground</span>
+<span>or</span>
+<span>out</span>
+<span>hunting</span>
+<span>in</span>
+<span>the</span>
+<span>dark</span>
+<span>at</span>
+<span>night</span>
+<span>they</span>
+<span>have</span>
+<span>poor</span>
+<span>eyesight</span>
+<span>but</span>
+<span>are</span>
+<span>able</span>
+<span>to</span>
+<span>easily</span>
+<span>navigate</span>
+<span>their</span>
+<span>surrounding</span>
+<span>using</span>
+<span>their</span>
+<span>excellent</span>
+<span>sense</span>
+<span>of</span>
+<span>smell</span>
+<span>to</span>
+<span>both</span>
+<span>find</span>
+<span>prey</span>
+<span>and</span>
+<span>to</span>
+<span>sense</span>
+<span>potential</span>
+<span>danger</span>
+<span>aardvark</span>
+<span>distribution</span>
+<span>and</span>
+<span>habitat</span>
+<span>aardvarks</span>
+<span>are</span>
+<span>found</span>
+<span>in</span>
+<span>a</span>
+<span>wide</span>
+<span>variety</span>
+<span>of</span>
+<span>different</span>
+<span>habitats</span>
+<span>throughout</span>
+<span>sub</span>
+<span>saharan</span>
+<span>africa</span>
+<span>from</span>
+<span>dry</span>
+<span>deserts</span>
+<span>to</span>
+<span>the</span>
+<span>moist</span>
+<span>rainforest</span>
+<span>regions</span>
+<span>the</span>
+<span>only</span>
+<span>stipulation</span>
+<span>other</span>
+<span>than</span>
+<span>having</span>
+<span>good</span>
+<span>access</span>
+<span>to</span>
+<span>plenty</span>
+<span>of</span>
+<span>food</span>
+<span>and</span>
+<span>water</span>
+<span>is</span>
+<span>to</span>
+<span>have</span>
+<span>good</span>
+<span>soil</span>
+<span>in</span>
+<span>which</span>
+<span>they</span>
+<span>can</span>
+<span>dig</span>
+<span>their</span>
+<span>extensive</span>
+<span>burrows</span>
+<span>despite</span>
+<span>being</span>
+<span>highly</span>
+<span>skilled</span>
+<span>at</span>
+<span>digging</span>
+<span>in</span>
+<span>sandy</span>
+<span>or</span>
+<span>clay</span>
+<span>soil</span>
+<span>types</span>
+<span>rockier</span>
+<span>regions</span>
+<span>prove</span>
+<span>more</span>
+<span>of</span>
+<span>a</span>
+<span>challenge</span>
+<span>to</span>
+<span>create</span>
+<span>their</span>
+<span>underground</span>
+<span>homes</span>
+<span>so</span>
+<span>the</span>
+<span>aardvark</span>
+<span>will</span>
+<span>move</span>
+<span>to</span>
+<span>another</span>
+<span>area</span>
+<span>where</span>
+<span>soil</span>
+<span>conditions</span>
+<span>are</span>
+<span>better</span>
+<span>suited</span>
+<span>to</span>
+<span>digging</span>
+<span>their</span>
+<span>burrows</span>
+<span>can</span>
+<span>be</span>
+<span>up</span>
+<span>to</span>
+<span>10</span>
+<span>meters</span>
+<span>33</span>
+<span>ft</span>
+<span>long</span>
+<span>in</span>
+<span>a</span>
+<span>home</span>
+<span>range</span>
+<span>that</span>
+<span>can</span>
+<span>be</span>
+<span>anywhere</span>
+<span>from</span>
+<span>2</span>
+<span>to</span>
+<span>5</span>
+<span>kilometres</span>
+<span>square</span>
+<span>their</span>
+<span>burrows</span>
+<span>often</span>
+<span>having</span>
+<span>multiple</span>
+<span>entrances</span>
+<span>and</span>
+<span>are</span>
+<span>always</span>
+<span>left</span>
+<span>head</span>
+<span>first</span>
+<span>so</span>
+<span>they</span>
+<span>are</span>
+<span>able</span>
+<span>to</span>
+<span>identify</span>
+<span>potential</span>
+<span>predators</span>
+<span>easily</span>
+<span>using</span>
+<span>their</span>
+<span>keen</span>
+<span>sense</span>
+<span>of</span>
+<span>smell</span>
+<span>aardvark</span>
+<span>behaviour</span>
+<span>and</span>
+<span>lifestyle</span>
+<span>aardvarks</span>
+<span>are</span>
+<span>mainly</span>
+<span>solitary</span>
+<span>animals</span>
+<span>that</span>
+<span>come</span>
+<span>together</span>
+<span>only</span>
+<span>to</span>
+<span>mate</span>
+<span>and</span>
+<span>are</span>
+<span>never</span>
+<span>found</span>
+<span>in</span>
+<span>large</span>
+<span>groups</span>
+<span>they</span>
+<span>live</span>
+<span>in</span>
+<span>underground</span>
+<span>burrows</span>
+<span>to</span>
+<span>protect</span>
+<span>them</span>
+<span>both</span>
+<span>from</span>
+<span>the</span>
+<span>hot</span>
+<span>daytime</span>
+<span>sun</span>
+<span>and</span>
+<span>from</span>
+<span>predators</span>
+<span>aardvarks</span>
+<span>are</span>
+<span>nocturnal</span>
+<span>mammals</span>
+<span>only</span>
+<span>leaving</span>
+<span>the</span>
+<span>safety</span>
+<span>of</span>
+<span>the</span>
+<span>burrow</span>
+<span>under</span>
+<span>the</span>
+<span>cover</span>
+<span>of</span>
+<span>night</span>
+<span>when</span>
+<span>they</span>
+<span>go</span>
+<span>in</span>
+<span>search</span>
+<span>of</span>
+<span>food</span>
+<span>and</span>
+<span>water</span>
+<span>often</span>
+<span>travelling</span>
+<span>several</span>
+<span>miles</span>
+<span>in</span>
+<span>order</span>
+<span>to</span>
+<span>find</span>
+<span>the</span>
+<span>biggest</span>
+<span>termite</span>
+<span>mounds</span>
+<span>guided</span>
+<span>by</span>
+<span>their</span>
+<span>excellent</span>
+<span>hearing</span>
+<span>and</span>
+<span>sense</span>
+<span>of</span>
+<span>smell</span>
+<span>despite</span>
+<span>often</span>
+<span>having</span>
+<span>a</span>
+<span>large</span>
+<span>burrow</span>
+<span>comprised</span>
+<span>of</span>
+<span>an</span>
+<span>extensive</span>
+<span>network</span>
+<span>of</span>
+<span>tunnels</span>
+<span>aardvarks</span>
+<span>are</span>
+<span>also</span>
+<span>known</span>
+<span>to</span>
+<span>be</span>
+<span>able</span>
+<span>to</span>
+<span>quickly</span>
+<span>excavate</span>
+<span>small</span>
+<span>temporary</span>
+<span>burrows</span>
+<span>where</span>
+<span>they</span>
+<span>can</span>
+<span>protect</span>
+<span>themselves</span>
+<span>quickly</span>
+<span>rather</span>
+<span>than</span>
+<span>having</span>
+<span>to</span>
+<span>return</span>
+<span>to</span>
+<span>their</span>
+<span>original</span>
+<span>dwelling</span>
+<span>aardvark</span>
+<span>reproduction</span>
+<span>and</span>
+<span>life</span>
+<span>cycles</span>
+<span>aardvarks</span>
+<span>have</span>
+<span>specific</span>
+<span>mating</span>
+<span>seasons</span>
+<span>that</span>
+<span>occur</span>
+<span>every</span>
+<span>year</span>
+<span>depending</span>
+<span>on</span>
+<span>the</span>
+<span>region</span>
+<span>in</span>
+<span>which</span>
+<span>the</span>
+<span>aardvark</span>
+<span>lives</span>
+<span>young</span>
+<span>can</span>
+<span>be</span>
+<span>born</span>
+<span>either</span>
+<span>in</span>
+<span>october</span>
+<span>to</span>
+<span>november</span>
+<span>or</span>
+<span>may</span>
+<span>to</span>
+<span>june</span>
+<span>in</span>
+<span>other</span>
+<span>areas</span>
+<span>known</span>
+<span>to</span>
+<span>have</span>
+<span>babies</span>
+<span>most</span>
+<span>years</span>
+<span>female</span>
+<span>aardvarks</span>
+<span>give</span>
+<span>birth</span>
+<span>to</span>
+<span>a</span>
+<span>single</span>
+<span>offspring</span>
+<span>after</span>
+<span>a</span>
+<span>gestation</span>
+<span>period</span>
+<span>that</span>
+<span>usually</span>
+<span>lasts</span>
+<span>for</span>
+<span>around</span>
+<span>7</span>
+<span>months</span>
+<span>newborn</span>
+<span>aardvarks</span>
+<span>often</span>
+<span>weigh</span>
+<span>as</span>
+<span>little</span>
+<span>as</span>
+<span>2kg</span>
+<span>and</span>
+<span>are</span>
+<span>born</span>
+<span>with</span>
+<span>hairless</span>
+<span>pink</span>
+<span>skin</span>
+<span>in</span>
+<span>the</span>
+<span>safety</span>
+<span>of</span>
+<span>their</span>
+<span>mother's</span>
+<span>burrow</span>
+<span>baby</span>
+<span>aardvarks</span>
+<span>spend</span>
+<span>the</span>
+<span>first</span>
+<span>two</span>
+<span>weeks</span>
+<span>of</span>
+<span>their</span>
+<span>lives</span>
+<span>in</span>
+<span>the</span>
+<span>safety</span>
+<span>of</span>
+<span>the</span>
+<span>underground</span>
+<span>burrow</span>
+<span>before</span>
+<span>beginning</span>
+<span>to</span>
+<span>venture</span>
+<span>out</span>
+<span>with</span>
+<span>their</span>
+<span>mother</span>
+<span>under</span>
+<span>the</span>
+<span>cover</span>
+<span>of</span>
+<span>night</span>
+<span>however</span>
+<span>despite</span>
+<span>accompanying</span>
+<span>their</span>
+<span>mother</span>
+<span>in</span>
+<span>search</span>
+<span>of</span>
+<span>food</span>
+<span>they</span>
+<span>aren't</span>
+<span>weaned</span>
+<span>until</span>
+<span>they</span>
+<span>are</span>
+<span>around</span>
+<span>three</span>
+<span>months</span>
+<span>old</span>
+<span>young</span>
+<span>aardvarks</span>
+<span>live</span>
+<span>with</span>
+<span>their</span>
+<span>mother</span>
+<span>in</span>
+<span>her</span>
+<span>burrow</span>
+<span>until</span>
+<span>they</span>
+<span>are</span>
+<span>around</span>
+<span>six</span>
+<span>months</span>
+<span>old</span>
+<span>when</span>
+<span>they</span>
+<span>move</span>
+<span>out</span>
+<span>to</span>
+<span>dig</span>
+<span>a</span>
+<span>burrow</span>
+<span>of</span>
+<span>their</span>
+<span>own</span>
+<span>although</span>
+<span>their</span>
+<span>lifespan</span>
+<span>in</span>
+<span>the</span>
+<span>wild</span>
+<span>is</span>
+<span>not</span>
+<span>entirely</span>
+<span>clear</span>
+<span>aardvarks</span>
+<span>tend</span>
+<span>to</span>
+<span>live</span>
+<span>for</span>
+<span>more</span>
+<span>than</span>
+<span>20</span>
+<span>years</span>
+<span>in</span>
+<span>captivity</span>
+<span>aardvark</span>
+<span>diet</span>
+<span>and</span>
+<span>prey</span>
+<span>the</span>
+<span>diet</span>
+<span>of</span>
+<span>aardvarks</span>
+<span>is</span>
+<span>mainly</span>
+<span>comprised</span>
+<span>of</span>
+<span>ants</span>
+<span>and</span>
+<span>termites</span>
+<span>with</span>
+<span>termites</span>
+<span>being</span>
+<span>their</span>
+<span>preferred</span>
+<span>food</span>
+<span>source</span>
+<span>despite</span>
+<span>this</span>
+<span>though</span>
+<span>they</span>
+<span>are</span>
+<span>known</span>
+<span>to</span>
+<span>also</span>
+<span>eat</span>
+<span>other</span>
+<span>insects</span>
+<span>such</span>
+<span>as</span>
+<span>beetles</span>
+<span>and</span>
+<span>insect</span>
+<span>larvae</span>
+<span>aardvarks</span>
+<span>are</span>
+<span>built</span>
+<span>to</span>
+<span>be</span>
+<span>insectivores</span>
+<span>with</span>
+<span>strong</span>
+<span>limbs</span>
+<span>and</span>
+<span>claws</span>
+<span>that</span>
+<span>are</span>
+<span>capable</span>
+<span>of</span>
+<span>breaking</span>
+<span>into</span>
+<span>the</span>
+<span>harder</span>
+<span>outer</span>
+<span>shell</span>
+<span>of</span>
+<span>termite</span>
+<span>mounds</span>
+<span>very</span>
+<span>efficiently</span>
+<span>once</span>
+<span>they</span>
+<span>have</span>
+<span>broken</span>
+<span>into</span>
+<span>the</span>
+<span>mound</span>
+<span>they</span>
+<span>then</span>
+<span>use</span>
+<span>their</span>
+<span>long</span>
+<span>sticky</span>
+<span>tongue</span>
+<span>to</span>
+<span>harvest</span>
+<span>the</span>
+<span>insects</span>
+<span>inside</span>
+<span>and</span>
+<span>eat</span>
+<span>them</span>
+<span>whole</span>
+<span>without</span>
+<span>chewing</span>
+<span>as</span>
+<span>they</span>
+<span>are</span>
+<span>then</span>
+<span>ground</span>
+<span>down</span>
+<span>in</span>
+<span>their</span>
+<span>muscular</span>
+<span>stomachs</span>
+<span>one</span>
+<span>of</span>
+<span>the</span>
+<span>aardvarks</span>
+<span>most</span>
+<span>distinctive</span>
+<span>features</span>
+<span>is</span>
+<span>the</span>
+<span>fact</span>
+<span>that</span>
+<span>they</span>
+<span>have</span>
+<span>columnar</span>
+<span>cheek</span>
+<span>teeth</span>
+<span>that</span>
+<span>serve</span>
+<span>no</span>
+<span>functional</span>
+<span>purpose</span>
+<span>at</span>
+<span>all</span>
+<span>with</span>
+<span>some</span>
+<span>larger</span>
+<span>ant</span>
+<span>species</span>
+<span>that</span>
+<span>need</span>
+<span>to</span>
+<span>be</span>
+<span>chewed</span>
+<span>they</span>
+<span>use</span>
+<span>the</span>
+<span>incisors</span>
+<span>that</span>
+<span>are</span>
+<span>located</span>
+<span>towards</span>
+<span>the</span>
+<span>back</span>
+<span>of</span>
+<span>their</span>
+<span>mouths</span>
+<span>aardvarks</span>
+<span>are</span>
+<span>also</span>
+<span>able</span>
+<span>to</span>
+<span>use</span>
+<span>the</span>
+<span>same</span>
+<span>techniques</span>
+<span>to</span>
+<span>break</span>
+<span>into</span>
+<span>underground</span>
+<span>ant</span>
+<span>nests</span>
+<span>aardvark</span>
+<span>predators</span>
+<span>and</span>
+<span>threats</span>
+<span>despite</span>
+<span>the</span>
+<span>fact</span>
+<span>that</span>
+<span>aardvarks</span>
+<span>are</span>
+<span>nocturnal</span>
+<span>animals</span>
+<span>that</span>
+<span>live</span>
+<span>in</span>
+<span>the</span>
+<span>safety</span>
+<span>of</span>
+<span>underground</span>
+<span>burrows</span>
+<span>they</span>
+<span>are</span>
+<span>threatened</span>
+<span>by</span>
+<span>a</span>
+<span>number</span>
+<span>of</span>
+<span>different</span>
+<span>predators</span>
+<span>throughout</span>
+<span>their</span>
+<span>natural</span>
+<span>environment</span>
+<span>lions</span>
+<span>leopards</span>
+<span>hyenas</span>
+<span>and</span>
+<span>large</span>
+<span>snakes</span>
+<span>most</span>
+<span>notably</span>
+<span>pythons</span>
+<span>are</span>
+<span>the</span>
+<span>main</span>
+<span>predators</span>
+<span>of</span>
+<span>aardvarks</span>
+<span>but</span>
+<span>this</span>
+<span>does</span>
+<span>vary</span>
+<span>depending</span>
+<span>on</span>
+<span>where</span>
+<span>the</span>
+<span>aardvark</span>
+<span>lives</span>
+<span>their</span>
+<span>main</span>
+<span>form</span>
+<span>of</span>
+<span>defence</span>
+<span>is</span>
+<span>to</span>
+<span>escape</span>
+<span>very</span>
+<span>quickly</span>
+<span>underground</span>
+<span>however</span>
+<span>they</span>
+<span>are</span>
+<span>also</span>
+<span>known</span>
+<span>to</span>
+<span>be</span>
+<span>quite</span>
+<span>aggressive</span>
+<span>when</span>
+<span>threatened</span>
+<span>by</span>
+<span>these</span>
+<span>larger</span>
+<span>animals</span>
+<span>aardvarks</span>
+<span>use</span>
+<span>their</span>
+<span>strong</span>
+<span>sharp</span>
+<span>claws</span>
+<span>to</span>
+<span>try</span>
+<span>and</span>
+<span>injure</span>
+<span>their</span>
+<span>attacker</span>
+<span>along</span>
+<span>with</span>
+<span>kicking</span>
+<span>the</span>
+<span>threatening</span>
+<span>animal</span>
+<span>with</span>
+<span>their</span>
+<span>powerful</span>
+<span>back</span>
+<span>legs</span>
+<span>aardvarks</span>
+<span>are</span>
+<span>also</span>
+<span>threatened</span>
+<span>by</span>
+<span>humans</span>
+<span>who</span>
+<span>hunt</span>
+<span>them</span>
+<span>and</span>
+<span>destroy</span>
+<span>their</span>
+<span>natural</span>
+<span>habitats</span>
+<span>aardvark</span>
+<span>interesting</span>
+<span>facts</span>
+<span>and</span>
+<span>features</span>
+<span>aardvarks</span>
+<span>use</span>
+<span>their</span>
+<span>long</span>
+<span>sticky</span>
+<span>tongue</span>
+<span>to</span>
+<span>lap</span>
+<span>up</span>
+<span>to</span>
+<span>50,000</span>
+<span>insects</span>
+<span>a</span>
+<span>night</span>
+<span>from</span>
+<span>inside</span>
+<span>termite</span>
+<span>mounds</span>
+<span>or</span>
+<span>underground</span>
+<span>ant</span>
+<span>nests</span>
+<span>their</span>
+<span>worm</span>
+<span>like</span>
+<span>tongues</span>
+<span>can</span>
+<span>actually</span>
+<span>grow</span>
+<span>up</span>
+<span>to</span>
+<span>30</span>
+<span>cm</span>
+<span>in</span>
+<span>length</span>
+<span>meaning</span>
+<span>they</span>
+<span>can</span>
+<span>reach</span>
+<span>more</span>
+<span>termites</span>
+<span>further</span>
+<span>into</span>
+<span>the</span>
+<span>mound</span>
+<span>their</span>
+<span>love</span>
+<span>of</span>
+<span>insects</span>
+<span>has</span>
+<span>actually</span>
+<span>led</span>
+<span>aardvarks</span>
+<span>also</span>
+<span>being</span>
+<span>known</span>
+<span>as</span>
+<span>antbears</span>
+<span>interestingly</span>
+<span>enough</span>
+<span>aardvarks</span>
+<span>are</span>
+<span>also</span>
+<span>thought</span>
+<span>to</span>
+<span>get</span>
+<span>almost</span>
+<span>all</span>
+<span>of</span>
+<span>the</span>
+<span>moisture</span>
+<span>they</span>
+<span>need</span>
+<span>from</span>
+<span>their</span>
+<span>prey</span>
+<span>meaning</span>
+<span>that</span>
+<span>they</span>
+<span>actually</span>
+<span>have</span>
+<span>to</span>
+<span>physically</span>
+<span>drink</span>
+<span>very</span>
+<span>little</span>
+<span>water</span>
+<span>aardvarks</span>
+<span>are</span>
+<span>thought</span>
+<span>to</span>
+<span>be</span>
+<span>one</span>
+<span>of</span>
+<span>the</span>
+<span>world's</span>
+<span>most</span>
+<span>prolific</span>
+<span>diggers</span>
+<span>with</span>
+<span>their</span>
+<span>strong</span>
+<span>limbs</span>
+<span>and</span>
+<span>claws</span>
+<span>and</span>
+<span>shovel</span>
+<span>like</span>
+<span>feet</span>
+<span>helping</span>
+<span>them</span>
+<span>to</span>
+<span>be</span>
+<span>able</span>
+<span>to</span>
+<span>shift</span>
+<span>2ft</span>
+<span>of</span>
+<span>soil</span>
+<span>in</span>
+<span>just</span>
+<span>15</span>
+<span>seconds</span>
+<span>aardvark</span>
+<span>relationship</span>
+<span>with</span>
+<span>humans</span>
+<span>due</span>
+<span>to</span>
+<span>the</span>
+<span>fact</span>
+<span>that</span>
+<span>they</span>
+<span>spend</span>
+<span>the</span>
+<span>daytime</span>
+<span>hours</span>
+<span>hidden</span>
+<span>in</span>
+<span>the</span>
+<span>safety</span>
+<span>of</span>
+<span>their</span>
+<span>underground</span>
+<span>burrows</span>
+<span>only</span>
+<span>emerging</span>
+<span>under</span>
+<span>the</span>
+<span>cover</span>
+<span>of</span>
+<span>night</span>
+<span>to</span>
+<span>hunt</span>
+<span>for</span>
+<span>food</span>
+<span>aardvarks</span>
+<span>are</span>
+<span>very</span>
+<span>seldom</span>
+<span>seen</span>
+<span>by</span>
+<span>many</span>
+<span>people</span>
+<span>in</span>
+<span>some</span>
+<span>regions</span>
+<span>though</span>
+<span>they</span>
+<span>are</span>
+<span>hunted</span>
+<span>by</span>
+<span>people</span>
+<span>for</span>
+<span>food</span>
+<span>and</span>
+<span>are</span>
+<span>becoming</span>
+<span>increasingly</span>
+<span>affected</span>
+<span>by</span>
+<span>expanding</span>
+<span>human</span>
+<span>populations</span>
+<span>as</span>
+<span>more</span>
+<span>of</span>
+<span>their</span>
+<span>natural</span>
+<span>habitats</span>
+<span>disappear</span>
+<span>to</span>
+<span>make</span>
+<span>way</span>
+<span>for</span>
+<span>growing</span>
+<span>settlements</span>
+<span>aardvark</span>
+<span>conservation</span>
+<span>status</span>
+<span>and</span>
+<span>life</span>
+<span>today</span>
+<span>today</span>
+<span>aardvarks</span>
+<span>are</span>
+<span>listed</span>
+<span>by</span>
+<span>the</span>
+<span>iucn</span>
+<span>as</span>
+<span>a</span>
+<span>species</span>
+<span>that</span>
+<span>is</span>
+<span>of</span>
+<span>least</span>
+<span>concern</span>
+<span>despite</span>
+<span>the</span>
+<span>fact</span>
+<span>that</span>
+<span>population</span>
+<span>numbers</span>
+<span>of</span>
+<span>aardvarks</span>
+<span>most</span>
+<span>certainly</span>
+<span>declined</span>
+<span>in</span>
+<span>some</span>
+<span>countries</span>
+<span>in</span>
+<span>others</span>
+<span>their</span>
+<span>numbers</span>
+<span>remain</span>
+<span>stable</span>
+<span>and</span>
+<span>they</span>
+<span>are</span>
+<span>often</span>
+<span>commonly</span>
+<span>found</span>
+<span>in</span>
+<span>both</span>
+<span>protected</span>
+<span>areas</span>
+<span>and</span>
+<span>regions</span>
+<span>with</span>
+<span>suitable</span>
+<span>habitats</span>
+<span>they</span>
+<span>are</span>
+<span>however</span>
+<span>becoming</span>
+<span>increasingly</span>
+<span>affected</span>
+<span>by</span>
+<span>habitat</span>
+<span>loss</span>
+<span>in</span>
+<span>both</span>
+<span>the</span>
+<span>form</span>
+<span>of</span>
+<span>deforestation</span>
+<span>and</span>
+<span>expanding</span>
+<span>towns</span>
+<span>and</span>
+<span>villages</span>
+<span>due</span>
+<span>to</span>
+<span>their</span>
+<span>incredibly</span>
+<span>elusive</span>
+<span>nature</span>
+<span>exact</span>
+<span>population</span>
+<span>sizes</span>
+<span>are</span>
+<span>not</span>
+<span>fully</span>
+<span>understood</span>
+</div>
+
+---
+
+# Final fit
+
+We will now use `last_fit()` to **fit** our model one last time on our training data and **evaluate** it on our testing data.
+
+
+```r
+final_fit &lt;- last_fit(
+  wf_spec_final, 
+  animals_split
+)
+```
+
+---
+
+class: inverse, right, middle
+
+# Notice that this is the **first** and **only** time we have used our **testing data**
+
+---
+
+# Evaluate on the **test** data 📐
+
+
+```r
+final_fit %&gt;%
+  collect_metrics()
+```
+
+```
+## # A tibble: 2 x 3
+##   .metric  .estimator .estimate
+##   &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;
+## 1 accuracy multiclass     0.743
+## 2 roc_auc  hand_till      0.868
+```
+
+---
+
+
+```r
+final_fit %&gt;%
+  collect_predictions() %&gt;%
+  conf_mat(truth = diet, .pred_class) %&gt;%
+  autoplot(type = "heatmap")
+```
+
+&lt;img src="index_files/figure-html/unnamed-chunk-62-1.png" width="700px" style="display: block; margin: auto;" /&gt;
+
+---
+
+class: center, middle
+
+# Thanks!
+
+##[smltar.com](https://smltar.com/)
+
+.pull-left[
+&lt;img style="border-radius: 50%;" src="https://github.com/EmilHvitfeldt.png" width="150px"/&gt;  
+[<i class="fab  fa-github "></i> @EmilHvitfeldt](https://github.com/EmilHvitfeldt)  
+[<i class="fab  fa-twitter "></i> @Emil_Hvitfeldt](https://twitter.com/Emil_Hvitfeldt)  
+[<i class="fas  fa-link "></i> hvitfeldt.me](https://www.hvitfeldt.me/)
+]
+
+.pull-right[
+&lt;img style="border-radius: 50%;" src="https://github.com/juliasilge.png" width="150px"/&gt;  
+[<i class="fab  fa-github "></i> @juliasilge](https://github.com/juliasilge)  
+[<i class="fab  fa-twitter "></i> @juliasilge](https://twitter.com/juliasilge)  
+[<i class="fas  fa-link "></i> juliasilge.com](https://juliasilge.com)
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="macros.js"></script>
+<script>var slideshow = remark.create({
+"highlightLanguage": "r",
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

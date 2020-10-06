@@ -1,0 +1,38 @@
+---
+title: "Slides"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r share-again, echo=FALSE}
+xaringanExtra::use_share_again()
+```
+
+```{r embed-xaringan1, echo=FALSE, fig.cap="[Slides](slides/01-introduction/index.html)"}
+xaringanExtra::embed_xaringan(url = "slides/01-introduction/index.html", ratio = "16:9")
+```
+
+<aside>
+First set of slides. These slides introduces the instructor, the material being taught and general guidelines. This is being seperated into their own slides for ease of access.  
+[Full screen link](slides/01-introduction/index.html)
+</aside>
+
+```{r embed-xaringan2, echo=FALSE, fig.cap="[Slides](slides/02-text-mining/index.html)"}
+xaringanExtra::embed_xaringan(url = "slides/02-text-mining/index.html", ratio = "16:9")
+```
+
+<aside>
+Second set of slides. These slides will introduce the data set we will be using and to do some rudimentary text mining to get us familiar with the data.  
+[Full screen link](slides/02-text-mining/index.html)
+</aside>
+
+```{r embed-xaringan3, echo=FALSE, fig.cap="[Slides](slides/03-modeling/index.html)"}
+xaringanExtra::embed_xaringan(url = "slides/03-modeling/index.html", ratio = "16:9")
+```
+
+<aside>
+Third and final set of slides. These slides will showcase how we can use [tidymodels](https://www.tidymodels.org/) and [textrecipes](https://textrecipes.tidymodels.org/) to build predictive models that use text as features.  
+[full screen link](slides/03-modeling/index.html)
+</aside>

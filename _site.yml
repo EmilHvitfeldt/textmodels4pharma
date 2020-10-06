@@ -1,0 +1,14 @@
+name: "."
+title: "R/Pharma 2020 Text model"
+description: |
+  R/Pharma 2020 Text model
+output_dir: "_site"
+navbar:
+  right:
+    - text: "Home"
+      href: index.html
+    - text: "Slides"
+      href: slides.html
+    - text: "About"
+      href: about.html
+output: distill::distill_article

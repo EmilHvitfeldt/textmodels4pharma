@@ -1,0 +1,56 @@
+---
+title: "Predictive modeling with text using tidy data principles"
+author:
+- name: Emil Hvitfeldt
+  url: https://www.hvitfeldt.me/
+  affiliation: University of Southern California
+  affiliation_url: https://www.usc.edu/
+date: "2020-10-09"
+description: |
+  1 day workshop at R/Pharma
+site: distill::distill_website
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r meta, echo=FALSE}
+#library(metathis)
+#meta() %>%
+#  meta_general(
+#    description = "Make your teaching more robust & reproducible with R Markdown",
+#    generator = "xaringan and remark.js"
+#  ) %>% 
+#  meta_name("github-repo" = "rstudio-education/teaching-in-production") %>% 
+#  meta_social(
+#    title = "Teaching in Production",
+#    url = "https://rstd.io/tip",
+#    image = "https://repository-images.githubusercontent.com/288797104/d13f1700-e2cc-11ea-9ed7-0bf3a41af1e4",
+#    image_alt = "R Markdown hedgehog by Allison Horst",
+#    og_type = "website",
+#    twitter_card_type = "summary_large_image"
+#  )
+```
+
+## Welcome  
+
+These are the materials for the [R/Pharma](https://rinpharma.com/) workshop Predictive modeling with text using tidy data principles, by Emil Hvitfeldt.
+
+## Prework
+
+TODO
+
+
+## Links
+
++ Link to this website: <https://rstd.io/tip>
+
++ Link to Supervised Machine Learning for Text Analysis in R book: <https://smltar.com/>
+
++ Link to Text Mining with R book: <https://www.tidytextmining.com/>
+
+
+## Acknowledgments {.appendix}
+
+This is website made with the [distill package](https://rstudio.github.io/distill/).

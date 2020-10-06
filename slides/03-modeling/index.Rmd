@@ -1,0 +1,1290 @@
+---
+title: "Modeling"
+subtitle: "R/Pharma 2020 Text modeling workshop"
+author: "Emil Hvitfeldt"
+date: "2020-10-09"
+output:
+  xaringan::moon_reader:
+    css: ["theme.css", "default"]
+    lib_dir: libs
+    nature:
+      beforeInit: "macros.js"
+      ratio: "16:9"
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      titleSlideClass: [center, middle]
+---
+
+```{r, eval = FALSE, echo = FALSE}
+The general outline of the talk is:
+
+Introduction
+Motivation
+talk about data
+Start modeling
+side tangent - talk about one of chapter 1-5
+more modeling
+side tangent - talk about one of chapter 1-5
+finish modeling
+evaluate
+
+We will be doing 1 model workflow from start to finish, with sidestepping to talk about chapter 1-5 things
+
+```
+
+
+```{r include=FALSE}
+library(knitr)
+hook_output <- knit_hooks$get("output")
+knit_hooks$set(output = function(x, options) {
+  lines <- options$output.lines
+  if (is.null(lines)) {
+    return(hook_output(x, options))  # pass to default hook
+  }
+  x <- unlist(strsplit(x, "\n"))
+  more <- "..."
+  if (length(lines) == 1) {        # first n lines
+    if (length(x) > lines) {
+      # truncate the output, but add ....
+      x <- c(head(x, lines), more)
+    }
+  } else {
+    x <- c(more, x[lines], more)
+  }
+  # paste these lines together
+  x <- paste(c(x, ""), collapse = "\n")
+  hook_output(x, options)
+})
+knit_hooks$set(output = function(x, options) {
+  # this hook is used only when the linewidth option is not NULL
+  if (!is.null(n <- options$linewidth)) {
+    x = knitr:::split_lines(x)
+    # any lines wider than n should be wrapped
+    if (any(nchar(x) > n)) x = strwrap(x, width = n)
+    x = paste(x, collapse = '\n')
+  }
+  hook_output(x, options)
+})
+
+opts_chunk$set(
+  echo = TRUE,
+  cache = TRUE,
+  fig.width = 7, 
+  fig.align = 'center',
+  fig.asp = 0.618, # 1 / phi
+  out.width = "700px",
+  fig.retina = 3)
+```
+
+```{r, echo = FALSE}
+library(sass)
+sass(sass_file("theme.sass"), output = "theme.css")
+set.seed(1234)
+library(ggplot2)
+theme_set(theme_minimal())
+```
+
+class: center, middle
+
+# Hello!
+
+.pull-left[
+<img style="border-radius: 50%;" src="https://github.com/EmilHvitfeldt.png" width="150px"/>  
+[`r icon::fa("github")` @EmilHvitfeldt](https://github.com/EmilHvitfeldt)  
+[`r icon::fa("twitter")` @Emil_Hvitfeldt](https://twitter.com/Emil_Hvitfeldt)  
+[`r icon::fa("link")` hvitfeldt.me](https://www.hvitfeldt.me/)
+]
+
+.pull-right[
+<img style="border-radius: 50%;" src="https://github.com/juliasilge.png" width="150px"/>  
+[`r icon::fa("github")` @juliasilge](https://github.com/juliasilge)  
+[`r icon::fa("twitter")` @juliasilge](https://twitter.com/juliasilge)  
+[`r icon::fa("link")` juliasilge.com](https://juliasilge.com)
+]
+
+---
+
+# Plan for today
+
+--
+
+- We will walk through our case study using slides and live coding
+
+
+
+--
+
+
+- After the tutorial, use the [materials on GitHub](https://github.com/EmilHvitfeldt/useR2020-text-modeling-tutorial) and YouTube recording to run the code yourself `r emo::ji("muscle")`
+
+---
+
+# Text as data
+
+Let's look at complaints submitted to the [United States Consumer Financial Protection Bureau (CFPB)](https://www.consumerfinance.gov/data-research/consumer-complaints/).
+
+--
+
+
+- An individual experiences a problem `r emo::ji("weary")` with a consumer financial product or service, like a bank, loan, or credit card `r emo::ji("moneybag")`
+
+
+--
+
+
+- They submit a **complaint** to the CFPB explaining what happened `r emo::ji("rage")`
+
+
+--
+
+
+- This complaint is sent to the company, which can respond or dispute
+
+
+---
+
+# Text as data
+
+Let's look at complaints submitted to the [United States Consumer Financial Protection Bureau (CFPB)](https://www.consumerfinance.gov/data-research/consumer-complaints/).
+
+```{r R.options = list(width = 80), message=FALSE}
+library(tidyverse)
+library(animals)
+
+animals
+
+names(animals)
+```
+
+---
+
+# Text as data
+
+```{r}
+animals %>%
+  sample_n(1) %>%
+  pull(text)
+```
+
+---
+
+# Text as data
+
+
+--
+
+- Text like this can be used for **supervised** or **predictive** modeling
+
+
+--
+
+
+- We can build both regression and classification models with text data
+
+
+--
+
+
+- We can use the ways language exhibits organization to create features for modeling
+
+
+---
+
+# Modeling Packages
+
+```{r, message=FALSE}
+library(tidymodels)
+library(textrecipes)
+```
+
+- [tidymodels](https://www.tidymodels.org/) is a collection of packages for modeling and machine learning using tidyverse principles
+- [textrecipes](https://textrecipes.tidymodels.org/) extends the recipes package to handle text preprocessing
+
+---
+
+# Modeling workflow
+
+![](https://rviews.rstudio.com/post/2019-06-14-a-gentle-intro-to-tidymodels_files/figure-html/tidymodels.png)
+
+---
+
+# smltar.com
+
+```{r echo=FALSE, out.width="100%"}
+knitr::include_url("https://smltar.com/")
+```
+
+---
+
+# Class imbalance
+
+```{r, echo=FALSE}
+animals %>%
+  mutate(diet = fct_rev(fct_infreq(factor(diet)))) %>%
+  ggplot(aes(y = diet)) +
+  geom_bar() +
+  labs(x = NULL, y = NULL)
+```
+
+---
+
+class: inverse, right, middle
+
+# Let's approach this as a **multiclass classification task**
+
+---
+
+---
+
+# Data splitting
+
+The testing set is a precious resource which can be used only once
+
+```{r all-split, echo = FALSE, fig.width=10}
+set.seed(16)
+one_split <- slice(animals, 1:30) %>% 
+  initial_split() %>% 
+  tidy() %>% 
+  add_row(Row = 1:30, Data = "Original") %>% 
+  mutate(Data = case_when(
+    Data == "Analysis" ~ "Training",
+    Data == "Assessment" ~ "Testing",
+    TRUE ~ Data
+  )) %>% 
+  mutate(Data = factor(Data, levels = c("Original", "Training", "Testing")))
+
+all_split <-
+  ggplot(one_split, aes(x = Row, y = fct_rev(Data), fill = Data)) + 
+  geom_tile(color = "white",
+            size = 1) + 
+  #scale_fill_manual(values = splits_pal, guide = FALSE) +
+  theme_minimal() +
+  theme(axis.text.y = element_text(size = rel(2)),
+        axis.text.x = element_blank(),
+        legend.position = "top",
+        panel.grid = element_blank()) +
+  coord_equal(ratio = 1) +
+  labs(x = NULL, y = NULL)
+
+all_split
+```
+
+---
+
+# Data splitting
+
+```{r}
+animals <- animals::animals %>%
+  select(diet, text) %>%
+  mutate(diet = if_else(diet %in% c("Omnivore", "Carnivore"), diet, "Other"),
+         diet = factor(trimws(diet)))
+
+set.seed(1234)
+animals_split <- initial_split(animals)
+
+animals_training <- training(animals_split)
+animals_testing <- testing(animals_split)
+```
+
+---
+
+# Which of these variables can we use?
+
+```{r}
+names(animals)
+```
+
+---
+
+# Feature selection checklist
+
+--
+
+
+- Is it ethical to use this variable? (or even legal?)
+
+
+--
+
+
+- Will this variable be available at prediction time?
+
+
+--
+
+
+- Does this variable contribute to explainability?
+
+---
+
+# Which of these variables can we use?
+
+```{r}
+names(animals_training)
+```
+
+---
+
+# Which of these variables can we use?
+
+- `date_received`
+- `tags`
+- `consumer_complaint_narrative` == `r emo::ji("page_with_curl")`
+
+---
+
+# Preprocessing specification
+
+```{r}
+rec_spec <- recipe(diet ~ text, animals_training) %>%
+  # Tokenize to words
+  step_tokenize(text) %>%
+  # Remove stopwords
+  step_stopwords(text) %>%
+  # Remove less frequent words
+  step_tokenfilter(text) %>%
+  # Calculate term frequencies
+  step_tf(text, weight_scheme = "binary")
+```
+
+---
+
+# Feature engineering
+
+```{r}
+rec_spec <- recipe(diet ~ text, animals_training) %>%
+  # Tokenize to words
+  step_tokenize(text) %>%
+  # Remove stopwords
+  step_stopwords(text) %>%
+  # Remove less frequent words
+  step_tokenfilter(text) %>%
+  # Calculate term frequencies
+  step_tf(text, weight_scheme = "binary")
+```
+
+--
+
+Also, what does `tune()` mean here? `r emo::ji("thinking")`
+
+---
+
+class: inverse, right, middle
+
+# You can **combine** text and non-text features in your model
+
+---
+
+# Feature engineering: handling dates
+
+```{r}
+#recipe(product ~ date_received + tags + text,
+#    data = complaints_train
+#  ) %>%
+#  step_date(date_received, features = c("month", "dow"), role = "dates") %>%
+#  step_rm(date_received)
+```
+
+---
+
+# Feature engineering: categorical data
+
+```{r}
+#recipe(product ~ date_received + tags + text,
+#    data = complaints_train
+#  ) %>%
+#  step_unknown(tags) %>%
+#  step_dummy(tags)
+```
+
+---
+
+class: inverse, right, middle
+
+# You can **combine** text and non-text features in your model
+
+
+---
+
+# Feature engineering: text
+
+```{r eval=FALSE}
+# recipe(product ~ date_received + tags + text,
+#     data = complaints_train
+#   ) %>%
+#   step_tokenize(text) %>%
+#   step_stopwords(text) %>%
+#   step_ngram(text, num_tokens = 3, min_num_tokens = 1) %>%
+#   step_tokenfilter(text, max_tokens = tune(), min_times = 5) %>%
+#   step_tfidf(text)
+```
+
+---
+
+# Feature engineering: text
+
+```{r echo=FALSE}
+# recipe(product ~ date_received + tags + text,
+#     data = complaints_train
+#   ) %>%
+#   step_tokenize(text) %>%
+#   step_stopwords(text) %>%
+#   step_ngram(text, num_tokens = 3, min_num_tokens = 1) %>%
+#   step_tokenfilter(text, max_tokens = tune(), min_times = 5) %>%
+#   step_tfidf(text)
+```
+
+
+---
+
+class: inverse, right, middle
+
+# How do we create **features** from **natural language**?
+
+
+---
+
+# From natural language to ML features
+
+```{r R.options=list(quanteda_print_dfm_max_ndoc = 0, quanteda_print_dfm_max_nfeat = 0)}
+library(tidytext)
+
+animals %>%
+  mutate(id = row_number()) %>%
+  unnest_tokens(word, text) %>%
+  anti_join(get_stopwords(), by = "word") %>%
+  count(id, word) %>%
+  bind_tf_idf(word, id, n) %>%
+  cast_dfm(id, word, tf_idf)
+```
+
+---
+
+class: inverse, center, middle
+
+# `r emo::ji("stop_sign")` STOP WORDS `r emo::ji("stop_sign")`
+
+---
+
+# Stop words
+
+```{r}
+library(stopwords)
+stopwords()
+```
+
+
+---
+
+class: center, middle
+
+```{r echo=FALSE}
+library(UpSetR)
+fromList(list(smart = stopwords(source = "smart"),
+              snowball = stopwords(source = "snowball"),
+              iso = stopwords(source = "stopwords-iso"))) %>%
+  upset(empty.intersections = "on")
+```
+
+---
+
+# Stop words
+
+
+--
+
+
+- Stop words are context specific
+
+
+--
+
+
+- Stop word lexicons can have bias
+
+
+--
+
+
+- You can create your own stop word list
+
+
+--
+
+
+- See [Chapter 3](https://smltar.com/stopwords.html) for more! `r emo::ji("stop_sign")`
+
+---
+
+class: inverse, right, middle
+
+## What kind of **models** work well for text?
+
+---
+
+# Text models
+
+Remember that text data is sparse! `r emo::ji("open_mouth")`
+
+--
+
+
+- Regularized linear models (glmnet)
+- Support vector machines
+- naive Bayes
+- Tree-based models like random forest? 
+
+---
+
+# Text models
+
+Remember that text data is sparse! `r emo::ji("open_mouth")`
+
+- Regularized linear models (glmnet)
+- Support vector machines
+- naive Bayes
+- Tree-based models like random forest?  `r emo::ji("no_good")`
+
+---
+
+class: inverse, right, middle
+
+# Does text data have to be **sparse**?
+
+---
+
+
+>### You shall know a word by the company it keeps.
+#### [`r emo::ji("speech_balloon")` John Rupert Firth](https://en.wikiquote.org/wiki/John_Rupert_Firth)
+
+
+
+--
+
+Learn more about word embeddings:
+
+- in [Chapter 5](https://smltar.com/embeddings.html)
+- at [juliasilge.github.io/why-r-webinar/](https://juliasilge.github.io/why-r-webinar/)
+
+
+---
+
+# To specify a model in tidymodels
+
+1\. Pick a **model**
+
+2\. Set the **mode** (if needed)
+
+3\. Set the **engine**
+
+---
+
+background-image: url(https://github.com/allisonhorst/stats-illustrations/raw/master/rstats-artwork/parsnip.png)
+background-size: cover
+
+.footnote[
+Art by [Allison Horst](https://github.com/allisonhorst/stats-illustrations)
+]
+
+---
+
+# To specify a model in tidymodels
+
+All available models are listed at <https://tidymodels.org/find/parsnip>
+
+```{r echo=FALSE, out.width="100%"}
+knitr::include_url("https://tidymodels.org/find/parsnip")
+```
+
+---
+
+class: middle
+
+
+# `set_mode()`
+
+Some models can solve multiple types of problems
+
+
+```{r}
+svm_rbf() %>% set_mode(mode = "regression")
+```
+
+---
+
+class: middle
+
+
+# `set_mode()`
+
+Some models can solve multiple types of problems
+
+
+```{r}
+svm_rbf() %>% set_mode(mode = "classification")
+```
+
+---
+
+class: middle
+
+
+# `set_engine()`
+
+The same model can be implemented by multiple computational engines
+
+
+```{r eval}
+svm_rbf() %>% set_engine("kernlab")
+```
+
+---
+
+class: middle
+
+
+# `set_engine()`
+
+The same model can be implemented by multiple computational engines
+
+
+```{r}
+svm_rbf() %>% set_engine("liquidSVM")
+```
+
+---
+
+# What makes a model?
+
+```{r}
+lasso_spec <- multinom_reg(penalty = tune(), mixture = 1) %>%
+  set_mode("classification") %>%
+  set_engine("glmnet")
+
+
+lasso_spec
+```
+
+
+--
+
+It's `tune()` again! `r emo::ji("worried")`
+
+---
+
+## Parameters and... hyperparameters?
+
+- Some model parameters can be learned from data during fitting/training
+
+
+--
+
+
+- Some CANNOT `r emo::ji("scream")`
+
+
+--
+
+
+- These are **hyperparameters** of a model, and we estimate them by training lots of models with different hyperparameters and comparing them
+
+
+---
+
+# A grid of possible hyperparameters
+
+```{r}
+param_grid <- grid_regular(
+  penalty(range = c(-4, 0)),
+  max_tokens(range = c(500, 2000)),
+  levels = 50
+)
+```
+
+
+---
+
+# A grid of possible hyperparameters
+
+```{r echo=FALSE}
+param_grid
+```
+
+---
+
+class: inverse, right, middle
+
+# How can we **compare** and **evaluate** these different models?
+
+---
+
+background-image: url(https://www.tidymodels.org/start/resampling/img/resampling.svg)
+background-size: 60%
+
+---
+
+# Spend your data budget
+
+```{r}
+set.seed(123)
+animals_folds <- vfold_cv(animals_training, v = 10, strata = diet)
+
+animals_folds
+```
+
+---
+class: middle, center, inverse
+
+# `r emo::ji("sparkles")` CROSS-VALIDATION `r emo::ji("sparkles")`
+
+---
+background-image: url(images/cross-validation/Slide2.png)
+background-size: contain
+
+.footnote[
+Art by [Alison Hill](https://alison.rbind.io/)
+]
+---
+background-image: url(images/cross-validation/Slide3.png)
+background-size: contain
+
+.footnote[
+Art by [Alison Hill](https://alison.rbind.io/)
+]
+---
+background-image: url(images/cross-validation/Slide4.png)
+background-size: contain
+
+.footnote[
+Art by [Alison Hill](https://alison.rbind.io/)
+]
+---
+background-image: url(images/cross-validation/Slide5.png)
+background-size: contain
+
+.footnote[
+Art by [Alison Hill](https://alison.rbind.io/)
+]
+---
+background-image: url(images/cross-validation/Slide6.png)
+background-size: contain
+
+.footnote[
+Art by [Alison Hill](https://alison.rbind.io/)
+]
+---
+background-image: url(images/cross-validation/Slide7.png)
+background-size: contain
+
+.footnote[
+Art by [Alison Hill](https://alison.rbind.io/)
+]
+---
+background-image: url(images/cross-validation/Slide8.png)
+background-size: contain
+
+.footnote[
+Art by [Alison Hill](https://alison.rbind.io/)
+]
+---
+background-image: url(images/cross-validation/Slide9.png)
+background-size: contain
+
+.footnote[
+Art by [Alison Hill](https://alison.rbind.io/)
+]
+---
+background-image: url(images/cross-validation/Slide10.png)
+background-size: contain
+
+.footnote[
+Art by [Alison Hill](https://alison.rbind.io/)
+]
+---
+background-image: url(images/cross-validation/Slide11.png)
+background-size: contain
+
+.footnote[
+Art by [Alison Hill](https://alison.rbind.io/)
+]
+---
+
+class: inverse, right, middle
+
+# Spend your data wisely to create **simulated** validation sets
+
+---
+
+class: inverse, right, middle
+
+# Now we have **resamples**, **features**, plus a **model**
+
+---
+
+# Create a workflow
+
+```{r}
+wf_spec <- workflow() %>%
+  add_recipe(rec_spec) %>%
+  add_model(lasso_spec)
+```
+
+---
+
+class: inverse, right, middle
+
+# What is a `workflow()`?
+
+---
+
+## Time to tune! `r emo::ji("zap")`
+
+```{r}
+set.seed(42)
+lasso_rs <- tune_grid(
+  wf_spec,
+  resamples = animals_folds,
+  grid = select(param_grid, -max_tokens), 
+  control = control_grid(save_pred = TRUE)
+) 
+```
+
+---
+
+## Time to tune! `r emo::ji("zap")`
+
+```{r echo=FALSE}
+lasso_rs
+```
+
+---
+class: middle, center, inverse
+
+# `r emo::ji("dizzy")` TOKENIZATION `r emo::ji("dizzy")`
+
+---
+
+# Tokenization
+
+- The process of splitting text in smaller pieces of text (_tokens_)
+
+
+--
+
+
+- Most common token == word, but sometimes we tokenize in a different way
+
+
+--
+
+
+- An essential part of most text analyses
+
+
+--
+
+
+- Many options to take into consideration 
+
+---
+
+# Tokenization: whitespace
+
+```{r, echo=FALSE}
+token_example <- "I am a long-time victim of identity theft. This debt doesn't belong to me."
+```
+
+```{r}
+token_example
+```
+
+--
+
+```{r}
+strsplit(token_example, "\\s")
+```
+
+---
+
+# Tokenization: [tokenizers](https://docs.ropensci.org/tokenizers/) package
+
+
+```{r}
+token_example
+```
+
+```{r}
+library(tokenizers)
+
+tokenize_words(token_example)
+```
+
+---
+
+# Tokenization: [spaCy](https://spacy.io/) library
+
+
+```{r}
+token_example
+```
+
+```{r, eval=FALSE}
+library(spacyr)
+
+spacy_tokenize(token_example)
+```
+
+```{r echo=FALSE}
+list(c("I", "am", "a", "long", "-", "time", "victim", 
+"of", "identity", "theft", ".", "This", "debt", "does", "n't", 
+"belong", "to", "me", "."))
+```
+
+---
+
+whitespace
+
+```{r, echo=FALSE}
+strsplit(token_example, "\\s")
+```
+
+tokenizers package
+
+```{r, echo=FALSE}
+tokenize_words(token_example)
+```
+
+spaCy library
+
+```{r echo=FALSE}
+list(c("I", "am", "a", "long", "-", "time", "victim", 
+"of", "identity", "theft", ".", "This", "debt", "does", "n't", 
+"belong", "to", "me", "."))
+```
+
+---
+
+# Tokenization considerations
+
+- Should we turn UPPERCASE letters to lowercase?
+
+
+--
+
+
+- How should we handle punctuation`r emo::ji("interrobang")`
+
+
+--
+
+
+- What about non-word characters _inside_ words?
+
+
+--
+
+
+- Should compound words be split or multi-word ideas be kept together?
+
+---
+
+class: inverse, right, middle
+
+## Tokenization for English text is typically **much easier** than other languages.
+
+---
+
+# N-grams
+
+## A sequence of `n` sequential tokens
+
+--
+
+
+- Captures words that appear together often
+
+
+--
+
+
+- Can detect negations ("not happy")
+
+
+--
+
+
+- Larger cardinality
+
+
+---
+
+```{r}
+tokenize_ngrams(token_example, n = 1)
+```
+
+
+```{r}
+tokenize_ngrams(token_example, n = 2)
+```
+
+
+```{r}
+tokenize_ngrams(token_example, n = 3)
+```
+
+---
+
+# Tokenization
+
+See [Chapter 2](https://smltar.com/tokenization.html) for more!
+
+---
+
+# Look at the tuning results `r emo::ji("eyes")`
+
+
+```{r}
+collect_metrics(lasso_rs)
+```
+
+---
+
+```{r}
+autoplot(lasso_rs)
+```
+
+---
+
+# Look at the tuning results `r emo::ji("eyes")`
+
+```{r}
+lasso_rs %>%
+  show_best("roc_auc")
+```
+
+---
+
+# The **best** `r emo::ji("first")` hyperparameters 
+
+```{r}
+best_roc_auc <- select_best(lasso_rs, "roc_auc")
+
+best_roc_auc
+```
+
+---
+
+# Evaluate the best model `r emo::ji("ruler")`
+
+```{r}
+collect_predictions(lasso_rs, parameters = best_roc_auc)
+```
+
+---
+
+# Evaluate the best model `r emo::ji("ruler")`
+
+```{r, eval=FALSE}
+# collect_predictions(lasso_rs, parameters = best_roc_auc) %>%
+#   group_by(id) %>%
+#   roc_curve(truth = diet, .pred_Carnivore) %>%
+#   autoplot()
+```
+
+---
+
+# Evaluate the best model `r emo::ji("ruler")`
+
+```{r, echo=FALSE}
+# collect_predictions(lasso_rs, parameters = best_roc_auc) %>%
+#   group_by(id) %>%
+#   roc_curve(truth = product, .pred_Carnivore) %>%
+#   autoplot() +
+#   labs(
+#     color = NULL,
+#     title = "Receiver operator curve for US Consumer Finance Complaints",
+#     subtitle = "Each resample fold is shown in a different color"
+#   )
+```
+
+---
+
+# Update the workflow
+
+We can update our workflow with the best performing hyperparameters.
+
+```{r}
+wf_spec_final <- finalize_workflow(wf_spec, best_roc_auc)
+```
+
+This workflow is ready to go! It can now be applied to new data.
+
+---
+
+class: inverse, right, middle
+
+# How is our model **thinking**?
+
+---
+
+## Variable importance
+
+```{r message=FALSE}
+library(vip)
+
+wf_spec_final %>%
+  fit(animals_training) %>%
+  pull_workflow_fit() %>%
+  vi(lambda = best_roc_auc$penalty) %>%
+  filter(!str_detect(Variable, "tfidf")) %>%
+  filter(Importance != 0)
+```
+
+---
+
+## Variable importance
+
+```{r}
+vi_data <- wf_spec_final %>%
+  fit(animals_training) %>%
+  pull_workflow_fit() %>%
+  vi(lambda = best_roc_auc$penalty) %>%
+  mutate(Variable = str_remove_all(Variable, "tfidf_text_")) %>%
+  filter(Importance != 0)
+```
+
+---
+
+## Variable importance 
+
+```{r}
+vi_data
+```
+
+---
+
+class: center, middle
+
+```{r, echo=FALSE}
+max_imp <- log(max(abs(vi_data$Importance)))
+
+log_neg <- function(x) {
+  sign(x) * log(abs(x))
+}
+
+range01 <- function(x) {
+  (log_neg(x) + (max_imp)) / (max_imp + max_imp)
+}
+
+color_fun <- scales::colour_ramp(rev(scico::scico(256, palette = "tofino", begin = 0, end = 1)))
+
+highlighter <- function(x, sign) {
+  if(is.na(sign)) {
+    htmltools::span(x)
+  } else {
+    htmltools::span(htmltools::tags$em(x), style = glue::glue('color:{color_fun(range01(sign))};'))
+  }
+}
+```
+
+```{r, echo=FALSE}
+vi_data %>%
+  mutate(
+    Importance = abs(Importance)
+    ) %>%
+  filter(Importance != 0) %>%
+  group_by(Sign) %>%
+  top_n(20, Importance) %>%
+  ungroup() %>%
+  mutate(Sign = factor(Sign, c("POS", "NEG"), c("Other", "Credit"))) %>%
+  ggplot(aes(
+    x = Importance,
+    y = fct_reorder(Variable, Importance),
+    fill = Sign
+  )) +
+  geom_col(show.legend = FALSE) +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_fill_manual(values = color_fun(c(0.8, 0.2))) +
+  facet_wrap(~Sign, scales = "free") +
+  labs(
+    y = NULL
+  )
+```
+
+---
+
+## Credit Complaint #1
+
+<span, style = 'color:green;'>Credit</span>
+<span, style = 'color:black;'>And</span>
+<span, style = 'color:blue;'>Other</span>
+
+```{r, echo=FALSE}
+animals_training %>%
+  slice(1) %>%
+  tidytext::unnest_tokens(words, text) %>%
+  left_join(vi_data, by = c("words" = "Variable")) %>%
+  mutate(words = map2(words, Importance, highlighter)) %>%
+  pull(words) %>%
+  htmltools::div()
+```
+
+---
+
+# Final fit
+
+We will now use `last_fit()` to **fit** our model one last time on our training data and **evaluate** it on our testing data.
+
+```{r}
+final_fit <- last_fit(
+  wf_spec_final, 
+  animals_split
+)
+```
+
+---
+
+class: inverse, right, middle
+
+# Notice that this is the **first** and **only** time we have used our **testing data**
+
+---
+
+# Evaluate on the **test** data `r emo::ji("ruler")`
+
+```{r}
+final_fit %>%
+  collect_metrics()
+```
+
+---
+
+```{r}
+final_fit %>%
+  collect_predictions() %>%
+  conf_mat(truth = diet, .pred_class) %>%
+  autoplot(type = "heatmap")
+```
+
+---
+
+class: center, middle
+
+# Thanks!
+
+##[smltar.com](https://smltar.com/)
+
+.pull-left[
+<img style="border-radius: 50%;" src="https://github.com/EmilHvitfeldt.png" width="150px"/>  
+[`r icon::fa("github")` @EmilHvitfeldt](https://github.com/EmilHvitfeldt)  
+[`r icon::fa("twitter")` @Emil_Hvitfeldt](https://twitter.com/Emil_Hvitfeldt)  
+[`r icon::fa("link")` hvitfeldt.me](https://www.hvitfeldt.me/)
+]
+
+.pull-right[
+<img style="border-radius: 50%;" src="https://github.com/juliasilge.png" width="150px"/>  
+[`r icon::fa("github")` @juliasilge](https://github.com/juliasilge)  
+[`r icon::fa("twitter")` @juliasilge](https://twitter.com/juliasilge)  
+[`r icon::fa("link")` juliasilge.com](https://juliasilge.com)
+]
