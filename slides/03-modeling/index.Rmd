@@ -101,7 +101,7 @@ glimpse(animals)
 
 # Text as data
 
-```{r}
+```{r, linewidth = 80}
 animals %>%
   sample_n(1) %>%
   pull(text)
@@ -111,8 +111,6 @@ animals %>%
 
 # Text as data
 
-
---
 
 - Text like this can be used for **supervised** or **predictive** modeling
 
@@ -152,7 +150,7 @@ library(textrecipes)
 .pull-left[
 # Modeling task
 
-You are a new zoo keeper and your job is to figure out what to feed each animal based on a written description and some other metrics
+You are a new zoo keeper and your job is to figure out what to feed each animal based on a written description and some other metrics that are available for you
 ]
 
 --
@@ -196,8 +194,6 @@ animals %>%
 class: inverse, right, middle
 
 # Let's approach this as a **multiclass classification task**
-
----
 
 ---
 
@@ -297,18 +293,9 @@ class: inverse
 
 # What mistake have we made already?
 
-## We did EDA on the whole dataset
+### We did EDA on the whole dataset
 
-## By not restricting to training set => data leakage
-
-
----
-
-# Which of these variables can we use?
-
-```{r}
-names(animals)
-```
+### By not restricting to training set => data leakage
 
 ---
 
@@ -333,7 +320,7 @@ names(animals)
 
 ---
 
-## variables
+## Our Variables
 
 Response: `diet`
 
@@ -349,23 +336,12 @@ Text: `text`
 
 --
 
-.pull-left[
-```{r, eval=FALSE}
+```{r, fig.asp = 0.5}
 animals_training %>%
   count(lifestyle) %>%
-  ggplot(aes(n, lifestyle)) +
+  ggplot(aes(lifestyle, n)) +
   geom_col()
 ```
-]
-
-.pull-right[
-```{r, echo=FALSE}
-animals_training %>%
-  count(lifestyle) %>%
-  ggplot(aes(n, lifestyle)) +
-  geom_col()
-```
-]
 
 ---
 
@@ -380,11 +356,17 @@ countdown(2, 0)
 
 ---
 
-# recipes
+class: center
+
+# {recipes}
 
 Flexible and reproducible preprocessing framework
 
+![:scale 30%](images/recipes.png)
+
 ---
+
+class: middle
 
 # How to build a recipe
 
@@ -409,7 +391,7 @@ recipe(reponse ~ ., data = data_set)
 Creates a recipe for a set of variables
 
 ```{r}
-recipe(diet ~ text + lifestyle + mean_weight, data = animals_training)
+recipe(diet ~ ., data = animals_training)
 ```
 
 ---
@@ -425,7 +407,7 @@ Complete list at https://recipes.tidymodels.org/reference/
 `step_unknown()` will replace missing values with `unknown` level
 
 ```{r}
-rec_spec <- recipe(diet ~ text + lifestyle + mean_weight, 
+rec_spec <- recipe(diet ~ ., 
                    data = animals_training) %>%
   step_unknown(lifestyle) %>%
   prep()
@@ -446,13 +428,17 @@ rec_spec
 Specify variables and play around with the threshold, default is 0.05
 
 ```{r, eval=FALSE}
-rec_spec <- recipe(diet ~ text + lifestyle + mean_weight, 
+rec_spec <- recipe(diet ~ ., 
                    data = animals_training) %>%
   step_unknown(lifestyle) %>%
   step_other(___, threshold = ___)
 
 rec_spec %>%
   tidy(2)
+```
+
+```{r, echo=FALSE}
+countdown(2, 0)
 ```
 
 ---
@@ -462,7 +448,7 @@ rec_spec %>%
 Specify variables and play around with the threshold, default is 0.05
 
 ```{r}
-rec_spec <- recipe(diet ~ text + lifestyle + mean_weight, 
+rec_spec <- recipe(diet ~ ., 
                    data = animals_training) %>%
   step_unknown(lifestyle) %>%
   step_other(lifestyle, threshold = 0.05)
@@ -479,7 +465,7 @@ rec_spec %>%
 Specify variables and play around with the threshold, default is 0.05
 
 ```{r}
-rec_spec <- recipe(diet ~ text + lifestyle + mean_weight, 
+rec_spec <- recipe(diet ~ ., 
                    data = animals_training) %>%
   step_unknown(lifestyle) %>%
   step_other(lifestyle, threshold = 0.05) 
@@ -496,13 +482,13 @@ rec_spec %>%
 Specify variables and play around with the threshold, default is 0.05
 
 ```{r}
-rec_spec <- recipe(diet ~ text + lifestyle + mean_weight, 
+rec_spec <- recipe(diet ~ ., 
                    data = animals_training) %>%
   step_unknown(lifestyle) %>%
-  step_other(lifestyle, threshold = 0.1) %>%
-  prep()
+  step_other(lifestyle, threshold = 0.1)
 
 rec_spec %>%
+  prep() %>%
   tidy(2)
 ```
 
@@ -513,13 +499,13 @@ rec_spec %>%
 Specify variables and play around with the threshold, default is 0.05
 
 ```{r}
-rec_spec <- recipe(diet ~ text + lifestyle + mean_weight, 
+rec_spec <- recipe(diet ~ ., 
                    data = animals_training) %>%
   step_unknown(lifestyle) %>%
-  step_other(lifestyle, threshold = 0.01) %>%
-  prep()
+  step_other(lifestyle, threshold = 0.01)
 
 rec_spec %>%
+  prep() %>%
   tidy(2)
 ```
 
@@ -530,7 +516,7 @@ rec_spec %>%
 Specify variables and play around with the threshold, default is 0.05
 
 ```{r}
-rec_spec <- recipe(diet ~ text + lifestyle + mean_weight, 
+rec_spec <- recipe(diet ~ ., 
                    data = animals_training) %>%
   step_unknown(lifestyle) %>%
   step_other(lifestyle, threshold = 0.01) %>%
@@ -543,7 +529,7 @@ rec_spec
 
 # Numeric - mean_weight
 
-```{r}
+```{r, warning=FALSE, message=FALSE, fig.asp=0.5}
 animals_training %>%
   ggplot(aes(mean_weight)) +
   geom_histogram()
@@ -553,7 +539,7 @@ animals_training %>%
 
 # Numeric - mean_weight
 
-```{r}
+```{r, warning=FALSE, message=FALSE, fig.asp=0.5}
 animals_training %>%
   ggplot(aes(mean_weight)) +
   geom_histogram() +
@@ -562,8 +548,10 @@ animals_training %>%
 
 ---
 
+# Logging and mean imputation
+
 ```{r}
-rec_spec <- recipe(diet ~ text + lifestyle + mean_weight, 
+rec_spec <- recipe(diet ~ ., 
                    data = animals_training) %>%
   step_unknown(lifestyle) %>%
   step_other(lifestyle, threshold = 0.01) %>%
@@ -574,6 +562,8 @@ rec_spec <- recipe(diet ~ text + lifestyle + mean_weight,
 
 ---
 
+class: middle
+
 # Text preprocessing workflow
 
 - turn text into tokens
@@ -582,11 +572,65 @@ rec_spec <- recipe(diet ~ text + lifestyle + mean_weight,
 
 ---
 
-# Text preprocessing workflow - tokenize
+## Text preprocessing workflow - tokenize
 
-```{r}
-recipe(diet ~ text + lifestyle + mean_weight, 
-                   data = animals_training) %>%
+.pull-left[
+```{r, eval=FALSE}
+recipe(diet ~ ., 
+       data = animals_training) %>%
+  # Tokenize to words
+  step_tokenize(text)
+```
+]
+
+.pull-right[
+```{r, echo=FALSE}
+recipe(diet ~ ., 
+       data = animals_training) %>%
+  # Tokenize to words
+  step_tokenize(text)
+```
+]
+
+
+---
+
+## Text preprocessing workflow - modify tokens
+
+.pull-left[
+```{r, eval=FALSE}
+recipe(diet ~ ., 
+       data = animals_training) %>%
+  # Tokenize to words
+  step_tokenize(text) %>%
+  # Remove stopwords
+  step_stopwords(text) %>%
+  # Remove less frequent words
+  step_tokenfilter(text, max_tokens = 100)
+```
+]
+
+.pull-right[
+```{r, echo=FALSE}
+recipe(diet ~ ., 
+       data = animals_training) %>%
+  # Tokenize to words
+  step_tokenize(text) %>%
+  # Remove stopwords
+  step_stopwords(text) %>%
+  # Remove less frequent words
+  step_tokenfilter(text, max_tokens = 100)
+```
+]
+
+---
+
+## Text preprocessing workflow - count tokens
+
+.pull-left[
+```{r, eval=FALSE}
+recipe(diet ~ ., 
+       data = animals_training) %>%
   # Tokenize to words
   step_tokenize(text) %>%
   # Remove stopwords
@@ -596,14 +640,12 @@ recipe(diet ~ text + lifestyle + mean_weight,
   # Calculate term frequencies
   step_tf(text)
 ```
+]
 
----
-
-# Text preprocessing workflow - modify tokens
-
-```{r}
-recipe(diet ~ text + lifestyle + mean_weight, 
-                   data = animals_training) %>%
+.pull-right[
+```{r, echo=FALSE}
+recipe(diet ~ ., 
+       data = animals_training) %>%
   # Tokenize to words
   step_tokenize(text) %>%
   # Remove stopwords
@@ -613,45 +655,25 @@ recipe(diet ~ text + lifestyle + mean_weight,
   # Calculate term frequencies
   step_tf(text)
 ```
+]
 
 ---
 
-# Text preprocessing workflow - count tokens
-
-```{r}
-recipe(diet ~ text + lifestyle + mean_weight, 
-                   data = animals_training) %>%
-  # Tokenize to words
-  step_tokenize(text) %>%
-  # Remove stopwords
-  step_stopwords(text) %>%
-  # Remove less frequent words
-  step_tokenfilter(text, max_tokens = 100) %>%
-  # Calculate term frequencies
-  step_tf(text)
-```
-
----
-
-# Your turn #6
+### Your turn #6
 
 play around with the arguments in step_tokenfilter() and see what results we get
 
 ```{r, eval=FALSE}
-rec_spec <- recipe(diet ~ text + lifestyle + mean_weight, 
+rec_spec <- recipe(diet ~ ., 
                    data = animals_training) %>%
-  # Tokenize to words
   step_tokenize(text) %>%
-  # Remove stopwords
   step_stopwords(text) %>%
-  # Remove less frequent words
   step_tokenfilter(text, max_tokens = 100) %>%
-  # Calculate term frequencies
   step_tf(text)
 
 rec_spec %>%
   prep() %>%
-  juice()
+  bake(new_data = NULL)
 ```
 
 ```{r, echo=FALSE}
@@ -660,71 +682,93 @@ countdown(3, 0)
 
 ---
 
-# Your turn #6 - result
+### Your turn #6 - result
 
 play around with the arguments in step_tokenfilter() and see what results we get
 
-```{r}
-rec_spec <- recipe(diet ~ text + lifestyle + mean_weight, 
+```{r, eval=FALSE}
+rec_spec <- recipe(diet ~ ., 
                    data = animals_training) %>%
-  # Tokenize to words
   step_tokenize(text) %>%
-  # Remove stopwords
   step_stopwords(text) %>%
-  # Remove less frequent words
   step_tokenfilter(text, max_tokens = 100) %>%
-  # Calculate term frequencies
   step_tf(text)
 
 rec_spec %>%
   prep() %>%
-  juice()
+  bake(new_data = NULL)
 ```
 
 ---
 
-# Your turn #6 - result
+### Your turn #6 - result
+
+```{r, echo=FALSE}
+rec_spec <- recipe(diet ~ ., 
+                   data = animals_training) %>%
+  step_tokenize(text) %>%
+  step_stopwords(text) %>%
+  step_tokenfilter(text, max_tokens = 100) %>%
+  step_tf(text)
+
+rec_spec %>%
+  prep() %>%
+  bake(new_data = NULL)
+```
+
+---
+
+### Your turn #6 - result
 
 If we don't filter the tokens then we get a very large number of columns
 
-```{r}
-rec_spec <- recipe(diet ~ text + lifestyle + mean_weight, 
+```{r, eval=FALSE}
+rec_spec <- recipe(diet ~ ., 
                    data = animals_training) %>%
-  # Tokenize to words
   step_tokenize(text) %>%
-  # Remove stopwords
   step_stopwords(text) %>%
-  # Remove less frequent words
   #step_tokenfilter(text, max_tokens = 100) %>%
-  # Calculate term frequencies
   step_tf(text)
 
 rec_spec %>%
   prep() %>%
-  juice()
+  bake(new_data = NULL)
 ```
 
 ---
 
-# Your turn #7
+### Your turn #6 - result
+
+```{r, echo=FALSE}
+rec_spec <- recipe(diet ~ ., 
+                   data = animals_training) %>%
+  step_tokenize(text) %>%
+  step_stopwords(text) %>%
+  #step_tokenfilter(text, max_tokens = 100) %>%
+  step_tf(text)
+
+rec_spec %>%
+  prep() %>%
+  bake(new_data = NULL)
+```
+
+---
+
+### Your turn #7
 
 Swap `step_tf()` with `step_tfidf()` and see the change
 
 ```{r, eval=FALSE}
-rec_spec <- recipe(diet ~ text + lifestyle + mean_weight, 
+rec_spec <- recipe(diet ~ ., 
                    data = animals_training) %>%
-  # Tokenize to words
   step_tokenize(text) %>%
-  # Remove stopwords
   step_stopwords(text) %>%
-  # Remove less frequent words
   step_tokenfilter(text, max_tokens = 100) %>%
-  # Calculate term frequencies
   step_tf(text)
 
 rec_spec %>%
   prep() %>%
-  juice()
+  bake(new_data = NULL)
 ```
 
 ```{r, echo=FALSE}
@@ -733,35 +777,29 @@ countdown(2, 0)
 
 ---
 
-# Your turn #7 - result
+### Your turn #7 - result
 
 Swap `step_tf()` with `step_tfidf()` and see the change
 
-```{r}
-rec_spec <- recipe(diet ~ text + lifestyle + mean_weight,
+```{r, eval=FALSE}
+rec_spec <- recipe(diet ~ .,
                    data = animals_training) %>%
-  # Tokenize to words
   step_tokenize(text) %>%
-  # Remove stopwords
   step_stopwords(text) %>%
-  # Remove less frequent words
   step_tokenfilter(text, max_tokens = 100) %>%
-  # Calculate term frequencies
   step_tfidf(text)
 
 rec_spec %>%
   prep() %>%
-  juice()
+  bake(new_data = NULL)
 ```
 
 ---
 
-# Your turn #8
+### Your turn #7 - result
 
-Insert `step_ngram()` into recipe after tokenization. Play around with `num_tokens = ` and `min_num_tokens = `
-
-```{r}
-rec_spec <- recipe(diet ~ text + lifestyle + mean_weight,
+```{r, echo=FALSE}
+rec_spec <- recipe(diet ~ .,
                    data = animals_training) %>%
   step_tokenize(text) %>%
   step_stopwords(text) %>%
@@ -770,7 +808,26 @@ rec_spec <- recipe(diet ~ text + lifestyle + mean_weight,
 
 rec_spec %>%
   prep() %>%
-  juice()
+  bake(new_data = NULL)
+```
+
+---
+
+### Your turn #8
+
+Insert `step_ngram()` into recipe after tokenization. Play around with `num_tokens = ` and `min_num_tokens = `
+
+```{r}
+rec_spec <- recipe(diet ~ .,
+                   data = animals_training) %>%
+  step_tokenize(text) %>%
+  step_stopwords(text) %>%
+  step_tokenfilter(text, max_tokens = 100) %>%
+  step_tfidf(text)
+
+rec_spec %>%
+  prep() %>%
+  bake(new_data = NULL)
 ```
 
 ```{r, echo=FALSE}
@@ -779,12 +836,12 @@ countdown(3, 0)
 
 ---
 
-# Your turn #8 - result
+### Your turn #8 - result
 
 Insert `step_ngram()` into recipe after tokenization. Play around with `num_tokens = ` and `min_num_tokens = `
 
-```{r}
-rec_spec <- recipe(diet ~ text + lifestyle + mean_weight,
+```{r, eval=FALSE}
+rec_spec <- recipe(diet ~ .,
                    data = animals_training) %>%
   step_tokenize(text) %>%
   step_ngram(text, min_num_tokens = 1, num_tokens = 2) %>%
@@ -794,18 +851,37 @@ rec_spec <- recipe(diet ~ text + lifestyle + mean_weight,
 
 rec_spec %>%
   prep() %>%
-  juice() %>%
+  bake(new_data = NULL) %>%
   names()
 ```
 
 ---
 
-# Your turn #8 - result
+### Your turn #8 - result
+
+```{r, echo=FALSE}
+rec_spec <- recipe(diet ~ .,
+                   data = animals_training) %>%
+  step_tokenize(text) %>%
+  step_ngram(text, min_num_tokens = 1, num_tokens = 2) %>%
+  step_stopwords(text) %>%
+  step_tokenfilter(text, max_tokens = 100) %>%
+  step_tfidf(text)
+
+rec_spec %>%
+  prep() %>%
+  bake(new_data = NULL) %>%
+  names()
+```
+
+---
+
+### Your turn #8 - result
 
 Order matters!
 
-```{r}
-rec_spec <- recipe(diet ~ text + lifestyle + mean_weight,
+```{r, eval=FALSE}
+rec_spec <- recipe(diet ~ .,
                    data = animals_training) %>%
   step_tokenize(text) %>%
   step_stopwords(text) %>%
@@ -815,7 +891,26 @@ rec_spec <- recipe(diet ~ text + lifestyle + mean_weight,
 
 rec_spec %>%
   prep() %>%
-  juice() %>%
+  bake(new_data = NULL) %>%
+  names()
+```
+
+---
+
+### Your turn #8 - result
+
+```{r, echo=FALSE}
+rec_spec <- recipe(diet ~ .,
+                   data = animals_training) %>%
+  step_tokenize(text) %>%
+  step_stopwords(text) %>%
+  step_ngram(text, min_num_tokens = 1, num_tokens = 2) %>%
+  step_tokenfilter(text, max_tokens = 100) %>%
+  step_tfidf(text)
+
+rec_spec %>%
+  prep() %>%
+  bake(new_data = NULL) %>%
   names()
 ```
 
@@ -824,8 +919,9 @@ rec_spec %>%
 # Final recipe
 
 ```{r}
-rec_spec <- recipe(diet ~ text + lifestyle + mean_weight, 
+rec_spec <- recipe(diet ~ ., 
                    data = animals_training) %>%
+  step_novel(lifestyle) %>%
   step_unknown(lifestyle) %>%
   step_other(lifestyle, threshold = 0.01) %>%
   step_dummy(lifestyle) %>%
@@ -1016,22 +1112,29 @@ It's `tune()` again! `r emo::ji("worried")`
 
 # A grid of possible hyperparameters
 
-```{r}
+.pull-left[
+```{r, eval=FALSE}
 param_grid <- grid_regular(
   penalty(range = c(-4, 0)),
   max_tokens(range = c(100, 500)),
-  levels = c(penalty = 50, max_tokens = 4)
+  levels = c(penalty = 50, 
+             max_tokens = 4)
 )
-```
 
-
----
-
-# A grid of possible hyperparameters
-
-```{r echo=FALSE}
 param_grid
 ```
+]
+
+.pull-right[
+```{r, echo=FALSE}
+grid_regular(
+  penalty(range = c(-4, 0)),
+  max_tokens(range = c(100, 500)),
+  levels = c(penalty = 50,
+             max_tokens = 4)
+)
+```
+]
 
 ---
 
@@ -1050,7 +1153,7 @@ background-size: 60%
 
 ```{r}
 set.seed(123)
-animals_folds <- vfold_cv(animals_training, v = 10, strata = diet)
+animals_folds <- vfold_cv(animals_training, v = 5, strata = diet)
 
 animals_folds
 ```
@@ -1144,15 +1247,27 @@ class: inverse, right, middle
 
 ---
 
-# Create a workflow
+.pull-left[
+## Create a workflow
 
-```{r}
+```{r, eval=FALSE}
 wf_spec <- workflow() %>%
   add_recipe(rec_spec) %>%
   add_model(lasso_spec)
 
 wf_spec
 ```
+]
+
+.pull-right[
+```{r, echo=FALSE, linewidth = 50}
+wf_spec <- workflow() %>%
+  add_recipe(rec_spec) %>%
+  add_model(lasso_spec)
+
+wf_spec
+```
+]
 
 ---
 
@@ -1192,6 +1307,8 @@ collect_metrics(lasso_rs)
 ```
 
 ---
+
+# Look at the tuning results `r emo::ji("eyes")`
 
 ```{r}
 autoplot(lasso_rs)
@@ -1238,9 +1355,9 @@ collect_predictions(lasso_rs, parameters = best_roc_auc)
 
 ---
 
-# Evaluate the best model `r emo::ji("ruler")`
+## Evaluate the best model `r emo::ji("ruler")`
 
-```{r}
+```{r, eval=FALSE}
 collect_predictions(lasso_rs, parameters = best_roc_auc) %>%
   roc_curve(truth = diet, .pred_Carnivore:.pred_Unknown) %>%
   autoplot()
@@ -1248,9 +1365,30 @@ collect_predictions(lasso_rs, parameters = best_roc_auc) %>%
 
 ---
 
-# Evaluate the best model `r emo::ji("ruler")`
+## Evaluate the best model `r emo::ji("ruler")`
+
+```{r, echo=FALSE}
+collect_predictions(lasso_rs, parameters = best_roc_auc) %>%
+  roc_curve(truth = diet, .pred_Carnivore:.pred_Unknown) %>%
+  autoplot()
+```
+
+---
+
+## Evaluate the best model `r emo::ji("ruler")`
 
 ```{r, eval=FALSE}
+collect_predictions(lasso_rs, parameters = best_roc_auc) %>%
+  group_by(id) %>%
+  roc_curve(truth = diet, .pred_Carnivore:.pred_Unknown) %>%
+  autoplot()
+```
+
+---
+
+## Evaluate the best model `r emo::ji("ruler")`
+
+```{r, echo=FALSE}
 collect_predictions(lasso_rs, parameters = best_roc_auc) %>%
   group_by(id) %>%
   roc_curve(truth = diet, .pred_Carnivore:.pred_Unknown) %>%

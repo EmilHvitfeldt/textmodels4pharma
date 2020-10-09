@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="author" content="Emil Hvitfeldt" />
     <meta name="date" content="2020-10-09" />
-    <script src="libs/header-attrs-2.3/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.4/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/countdown-0.3.5/countdown.css" rel="stylesheet" />
     <script src="libs/countdown-0.3.5/countdown.js"></script>
@@ -64,15 +64,47 @@ animals %&gt;%
 ```
 
 ```
-## [1] "The guppy (also known as the millionfish) is a small colourful species of freshwater tropical fish that is found naturally in the rivers and lakes of South America. There are nearly 300 different types of guppy spread throughout Barbados, Brazil, Guyana, Netherlands Antilles, Trinidad and Tobago, and Venezuela.\nThe guppy is one of the most popular types of aquarium tropical fish in the world as they are small, colourful and easier to keep than many other species of fish. The guppy generally lives from 3 to 5 years old in captivity and slightly less in the wild.\nThe guppy has been introduced to most other countries mainly as a method of mosquito prevention as the guppy eats the mosquito larva before they are able to fly, therefore slowing down the spread of malaria.\nThe guppy is an extremely colourful fish and often displays elaborate patterns on its tail fin. The female guppy and the male guppy can be identified quite easily as the female guppy has a small, patterned tail where the tail of the male guppy is much longer and generally has fewer markings. The female guppy also tends to be larger in size than the male guppy.\nThe guppy gives birth to live young, meaning that the eggs are first incubated inside the female guppy and hatch there too. The incubation period of the guppy is about a month after which the female guppy can give birth to up to 100 baby guppies, which are called fry. As soon as they are born, the guppy fry are able to eat and swim around freely. The guppy fry are also able to sense and avoid danger which is important when around older guppies as they often eat the fry. The guppy fry have matured in adult guppies within a couple of months.\nAfter mating just once with a male guppy, the female guppy is able to give birth numerous times. The female guppy stores the sperm of the male guppy inside her and just hours after giving birth to her fry, the female guppy is ready to become pregnant again and will do so using the stored sperm (hence why the guppy is often called the millionfish).\nThe guppy is an omnivorous animal and eats a wide range of organic matter that is available in the water. The guppy mainly feeds on algae and brine shrimp, and often eat particles of food from the water that have been left by a larger fish.\nThe guppy has many natural predators in the wild (and in tanks) mainly due to their small size and their elaborate fins often attract unwanted attention. Birds such as kingfishers and larger fish are the primary predators of the guppy, so naturally, guppies that are kept in a tank should be kept with other very small fish to prevent them from being eaten."
+## [1] "The guppy (also known as the millionfish) is a small colourful species
+of freshwater tropical fish that is found naturally in the rivers and lakes of
+South America. There are nearly 300 different types of guppy spread throughout
+Barbados, Brazil, Guyana, Netherlands Antilles, Trinidad and Tobago, and
+Venezuela.\nThe guppy is one of the most popular types of aquarium tropical
+fish in the world as they are small, colourful and easier to keep than many
+other species of fish. The guppy generally lives from 3 to 5 years old in
+captivity and slightly less in the wild.\nThe guppy has been introduced to most
+other countries mainly as a method of mosquito prevention as the guppy eats the
+mosquito larva before they are able to fly, therefore slowing down the spread
+of malaria.\nThe guppy is an extremely colourful fish and often displays
+elaborate patterns on its tail fin. The female guppy and the male guppy can be
+identified quite easily as the female guppy has a small, patterned tail where
+the tail of the male guppy is much longer and generally has fewer markings. The
+female guppy also tends to be larger in size than the male guppy.\nThe guppy
+gives birth to live young, meaning that the eggs are first incubated inside the
+female guppy and hatch there too. The incubation period of the guppy is about a
+month after which the female guppy can give birth to up to 100 baby guppies,
+which are called fry. As soon as they are born, the guppy fry are able to eat
+and swim around freely. The guppy fry are also able to sense and avoid danger
+which is important when around older guppies as they often eat the fry. The
+guppy fry have matured in adult guppies within a couple of months.\nAfter
+mating just once with a male guppy, the female guppy is able to give birth
+numerous times. The female guppy stores the sperm of the male guppy inside her
+and just hours after giving birth to her fry, the female guppy is ready to
+become pregnant again and will do so using the stored sperm (hence why the
+guppy is often called the millionfish).\nThe guppy is an omnivorous animal and
+eats a wide range of organic matter that is available in the water. The guppy
+mainly feeds on algae and brine shrimp, and often eat particles of food from
+the water that have been left by a larger fish.\nThe guppy has many natural
+predators in the wild (and in tanks) mainly due to their small size and their
+elaborate fins often attract unwanted attention. Birds such as kingfishers and
+larger fish are the primary predators of the guppy, so naturally, guppies that
+are kept in a tank should be kept with other very small fish to prevent them
+from being eaten."
 ```
 
 ---
 
 # Text as data
 
-
---
 
 - Text like this can be used for **supervised** or **predictive** modeling
 
@@ -113,7 +145,7 @@ library(textrecipes)
 .pull-left[
 # Modeling task
 
-You are a new zoo keeper and your job is to figure out what to feed each animal based on a written description and some other metrics
+You are a new zoo keeper and your job is to figure out what to feed each animal based on a written description and some other metrics that are available for you
 ]
 
 --
@@ -125,7 +157,7 @@ Is this a realistic problem to have?
 
 Would it be a good use-case for Machine learning?
 
-<div class="countdown" id="timer_5f7fe1d6" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5f801e5f" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">02</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -152,8 +184,6 @@ Would it be a good use-case for Machine learning?
 class: inverse, right, middle
 
 # Let's approach this as a **multiclass classification task**
-
----
 
 ---
 
@@ -225,7 +255,7 @@ class: inverse
 
 # What mistake have we made already?
 
-<div class="countdown" id="timer_5f7fe2a7" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5f801e4e" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">02</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -236,23 +266,9 @@ class: inverse
 
 # What mistake have we made already?
 
-## We did EDA on the whole dataset
+### We did EDA on the whole dataset
 
-## By not restricting to training set =&gt; data leakage
-
-
----
-
-# Which of these variables can we use?
-
-
-```r
-names(animals)
-```
-
-```
-## [1] "text"        "diet"        "lifestyle"   "mean_weight"
-```
+### By not restricting to training set =&gt; data leakage
 
 ---
 
@@ -277,7 +293,7 @@ names(animals)
 
 ---
 
-## variables
+## Our Variables
 
 Response: `diet`
 
@@ -293,19 +309,15 @@ Text: `text`
 
 --
 
-.pull-left[
 
 ```r
 animals_training %&gt;%
   count(lifestyle) %&gt;%
-  ggplot(aes(n, lifestyle)) +
+  ggplot(aes(lifestyle, n)) +
   geom_col()
 ```
-]
 
-.pull-right[
-&lt;img src="index_files/figure-html/unnamed-chunk-15-1.png" width="700px" style="display: block; margin: auto;" /&gt;
-]
+&lt;img src="index_files/figure-html/unnamed-chunk-13-1.png" width="700px" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -314,17 +326,23 @@ animals_training %&gt;%
 - Missing values
 - many categories
 
-<div class="countdown" id="timer_5f7fe037" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5f801dd1" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">02</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
 ---
 
-# recipes
+class: center
+
+# {recipes}
 
 Flexible and reproducible preprocessing framework
 
+![:scale 30%](images/recipes.png)
+
 ---
+
+class: middle
 
 # How to build a recipe
 
@@ -351,7 +369,7 @@ Creates a recipe for a set of variables
 
 
 ```r
-recipe(diet ~ text + lifestyle + mean_weight, data = animals_training)
+recipe(diet ~ ., data = animals_training)
 ```
 
 ```
@@ -378,7 +396,7 @@ Complete list at https://recipes.tidymodels.org/reference/
 
 
 ```r
-rec_spec &lt;- recipe(diet ~ text + lifestyle + mean_weight, 
+rec_spec &lt;- recipe(diet ~ ., 
                    data = animals_training) %&gt;%
   step_unknown(lifestyle) %&gt;%
   prep()
@@ -416,7 +434,7 @@ Specify variables and play around with the threshold, default is 0.05
 
 
 ```r
-rec_spec &lt;- recipe(diet ~ text + lifestyle + mean_weight, 
+rec_spec &lt;- recipe(diet ~ ., 
                    data = animals_training) %&gt;%
   step_unknown(lifestyle) %&gt;%
   step_other(___, threshold = ___)
@@ -424,6 +442,10 @@ rec_spec &lt;- recipe(diet ~ text + lifestyle + mean_weight,
 rec_spec %&gt;%
   tidy(2)
 ```
+
+<div class="countdown" id="timer_5f801f0d" style="right:0;bottom:0;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">02</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
 
 ---
 
@@ -433,7 +455,7 @@ Specify variables and play around with the threshold, default is 0.05
 
 
 ```r
-rec_spec &lt;- recipe(diet ~ text + lifestyle + mean_weight, 
+rec_spec &lt;- recipe(diet ~ ., 
                    data = animals_training) %&gt;%
   step_unknown(lifestyle) %&gt;%
   step_other(lifestyle, threshold = 0.05)
@@ -447,8 +469,8 @@ rec_spec %&gt;%
 ## # A tibble: 2 x 6
 ##   number operation type    trained skip  id           
 ##    &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;   &lt;lgl&gt;   &lt;lgl&gt; &lt;chr&gt;        
-## 1      1 step      unknown TRUE    FALSE unknown_MPxQI
-## 2      2 step      other   TRUE    FALSE other_5rk3G
+## 1      1 step      unknown TRUE    FALSE unknown_G81f6
+## 2      2 step      other   TRUE    FALSE other_cJJkI
 ```
 
 ---
@@ -459,7 +481,7 @@ Specify variables and play around with the threshold, default is 0.05
 
 
 ```r
-rec_spec &lt;- recipe(diet ~ text + lifestyle + mean_weight, 
+rec_spec &lt;- recipe(diet ~ ., 
                    data = animals_training) %&gt;%
   step_unknown(lifestyle) %&gt;%
   step_other(lifestyle, threshold = 0.05) 
@@ -473,10 +495,10 @@ rec_spec %&gt;%
 ## # A tibble: 4 x 3
 ##   terms     retained id         
 ##   &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;      
-## 1 lifestyle Diurnal  other_ZlPtG
-## 2 lifestyle Herd     other_ZlPtG
-## 3 lifestyle Solitary other_ZlPtG
-## 4 lifestyle unknown  other_ZlPtG
+## 1 lifestyle Diurnal  other_4BR8s
+## 2 lifestyle Herd     other_4BR8s
+## 3 lifestyle Solitary other_4BR8s
+## 4 lifestyle unknown  other_4BR8s
 ```
 
 ---
@@ -487,13 +509,13 @@ Specify variables and play around with the threshold, default is 0.05
 
 
 ```r
-rec_spec &lt;- recipe(diet ~ text + lifestyle + mean_weight, 
+rec_spec &lt;- recipe(diet ~ ., 
                    data = animals_training) %&gt;%
   step_unknown(lifestyle) %&gt;%
-  step_other(lifestyle, threshold = 0.1) %&gt;%
-  prep()
+  step_other(lifestyle, threshold = 0.1)
 
 rec_spec %&gt;%
+  prep() %&gt;%
   tidy(2)
 ```
 
@@ -501,8 +523,8 @@ rec_spec %&gt;%
 ## # A tibble: 2 x 3
 ##   terms     retained id         
 ##   &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;      
-## 1 lifestyle Solitary other_JJkIG
-## 2 lifestyle unknown  other_JJkIG
+## 1 lifestyle Solitary other_EG0Sj
+## 2 lifestyle unknown  other_EG0Sj
 ```
 
 ---
@@ -513,13 +535,13 @@ Specify variables and play around with the threshold, default is 0.05
 
 
 ```r
-rec_spec &lt;- recipe(diet ~ text + lifestyle + mean_weight, 
+rec_spec &lt;- recipe(diet ~ ., 
                    data = animals_training) %&gt;%
   step_unknown(lifestyle) %&gt;%
-  step_other(lifestyle, threshold = 0.01) %&gt;%
-  prep()
+  step_other(lifestyle, threshold = 0.01)
 
 rec_spec %&gt;%
+  prep() %&gt;%
   tidy(2)
 ```
 
@@ -527,17 +549,17 @@ rec_spec %&gt;%
 ## # A tibble: 11 x 3
 ##    terms     retained    id         
 ##    &lt;chr&gt;     &lt;chr&gt;       &lt;chr&gt;      
-##  1 lifestyle Colony      other_BR8sj
-##  2 lifestyle Crepuscular other_BR8sj
-##  3 lifestyle Diurnal     other_BR8sj
-##  4 lifestyle Flock       other_BR8sj
-##  5 lifestyle Group       other_BR8sj
-##  6 lifestyle Herd        other_BR8sj
-##  7 lifestyle Nocturnal   other_BR8sj
-##  8 lifestyle Pack        other_BR8sj
-##  9 lifestyle Solitary    other_BR8sj
-## 10 lifestyle Troop       other_BR8sj
-## 11 lifestyle unknown     other_BR8sj
+##  1 lifestyle Colony      other_wEbxL
+##  2 lifestyle Crepuscular other_wEbxL
+##  3 lifestyle Diurnal     other_wEbxL
+##  4 lifestyle Flock       other_wEbxL
+##  5 lifestyle Group       other_wEbxL
+##  6 lifestyle Herd        other_wEbxL
+##  7 lifestyle Nocturnal   other_wEbxL
+##  8 lifestyle Pack        other_wEbxL
+##  9 lifestyle Solitary    other_wEbxL
+## 10 lifestyle Troop       other_wEbxL
+## 11 lifestyle unknown     other_wEbxL
 ```
 
 ---
@@ -548,7 +570,7 @@ Specify variables and play around with the threshold, default is 0.05
 
 
 ```r
-rec_spec &lt;- recipe(diet ~ text + lifestyle + mean_weight, 
+rec_spec &lt;- recipe(diet ~ ., 
                    data = animals_training) %&gt;%
   step_unknown(lifestyle) %&gt;%
   step_other(lifestyle, threshold = 0.01) %&gt;%
@@ -584,15 +606,7 @@ animals_training %&gt;%
   geom_histogram()
 ```
 
-```
-## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-```
-
-```
-## Warning: Removed 97 rows containing non-finite values (stat_bin).
-```
-
-&lt;img src="index_files/figure-html/unnamed-chunk-26-1.png" width="700px" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-25-1.png" width="700px" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -606,21 +620,15 @@ animals_training %&gt;%
   scale_x_log10()
 ```
 
-```
-## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-```
-
-```
-## Warning: Removed 97 rows containing non-finite values (stat_bin).
-```
-
-&lt;img src="index_files/figure-html/unnamed-chunk-27-1.png" width="700px" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-26-1.png" width="700px" style="display: block; margin: auto;" /&gt;
 
 ---
 
+# Logging and mean imputation
+
 
 ```r
-rec_spec &lt;- recipe(diet ~ text + lifestyle + mean_weight, 
+rec_spec &lt;- recipe(diet ~ ., 
                    data = animals_training) %&gt;%
   step_unknown(lifestyle) %&gt;%
   step_other(lifestyle, threshold = 0.01) %&gt;%
@@ -631,6 +639,8 @@ rec_spec &lt;- recipe(diet ~ text + lifestyle + mean_weight,
 
 ---
 
+class: middle
+
 # Text preprocessing workflow
 
 - turn text into tokens
@@ -639,12 +649,82 @@ rec_spec &lt;- recipe(diet ~ text + lifestyle + mean_weight,
 
 ---
 
-# Text preprocessing workflow - tokenize
+## Text preprocessing workflow - tokenize
 
+.pull-left[
 
 ```r
-recipe(diet ~ text + lifestyle + mean_weight, 
-                   data = animals_training) %&gt;%
+recipe(diet ~ ., 
+       data = animals_training) %&gt;%
+  # Tokenize to words
+  step_tokenize(text)
+```
+]
+
+.pull-right[
+
+```
+## Data Recipe
+## 
+## Inputs:
+## 
+##       role #variables
+##    outcome          1
+##  predictor          3
+## 
+## Operations:
+## 
+## Tokenization for text
+```
+]
+
+
+---
+
+## Text preprocessing workflow - modify tokens
+
+.pull-left[
+
+```r
+recipe(diet ~ ., 
+       data = animals_training) %&gt;%
+  # Tokenize to words
+  step_tokenize(text) %&gt;%
+  # Remove stopwords
+  step_stopwords(text) %&gt;%
+  # Remove less frequent words
+  step_tokenfilter(text, max_tokens = 100)
+```
+]
+
+.pull-right[
+
+```
+## Data Recipe
+## 
+## Inputs:
+## 
+##       role #variables
+##    outcome          1
+##  predictor          3
+## 
+## Operations:
+## 
+## Tokenization for text
+## Stop word removal for text
+## Text filtering for text
+```
+]
+
+---
+
+## Text preprocessing workflow - count tokens
+
+.pull-left[
+
+```r
+recipe(diet ~ ., 
+       data = animals_training) %&gt;%
   # Tokenize to words
   step_tokenize(text) %&gt;%
   # Remove stopwords
@@ -654,6 +734,9 @@ recipe(diet ~ text + lifestyle + mean_weight,
   # Calculate term frequencies
   step_tf(text)
 ```
+]
+
+.pull-right[
 
 ```
 ## Data Recipe
@@ -671,128 +754,56 @@ recipe(diet ~ text + lifestyle + mean_weight,
 ## Text filtering for text
 ## Term frequency with text
 ```
+]
 
 ---
 
-# Text preprocessing workflow - modify tokens
-
-
-```r
-recipe(diet ~ text + lifestyle + mean_weight, 
-                   data = animals_training) %&gt;%
-  # Tokenize to words
-  step_tokenize(text) %&gt;%
-  # Remove stopwords
-  step_stopwords(text) %&gt;%
-  # Remove less frequent words
-  step_tokenfilter(text, max_tokens = 100) %&gt;%
-  # Calculate term frequencies
-  step_tf(text)
-```
-
-```
-## Data Recipe
-## 
-## Inputs:
-## 
-##       role #variables
-##    outcome          1
-##  predictor          3
-## 
-## Operations:
-## 
-## Tokenization for text
-## Stop word removal for text
-## Text filtering for text
-## Term frequency with text
-```
-
----
-
-# Text preprocessing workflow - count tokens
-
-
-```r
-recipe(diet ~ text + lifestyle + mean_weight, 
-                   data = animals_training) %&gt;%
-  # Tokenize to words
-  step_tokenize(text) %&gt;%
-  # Remove stopwords
-  step_stopwords(text) %&gt;%
-  # Remove less frequent words
-  step_tokenfilter(text, max_tokens = 100) %&gt;%
-  # Calculate term frequencies
-  step_tf(text)
-```
-
-```
-## Data Recipe
-## 
-## Inputs:
-## 
-##       role #variables
-##    outcome          1
-##  predictor          3
-## 
-## Operations:
-## 
-## Tokenization for text
-## Stop word removal for text
-## Text filtering for text
-## Term frequency with text
-```
-
----
-
-# Your turn #6
+### Your turn #6
 
 play around with the arguments in step_tokenfilter() and see what results we get
 
 
 ```r
-rec_spec &lt;- recipe(diet ~ text + lifestyle + mean_weight, 
+rec_spec &lt;- recipe(diet ~ ., 
                    data = animals_training) %&gt;%
-  # Tokenize to words
   step_tokenize(text) %&gt;%
-  # Remove stopwords
   step_stopwords(text) %&gt;%
-  # Remove less frequent words
   step_tokenfilter(text, max_tokens = 100) %&gt;%
-  # Calculate term frequencies
   step_tf(text)
 
 rec_spec %&gt;%
   prep() %&gt;%
-  juice()
+  bake(new_data = NULL)
 ```
 
-<div class="countdown" id="timer_5f7fdfe9" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5f801e63" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
 ---
 
-# Your turn #6 - result
+### Your turn #6 - result
 
 play around with the arguments in step_tokenfilter() and see what results we get
 
 
 ```r
-rec_spec &lt;- recipe(diet ~ text + lifestyle + mean_weight, 
+rec_spec &lt;- recipe(diet ~ ., 
                    data = animals_training) %&gt;%
-  # Tokenize to words
   step_tokenize(text) %&gt;%
-  # Remove stopwords
   step_stopwords(text) %&gt;%
-  # Remove less frequent words
   step_tokenfilter(text, max_tokens = 100) %&gt;%
-  # Calculate term frequencies
   step_tf(text)
 
 rec_spec %&gt;%
   prep() %&gt;%
-  juice()
+  bake(new_data = NULL)
 ```
+
+---
+
+### Your turn #6 - result
+
 
 ```
 ## # A tibble: 459 x 103
@@ -815,216 +826,229 @@ rec_spec %&gt;%
 ## #   tf_text_birth &lt;dbl&gt;, tf_text_black &lt;dbl&gt;, tf_text_body &lt;dbl&gt;,
 ## #   tf_text_breed &lt;dbl&gt;, tf_text_can &lt;dbl&gt;, tf_text_common &lt;dbl&gt;,
 ## #   tf_text_despite &lt;dbl&gt;, tf_text_diet &lt;dbl&gt;, tf_text_different &lt;dbl&gt;,
-## #   tf_text_dog &lt;dbl&gt;, tf_text_due &lt;dbl&gt;, tf_text_eat &lt;dbl&gt;, tf_text_eggs &lt;dbl&gt;,
-## #   tf_text_elephant &lt;dbl&gt;, tf_text_even &lt;dbl&gt;, tf_text_fact &lt;dbl&gt;,
-## #   tf_text_feet &lt;dbl&gt;, tf_text_female &lt;dbl&gt;, tf_text_females &lt;dbl&gt;,
-## #   tf_text_fish &lt;dbl&gt;, tf_text_food &lt;dbl&gt;, tf_text_found &lt;dbl&gt;,
-## #   tf_text_fur &lt;dbl&gt;, tf_text_generally &lt;dbl&gt;, tf_text_habitat &lt;dbl&gt;,
-## #   tf_text_however &lt;dbl&gt;, tf_text_human &lt;dbl&gt;, tf_text_humans &lt;dbl&gt;,
-## #   tf_text_hunt &lt;dbl&gt;, tf_text_hunting &lt;dbl&gt;, tf_text_including &lt;dbl&gt;,
-## #   tf_text_insects &lt;dbl&gt;, tf_text_just &lt;dbl&gt;, tf_text_known &lt;dbl&gt;,
-## #   tf_text_large &lt;dbl&gt;, tf_text_larger &lt;dbl&gt;, tf_text_life &lt;dbl&gt;,
-## #   tf_text_like &lt;dbl&gt;, tf_text_live &lt;dbl&gt;, tf_text_long &lt;dbl&gt;,
-## #   tf_text_make &lt;dbl&gt;, tf_text_male &lt;dbl&gt;, tf_text_males &lt;dbl&gt;,
-## #   tf_text_many &lt;dbl&gt;, tf_text_may &lt;dbl&gt;, tf_text_means &lt;dbl&gt;,
-## #   tf_text_monkey &lt;dbl&gt;, tf_text_months &lt;dbl&gt;, tf_text_much &lt;dbl&gt;,
-## #   tf_text_name &lt;dbl&gt;, tf_text_natural &lt;dbl&gt;, tf_text_number &lt;dbl&gt;,
-## #   tf_text_often &lt;dbl&gt;, tf_text_old &lt;dbl&gt;, tf_text_one &lt;dbl&gt;,
-## #   tf_text_penguin &lt;dbl&gt;, tf_text_people &lt;dbl&gt;, tf_text_population &lt;dbl&gt;,
-## #   tf_text_populations &lt;dbl&gt;, tf_text_predators &lt;dbl&gt;, tf_text_prey &lt;dbl&gt;,
-## #   tf_text_range &lt;dbl&gt;, tf_text_rhino &lt;dbl&gt;, tf_text_sea &lt;dbl&gt;,
-## #   tf_text_size &lt;dbl&gt;, tf_text_small &lt;dbl&gt;, tf_text_smaller &lt;dbl&gt;,
-## #   tf_text_south &lt;dbl&gt;, tf_text_species &lt;dbl&gt;, tf_text_tend &lt;dbl&gt;,
-## #   tf_text_thought &lt;dbl&gt;, tf_text_three &lt;dbl&gt;, tf_text_throughout &lt;dbl&gt;,
-## #   tf_text_tiger &lt;dbl&gt;, tf_text_time &lt;dbl&gt;, tf_text_today &lt;dbl&gt;,
-## #   tf_text_trees &lt;dbl&gt;, tf_text_two &lt;dbl&gt;, tf_text_usually &lt;dbl&gt;,
-## #   tf_text_water &lt;dbl&gt;, tf_text_well &lt;dbl&gt;, tf_text_white &lt;dbl&gt;,
-## #   tf_text_wild &lt;dbl&gt;, tf_text_world &lt;dbl&gt;, tf_text_year &lt;dbl&gt;,
-## #   tf_text_years &lt;dbl&gt;, tf_text_young &lt;dbl&gt;
+## #   tf_text_dog &lt;dbl&gt;, tf_text_due &lt;dbl&gt;, tf_text_eat &lt;dbl&gt;,
+## #   tf_text_eggs &lt;dbl&gt;, tf_text_elephant &lt;dbl&gt;, tf_text_even &lt;dbl&gt;,
+## #   tf_text_fact &lt;dbl&gt;, tf_text_feet &lt;dbl&gt;, tf_text_female &lt;dbl&gt;,
+## #   tf_text_females &lt;dbl&gt;, tf_text_fish &lt;dbl&gt;, tf_text_food &lt;dbl&gt;,
+## #   tf_text_found &lt;dbl&gt;, tf_text_fur &lt;dbl&gt;, tf_text_generally &lt;dbl&gt;,
+## #   tf_text_habitat &lt;dbl&gt;, tf_text_however &lt;dbl&gt;, tf_text_human &lt;dbl&gt;,
+## #   tf_text_humans &lt;dbl&gt;, tf_text_hunt &lt;dbl&gt;, tf_text_hunting &lt;dbl&gt;,
+## #   tf_text_including &lt;dbl&gt;, tf_text_insects &lt;dbl&gt;, tf_text_just &lt;dbl&gt;,
+## #   tf_text_known &lt;dbl&gt;, tf_text_large &lt;dbl&gt;, tf_text_larger &lt;dbl&gt;,
+## #   tf_text_life &lt;dbl&gt;, tf_text_like &lt;dbl&gt;, tf_text_live &lt;dbl&gt;,
+## #   tf_text_long &lt;dbl&gt;, tf_text_make &lt;dbl&gt;, tf_text_male &lt;dbl&gt;,
+## #   tf_text_males &lt;dbl&gt;, tf_text_many &lt;dbl&gt;, tf_text_may &lt;dbl&gt;,
+## #   tf_text_means &lt;dbl&gt;, tf_text_monkey &lt;dbl&gt;, tf_text_months &lt;dbl&gt;,
+## #   tf_text_much &lt;dbl&gt;, tf_text_name &lt;dbl&gt;, tf_text_natural &lt;dbl&gt;,
+## #   tf_text_number &lt;dbl&gt;, tf_text_often &lt;dbl&gt;, tf_text_old &lt;dbl&gt;,
+## #   tf_text_one &lt;dbl&gt;, tf_text_penguin &lt;dbl&gt;, tf_text_people &lt;dbl&gt;,
+## #   tf_text_population &lt;dbl&gt;, tf_text_populations &lt;dbl&gt;,
+## #   tf_text_predators &lt;dbl&gt;, tf_text_prey &lt;dbl&gt;, tf_text_range &lt;dbl&gt;,
+## #   tf_text_rhino &lt;dbl&gt;, tf_text_sea &lt;dbl&gt;, tf_text_size &lt;dbl&gt;,
+## #   tf_text_small &lt;dbl&gt;, tf_text_smaller &lt;dbl&gt;, tf_text_south &lt;dbl&gt;,
+## #   tf_text_species &lt;dbl&gt;, tf_text_tend &lt;dbl&gt;, tf_text_thought &lt;dbl&gt;,
+## #   tf_text_three &lt;dbl&gt;, tf_text_throughout &lt;dbl&gt;, tf_text_tiger &lt;dbl&gt;,
+## #   tf_text_time &lt;dbl&gt;, tf_text_today &lt;dbl&gt;, tf_text_trees &lt;dbl&gt;,
+## #   tf_text_two &lt;dbl&gt;, tf_text_usually &lt;dbl&gt;, tf_text_water &lt;dbl&gt;,
+## #   tf_text_well &lt;dbl&gt;, tf_text_white &lt;dbl&gt;, tf_text_wild &lt;dbl&gt;,
+## #   tf_text_world &lt;dbl&gt;, tf_text_year &lt;dbl&gt;, tf_text_years &lt;dbl&gt;,
+## #   tf_text_young &lt;dbl&gt;
 ```
 
 ---
 
-# Your turn #6 - result
+### Your turn #6 - result
 
 If we don't filter the tokens then we get a very large number of columns
 
 
 ```r
-rec_spec &lt;- recipe(diet ~ text + lifestyle + mean_weight, 
+rec_spec &lt;- recipe(diet ~ ., 
                    data = animals_training) %&gt;%
-  # Tokenize to words
   step_tokenize(text) %&gt;%
-  # Remove stopwords
   step_stopwords(text) %&gt;%
-  # Remove less frequent words
   #step_tokenfilter(text, max_tokens = 100) %&gt;%
-  # Calculate term frequencies
   step_tf(text)
 
 rec_spec %&gt;%
   prep() %&gt;%
-  juice()
-```
-
-```
-## # A tibble: 459 x 14,347
-##    lifestyle mean_weight diet  tf_text_0.2 tf_text_0.24 tf_text_0.5 tf_text_0.5cm
-##    &lt;fct&gt;           &lt;dbl&gt; &lt;fct&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;         &lt;dbl&gt;
-##  1 Nocturnal       70    Omni…           0            0           0             0
-##  2 &lt;NA&gt;            NA    Unkn…           0            0           0             0
-##  3 Diurnal          4.5  Carn…           0            0           0             0
-##  4 &lt;NA&gt;            NA    Unkn…           0            0           0             0
-##  5 Diurnal       4500    Herb…           0            0           0             0
-##  6 Nocturnal        2.95 Omni…           0            0           0             0
-##  7 Diurnal       1950    Herb…           0            0           0             0
-##  8 Crepuscu…        2.95 Omni…           0            0           0             0
-##  9 Diurnal          3.5  Carn…           0            0           0             0
-## 10 Crepuscu…       26.5  Carn…           0            0           0             0
-## # … with 449 more rows, and 14,340 more variables: tf_text_0.6 &lt;dbl&gt;,
-## #   tf_text_0.7 &lt;dbl&gt;, tf_text_0.88 &lt;dbl&gt;, tf_text_0.9 &lt;dbl&gt;, tf_text_011 &lt;dbl&gt;,
-## #   tf_text_014 &lt;dbl&gt;, tf_text_053 &lt;dbl&gt;, tf_text_07 &lt;dbl&gt;, tf_text_071 &lt;dbl&gt;,
-## #   tf_text_1 &lt;dbl&gt;, `tf_text_1,000` &lt;dbl&gt;, `tf_text_1,000,000` &lt;dbl&gt;,
-## #   `tf_text_1,000kg` &lt;dbl&gt;, `tf_text_1,000km` &lt;dbl&gt;, `tf_text_1,037` &lt;dbl&gt;,
-## #   `tf_text_1,100` &lt;dbl&gt;, `tf_text_1,175` &lt;dbl&gt;, `tf_text_1,200` &lt;dbl&gt;,
-## #   `tf_text_1,200,000` &lt;dbl&gt;, `tf_text_1,215` &lt;dbl&gt;, `tf_text_1,300` &lt;dbl&gt;,
-## #   `tf_text_1,300m` &lt;dbl&gt;, `tf_text_1,360` &lt;dbl&gt;, `tf_text_1,400` &lt;dbl&gt;,
-## #   `tf_text_1,440` &lt;dbl&gt;, `tf_text_1,500` &lt;dbl&gt;, `tf_text_1,500m` &lt;dbl&gt;,
-## #   `tf_text_1,600` &lt;dbl&gt;, `tf_text_1,700` &lt;dbl&gt;, `tf_text_1,760` &lt;dbl&gt;,
-## #   `tf_text_1,800` &lt;dbl&gt;, tf_text_1.1 &lt;dbl&gt;, tf_text_1.17 &lt;dbl&gt;,
-## #   tf_text_1.2 &lt;dbl&gt;, tf_text_1.3 &lt;dbl&gt;, tf_text_1.4 &lt;dbl&gt;, tf_text_1.5 &lt;dbl&gt;,
-## #   tf_text_1.5cm &lt;dbl&gt;, tf_text_1.5kg &lt;dbl&gt;, tf_text_1.5m &lt;dbl&gt;,
-## #   tf_text_1.6 &lt;dbl&gt;, tf_text_1.7 &lt;dbl&gt;, tf_text_1.8 &lt;dbl&gt;, tf_text_1.9 &lt;dbl&gt;,
-## #   tf_text_10 &lt;dbl&gt;, `tf_text_10,000` &lt;dbl&gt;, tf_text_10.4 &lt;dbl&gt;,
-## #   tf_text_10.5 &lt;dbl&gt;, tf_text_100 &lt;dbl&gt;, `tf_text_100,000` &lt;dbl&gt;,
-## #   tf_text_1000 &lt;dbl&gt;, tf_text_100cm &lt;dbl&gt;, tf_text_100ft &lt;dbl&gt;,
-## #   tf_text_100kg &lt;dbl&gt;, tf_text_100km &lt;dbl&gt;, tf_text_100m &lt;dbl&gt;,
-## #   tf_text_102 &lt;dbl&gt;, tf_text_103 &lt;dbl&gt;, tf_text_104 &lt;dbl&gt;, tf_text_105 &lt;dbl&gt;,
-## #   tf_text_107 &lt;dbl&gt;, tf_text_10cm &lt;dbl&gt;, tf_text_10kg &lt;dbl&gt;, tf_text_10km &lt;dbl&gt;,
-## #   tf_text_11 &lt;dbl&gt;, `tf_text_11,000` &lt;dbl&gt;, tf_text_110 &lt;dbl&gt;,
-## #   `tf_text_110,000` &lt;dbl&gt;, tf_text_110cm &lt;dbl&gt;, tf_text_112 &lt;dbl&gt;,
-## #   tf_text_114 &lt;dbl&gt;, tf_text_116 &lt;dbl&gt;, tf_text_119 &lt;dbl&gt;, tf_text_11mph &lt;dbl&gt;,
-## #   tf_text_12 &lt;dbl&gt;, `tf_text_12,000` &lt;dbl&gt;, tf_text_12.6 &lt;dbl&gt;,
-## #   tf_text_120 &lt;dbl&gt;, `tf_text_120,000` &lt;dbl&gt;, tf_text_1200 &lt;dbl&gt;,
-## #   tf_text_120g &lt;dbl&gt;, tf_text_124 &lt;dbl&gt;, tf_text_124.2 &lt;dbl&gt;, tf_text_125 &lt;dbl&gt;,
-## #   tf_text_126 &lt;dbl&gt;, `tf_text_127,000` &lt;dbl&gt;, tf_text_129 &lt;dbl&gt;,
-## #   tf_text_12th &lt;dbl&gt;, tf_text_13 &lt;dbl&gt;, `tf_text_13,000` &lt;dbl&gt;,
-## #   `tf_text_13,800` &lt;dbl&gt;, tf_text_13.2 &lt;dbl&gt;, tf_text_13.5 &lt;dbl&gt;,
-## #   tf_text_130 &lt;dbl&gt;, `tf_text_130,000` &lt;dbl&gt;, tf_text_1300 &lt;dbl&gt;,
-## #   tf_text_132 &lt;dbl&gt;, tf_text_135 &lt;dbl&gt;, tf_text_13cm &lt;dbl&gt;, tf_text_14 &lt;dbl&gt;, …
+  bake(new_data = NULL)
 ```
 
 ---
 
-# Your turn #7
+### Your turn #6 - result
+
+
+```
+## # A tibble: 459 x 14,347
+##    lifestyle mean_weight diet  tf_text_0.2 tf_text_0.24 tf_text_0.5
+##    &lt;fct&gt;           &lt;dbl&gt; &lt;fct&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;
+##  1 Nocturnal       70    Omni…           0            0           0
+##  2 &lt;NA&gt;            NA    Unkn…           0            0           0
+##  3 Diurnal          4.5  Carn…           0            0           0
+##  4 &lt;NA&gt;            NA    Unkn…           0            0           0
+##  5 Diurnal       4500    Herb…           0            0           0
+##  6 Nocturnal        2.95 Omni…           0            0           0
+##  7 Diurnal       1950    Herb…           0            0           0
+##  8 Crepuscu…        2.95 Omni…           0            0           0
+##  9 Diurnal          3.5  Carn…           0            0           0
+## 10 Crepuscu…       26.5  Carn…           0            0           0
+## # … with 449 more rows, and 14,341 more variables: tf_text_0.5cm &lt;dbl&gt;,
+## #   tf_text_0.6 &lt;dbl&gt;, tf_text_0.7 &lt;dbl&gt;, tf_text_0.88 &lt;dbl&gt;,
+## #   tf_text_0.9 &lt;dbl&gt;, tf_text_011 &lt;dbl&gt;, tf_text_014 &lt;dbl&gt;,
+## #   tf_text_053 &lt;dbl&gt;, tf_text_07 &lt;dbl&gt;, tf_text_071 &lt;dbl&gt;,
+## #   tf_text_1 &lt;dbl&gt;, `tf_text_1,000` &lt;dbl&gt;, `tf_text_1,000,000` &lt;dbl&gt;,
+## #   `tf_text_1,000kg` &lt;dbl&gt;, `tf_text_1,000km` &lt;dbl&gt;,
+## #   `tf_text_1,037` &lt;dbl&gt;, `tf_text_1,100` &lt;dbl&gt;, `tf_text_1,175` &lt;dbl&gt;,
+## #   `tf_text_1,200` &lt;dbl&gt;, `tf_text_1,200,000` &lt;dbl&gt;,
+## #   `tf_text_1,215` &lt;dbl&gt;, `tf_text_1,300` &lt;dbl&gt;, `tf_text_1,300m` &lt;dbl&gt;,
+## #   `tf_text_1,360` &lt;dbl&gt;, `tf_text_1,400` &lt;dbl&gt;, `tf_text_1,440` &lt;dbl&gt;,
+## #   `tf_text_1,500` &lt;dbl&gt;, `tf_text_1,500m` &lt;dbl&gt;, `tf_text_1,600` &lt;dbl&gt;,
+## #   `tf_text_1,700` &lt;dbl&gt;, `tf_text_1,760` &lt;dbl&gt;, `tf_text_1,800` &lt;dbl&gt;,
+## #   tf_text_1.1 &lt;dbl&gt;, tf_text_1.17 &lt;dbl&gt;, tf_text_1.2 &lt;dbl&gt;,
+## #   tf_text_1.3 &lt;dbl&gt;, tf_text_1.4 &lt;dbl&gt;, tf_text_1.5 &lt;dbl&gt;,
+## #   tf_text_1.5cm &lt;dbl&gt;, tf_text_1.5kg &lt;dbl&gt;, tf_text_1.5m &lt;dbl&gt;,
+## #   tf_text_1.6 &lt;dbl&gt;, tf_text_1.7 &lt;dbl&gt;, tf_text_1.8 &lt;dbl&gt;,
+## #   tf_text_1.9 &lt;dbl&gt;, tf_text_10 &lt;dbl&gt;, `tf_text_10,000` &lt;dbl&gt;,
+## #   tf_text_10.4 &lt;dbl&gt;, tf_text_10.5 &lt;dbl&gt;, tf_text_100 &lt;dbl&gt;,
+## #   `tf_text_100,000` &lt;dbl&gt;, tf_text_1000 &lt;dbl&gt;, tf_text_100cm &lt;dbl&gt;,
+## #   tf_text_100ft &lt;dbl&gt;, tf_text_100kg &lt;dbl&gt;, tf_text_100km &lt;dbl&gt;,
+## #   tf_text_100m &lt;dbl&gt;, tf_text_102 &lt;dbl&gt;, tf_text_103 &lt;dbl&gt;,
+## #   tf_text_104 &lt;dbl&gt;, tf_text_105 &lt;dbl&gt;, tf_text_107 &lt;dbl&gt;,
+## #   tf_text_10cm &lt;dbl&gt;, tf_text_10kg &lt;dbl&gt;, tf_text_10km &lt;dbl&gt;,
+## #   tf_text_11 &lt;dbl&gt;, `tf_text_11,000` &lt;dbl&gt;, tf_text_110 &lt;dbl&gt;,
+## #   `tf_text_110,000` &lt;dbl&gt;, tf_text_110cm &lt;dbl&gt;, tf_text_112 &lt;dbl&gt;,
+## #   tf_text_114 &lt;dbl&gt;, tf_text_116 &lt;dbl&gt;, tf_text_119 &lt;dbl&gt;,
+## #   tf_text_11mph &lt;dbl&gt;, tf_text_12 &lt;dbl&gt;, `tf_text_12,000` &lt;dbl&gt;,
+## #   tf_text_12.6 &lt;dbl&gt;, tf_text_120 &lt;dbl&gt;, `tf_text_120,000` &lt;dbl&gt;,
+## #   tf_text_1200 &lt;dbl&gt;, tf_text_120g &lt;dbl&gt;, tf_text_124 &lt;dbl&gt;,
+## #   tf_text_124.2 &lt;dbl&gt;, tf_text_125 &lt;dbl&gt;, tf_text_126 &lt;dbl&gt;,
+## #   `tf_text_127,000` &lt;dbl&gt;, tf_text_129 &lt;dbl&gt;, tf_text_12th &lt;dbl&gt;,
+## #   tf_text_13 &lt;dbl&gt;, `tf_text_13,000` &lt;dbl&gt;, `tf_text_13,800` &lt;dbl&gt;,
+## #   tf_text_13.2 &lt;dbl&gt;, tf_text_13.5 &lt;dbl&gt;, tf_text_130 &lt;dbl&gt;,
+## #   `tf_text_130,000` &lt;dbl&gt;, tf_text_1300 &lt;dbl&gt;, tf_text_132 &lt;dbl&gt;,
+## #   tf_text_135 &lt;dbl&gt;, tf_text_13cm &lt;dbl&gt;, …
+```
+
+---
+
+### Your turn #7
 
 Swap `step_tf()` with `step_tfidf()` and see the change
 
 
 ```r
-rec_spec &lt;- recipe(diet ~ text + lifestyle + mean_weight, 
+rec_spec &lt;- recipe(diet ~ ., 
                    data = animals_training) %&gt;%
-  # Tokenize to words
   step_tokenize(text) %&gt;%
-  # Remove stopwords
   step_stopwords(text) %&gt;%
-  # Remove less frequent words
   step_tokenfilter(text, max_tokens = 100) %&gt;%
-  # Calculate term frequencies
   step_tf(text)
 
 rec_spec %&gt;%
   prep() %&gt;%
-  juice()
+  bake(new_data = NULL)
 ```
 
-<div class="countdown" id="timer_5f7fe0bd" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5f8020bf" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">02</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
 ---
 
-# Your turn #7 - result
+### Your turn #7 - result
 
 Swap `step_tf()` with `step_tfidf()` and see the change
 
 
 ```r
-rec_spec &lt;- recipe(diet ~ text + lifestyle + mean_weight,
+rec_spec &lt;- recipe(diet ~ .,
                    data = animals_training) %&gt;%
-  # Tokenize to words
   step_tokenize(text) %&gt;%
-  # Remove stopwords
   step_stopwords(text) %&gt;%
-  # Remove less frequent words
   step_tokenfilter(text, max_tokens = 100) %&gt;%
-  # Calculate term frequencies
   step_tfidf(text)
 
 rec_spec %&gt;%
   prep() %&gt;%
-  juice()
-```
-
-```
-## # A tibble: 459 x 103
-##    lifestyle mean_weight diet  tfidf_text_able tfidf_text_afri… tfidf_text_afri…
-##    &lt;fct&gt;           &lt;dbl&gt; &lt;fct&gt;           &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;
-##  1 Nocturnal       70    Omni…         0.0433            0.0252           0.0104
-##  2 &lt;NA&gt;            NA    Unkn…         0                 0.0310           0.0382
-##  3 Diurnal          4.5  Carn…         0.0249            0                0     
-##  4 &lt;NA&gt;            NA    Unkn…         0.0329            0                0     
-##  5 Diurnal       4500    Herb…         0.0127            0.0344           0.473 
-##  6 Nocturnal        2.95 Omni…         0.00595           0.0162           0.548 
-##  7 Diurnal       1950    Herb…         0.0163            0.0221           0.536 
-##  8 Crepuscu…        2.95 Omni…         0.0114            0.0231           0.418 
-##  9 Diurnal          3.5  Carn…         0                 0.0175           0.337 
-## 10 Crepuscu…       26.5  Carn…         0.00401           0.0218           0.342 
-## # … with 449 more rows, and 97 more variables: tfidf_text_along &lt;dbl&gt;,
-## #   tfidf_text_also &lt;dbl&gt;, tfidf_text_although &lt;dbl&gt;, tfidf_text_animal &lt;dbl&gt;,
-## #   tfidf_text_animals &lt;dbl&gt;, tfidf_text_appearance &lt;dbl&gt;, tfidf_text_areas &lt;dbl&gt;,
-## #   tfidf_text_around &lt;dbl&gt;, tfidf_text_bear &lt;dbl&gt;, tfidf_text_birds &lt;dbl&gt;,
-## #   tfidf_text_birth &lt;dbl&gt;, tfidf_text_black &lt;dbl&gt;, tfidf_text_body &lt;dbl&gt;,
-## #   tfidf_text_breed &lt;dbl&gt;, tfidf_text_can &lt;dbl&gt;, tfidf_text_common &lt;dbl&gt;,
-## #   tfidf_text_despite &lt;dbl&gt;, tfidf_text_diet &lt;dbl&gt;, tfidf_text_different &lt;dbl&gt;,
-## #   tfidf_text_dog &lt;dbl&gt;, tfidf_text_due &lt;dbl&gt;, tfidf_text_eat &lt;dbl&gt;,
-## #   tfidf_text_eggs &lt;dbl&gt;, tfidf_text_elephant &lt;dbl&gt;, tfidf_text_even &lt;dbl&gt;,
-## #   tfidf_text_fact &lt;dbl&gt;, tfidf_text_feet &lt;dbl&gt;, tfidf_text_female &lt;dbl&gt;,
-## #   tfidf_text_females &lt;dbl&gt;, tfidf_text_fish &lt;dbl&gt;, tfidf_text_food &lt;dbl&gt;,
-## #   tfidf_text_found &lt;dbl&gt;, tfidf_text_fur &lt;dbl&gt;, tfidf_text_generally &lt;dbl&gt;,
-## #   tfidf_text_habitat &lt;dbl&gt;, tfidf_text_however &lt;dbl&gt;, tfidf_text_human &lt;dbl&gt;,
-## #   tfidf_text_humans &lt;dbl&gt;, tfidf_text_hunt &lt;dbl&gt;, tfidf_text_hunting &lt;dbl&gt;,
-## #   tfidf_text_including &lt;dbl&gt;, tfidf_text_insects &lt;dbl&gt;, tfidf_text_just &lt;dbl&gt;,
-## #   tfidf_text_known &lt;dbl&gt;, tfidf_text_large &lt;dbl&gt;, tfidf_text_larger &lt;dbl&gt;,
-## #   tfidf_text_life &lt;dbl&gt;, tfidf_text_like &lt;dbl&gt;, tfidf_text_live &lt;dbl&gt;,
-## #   tfidf_text_long &lt;dbl&gt;, tfidf_text_make &lt;dbl&gt;, tfidf_text_male &lt;dbl&gt;,
-## #   tfidf_text_males &lt;dbl&gt;, tfidf_text_many &lt;dbl&gt;, tfidf_text_may &lt;dbl&gt;,
-## #   tfidf_text_means &lt;dbl&gt;, tfidf_text_monkey &lt;dbl&gt;, tfidf_text_months &lt;dbl&gt;,
-## #   tfidf_text_much &lt;dbl&gt;, tfidf_text_name &lt;dbl&gt;, tfidf_text_natural &lt;dbl&gt;,
-## #   tfidf_text_number &lt;dbl&gt;, tfidf_text_often &lt;dbl&gt;, tfidf_text_old &lt;dbl&gt;,
-## #   tfidf_text_one &lt;dbl&gt;, tfidf_text_penguin &lt;dbl&gt;, tfidf_text_people &lt;dbl&gt;,
-## #   tfidf_text_population &lt;dbl&gt;, tfidf_text_populations &lt;dbl&gt;,
-## #   tfidf_text_predators &lt;dbl&gt;, tfidf_text_prey &lt;dbl&gt;, tfidf_text_range &lt;dbl&gt;,
-## #   tfidf_text_rhino &lt;dbl&gt;, tfidf_text_sea &lt;dbl&gt;, tfidf_text_size &lt;dbl&gt;,
-## #   tfidf_text_small &lt;dbl&gt;, tfidf_text_smaller &lt;dbl&gt;, tfidf_text_south &lt;dbl&gt;,
-## #   tfidf_text_species &lt;dbl&gt;, tfidf_text_tend &lt;dbl&gt;, tfidf_text_thought &lt;dbl&gt;,
-## #   tfidf_text_three &lt;dbl&gt;, tfidf_text_throughout &lt;dbl&gt;, tfidf_text_tiger &lt;dbl&gt;,
-## #   tfidf_text_time &lt;dbl&gt;, tfidf_text_today &lt;dbl&gt;, tfidf_text_trees &lt;dbl&gt;,
-## #   tfidf_text_two &lt;dbl&gt;, tfidf_text_usually &lt;dbl&gt;, tfidf_text_water &lt;dbl&gt;,
-## #   tfidf_text_well &lt;dbl&gt;, tfidf_text_white &lt;dbl&gt;, tfidf_text_wild &lt;dbl&gt;,
-## #   tfidf_text_world &lt;dbl&gt;, tfidf_text_year &lt;dbl&gt;, tfidf_text_years &lt;dbl&gt;,
-## #   tfidf_text_young &lt;dbl&gt;
+  bake(new_data = NULL)
 ```
 
 ---
 
-# Your turn #8
+### Your turn #7 - result
+
+
+```
+## # A tibble: 459 x 103
+##    lifestyle mean_weight diet  tfidf_text_able tfidf_text_afri…
+##    &lt;fct&gt;           &lt;dbl&gt; &lt;fct&gt;           &lt;dbl&gt;            &lt;dbl&gt;
+##  1 Nocturnal       70    Omni…         0.0433            0.0252
+##  2 &lt;NA&gt;            NA    Unkn…         0                 0.0310
+##  3 Diurnal          4.5  Carn…         0.0249            0     
+##  4 &lt;NA&gt;            NA    Unkn…         0.0329            0     
+##  5 Diurnal       4500    Herb…         0.0127            0.0344
+##  6 Nocturnal        2.95 Omni…         0.00595           0.0162
+##  7 Diurnal       1950    Herb…         0.0163            0.0221
+##  8 Crepuscu…        2.95 Omni…         0.0114            0.0231
+##  9 Diurnal          3.5  Carn…         0                 0.0175
+## 10 Crepuscu…       26.5  Carn…         0.00401           0.0218
+## # … with 449 more rows, and 98 more variables: tfidf_text_african &lt;dbl&gt;,
+## #   tfidf_text_along &lt;dbl&gt;, tfidf_text_also &lt;dbl&gt;,
+## #   tfidf_text_although &lt;dbl&gt;, tfidf_text_animal &lt;dbl&gt;,
+## #   tfidf_text_animals &lt;dbl&gt;, tfidf_text_appearance &lt;dbl&gt;,
+## #   tfidf_text_areas &lt;dbl&gt;, tfidf_text_around &lt;dbl&gt;,
+## #   tfidf_text_bear &lt;dbl&gt;, tfidf_text_birds &lt;dbl&gt;,
+## #   tfidf_text_birth &lt;dbl&gt;, tfidf_text_black &lt;dbl&gt;,
+## #   tfidf_text_body &lt;dbl&gt;, tfidf_text_breed &lt;dbl&gt;, tfidf_text_can &lt;dbl&gt;,
+## #   tfidf_text_common &lt;dbl&gt;, tfidf_text_despite &lt;dbl&gt;,
+## #   tfidf_text_diet &lt;dbl&gt;, tfidf_text_different &lt;dbl&gt;,
+## #   tfidf_text_dog &lt;dbl&gt;, tfidf_text_due &lt;dbl&gt;, tfidf_text_eat &lt;dbl&gt;,
+## #   tfidf_text_eggs &lt;dbl&gt;, tfidf_text_elephant &lt;dbl&gt;,
+## #   tfidf_text_even &lt;dbl&gt;, tfidf_text_fact &lt;dbl&gt;, tfidf_text_feet &lt;dbl&gt;,
+## #   tfidf_text_female &lt;dbl&gt;, tfidf_text_females &lt;dbl&gt;,
+## #   tfidf_text_fish &lt;dbl&gt;, tfidf_text_food &lt;dbl&gt;, tfidf_text_found &lt;dbl&gt;,
+## #   tfidf_text_fur &lt;dbl&gt;, tfidf_text_generally &lt;dbl&gt;,
+## #   tfidf_text_habitat &lt;dbl&gt;, tfidf_text_however &lt;dbl&gt;,
+## #   tfidf_text_human &lt;dbl&gt;, tfidf_text_humans &lt;dbl&gt;,
+## #   tfidf_text_hunt &lt;dbl&gt;, tfidf_text_hunting &lt;dbl&gt;,
+## #   tfidf_text_including &lt;dbl&gt;, tfidf_text_insects &lt;dbl&gt;,
+## #   tfidf_text_just &lt;dbl&gt;, tfidf_text_known &lt;dbl&gt;,
+## #   tfidf_text_large &lt;dbl&gt;, tfidf_text_larger &lt;dbl&gt;,
+## #   tfidf_text_life &lt;dbl&gt;, tfidf_text_like &lt;dbl&gt;, tfidf_text_live &lt;dbl&gt;,
+## #   tfidf_text_long &lt;dbl&gt;, tfidf_text_make &lt;dbl&gt;, tfidf_text_male &lt;dbl&gt;,
+## #   tfidf_text_males &lt;dbl&gt;, tfidf_text_many &lt;dbl&gt;, tfidf_text_may &lt;dbl&gt;,
+## #   tfidf_text_means &lt;dbl&gt;, tfidf_text_monkey &lt;dbl&gt;,
+## #   tfidf_text_months &lt;dbl&gt;, tfidf_text_much &lt;dbl&gt;,
+## #   tfidf_text_name &lt;dbl&gt;, tfidf_text_natural &lt;dbl&gt;,
+## #   tfidf_text_number &lt;dbl&gt;, tfidf_text_often &lt;dbl&gt;,
+## #   tfidf_text_old &lt;dbl&gt;, tfidf_text_one &lt;dbl&gt;, tfidf_text_penguin &lt;dbl&gt;,
+## #   tfidf_text_people &lt;dbl&gt;, tfidf_text_population &lt;dbl&gt;,
+## #   tfidf_text_populations &lt;dbl&gt;, tfidf_text_predators &lt;dbl&gt;,
+## #   tfidf_text_prey &lt;dbl&gt;, tfidf_text_range &lt;dbl&gt;,
+## #   tfidf_text_rhino &lt;dbl&gt;, tfidf_text_sea &lt;dbl&gt;, tfidf_text_size &lt;dbl&gt;,
+## #   tfidf_text_small &lt;dbl&gt;, tfidf_text_smaller &lt;dbl&gt;,
+## #   tfidf_text_south &lt;dbl&gt;, tfidf_text_species &lt;dbl&gt;,
+## #   tfidf_text_tend &lt;dbl&gt;, tfidf_text_thought &lt;dbl&gt;,
+## #   tfidf_text_three &lt;dbl&gt;, tfidf_text_throughout &lt;dbl&gt;,
+## #   tfidf_text_tiger &lt;dbl&gt;, tfidf_text_time &lt;dbl&gt;,
+## #   tfidf_text_today &lt;dbl&gt;, tfidf_text_trees &lt;dbl&gt;, tfidf_text_two &lt;dbl&gt;,
+## #   tfidf_text_usually &lt;dbl&gt;, tfidf_text_water &lt;dbl&gt;,
+## #   tfidf_text_well &lt;dbl&gt;, tfidf_text_white &lt;dbl&gt;, tfidf_text_wild &lt;dbl&gt;,
+## #   tfidf_text_world &lt;dbl&gt;, tfidf_text_year &lt;dbl&gt;,
+## #   tfidf_text_years &lt;dbl&gt;, tfidf_text_young &lt;dbl&gt;
+```
+
+---
+
+### Your turn #8
 
 Insert `step_ngram()` into recipe after tokenization. Play around with `num_tokens = ` and `min_num_tokens = `
 
 
 ```r
-rec_spec &lt;- recipe(diet ~ text + lifestyle + mean_weight,
+rec_spec &lt;- recipe(diet ~ .,
                    data = animals_training) %&gt;%
   step_tokenize(text) %&gt;%
   step_stopwords(text) %&gt;%
@@ -1033,72 +1057,82 @@ rec_spec &lt;- recipe(diet ~ text + lifestyle + mean_weight,
 
 rec_spec %&gt;%
   prep() %&gt;%
-  juice()
+  bake(new_data = NULL)
 ```
 
 ```
 ## # A tibble: 459 x 103
-##    lifestyle mean_weight diet  tfidf_text_able tfidf_text_afri… tfidf_text_afri…
-##    &lt;fct&gt;           &lt;dbl&gt; &lt;fct&gt;           &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;
-##  1 Nocturnal       70    Omni…         0.0433            0.0252           0.0104
-##  2 &lt;NA&gt;            NA    Unkn…         0                 0.0310           0.0382
-##  3 Diurnal          4.5  Carn…         0.0249            0                0     
-##  4 &lt;NA&gt;            NA    Unkn…         0.0329            0                0     
-##  5 Diurnal       4500    Herb…         0.0127            0.0344           0.473 
-##  6 Nocturnal        2.95 Omni…         0.00595           0.0162           0.548 
-##  7 Diurnal       1950    Herb…         0.0163            0.0221           0.536 
-##  8 Crepuscu…        2.95 Omni…         0.0114            0.0231           0.418 
-##  9 Diurnal          3.5  Carn…         0                 0.0175           0.337 
-## 10 Crepuscu…       26.5  Carn…         0.00401           0.0218           0.342 
-## # … with 449 more rows, and 97 more variables: tfidf_text_along &lt;dbl&gt;,
-## #   tfidf_text_also &lt;dbl&gt;, tfidf_text_although &lt;dbl&gt;, tfidf_text_animal &lt;dbl&gt;,
-## #   tfidf_text_animals &lt;dbl&gt;, tfidf_text_appearance &lt;dbl&gt;, tfidf_text_areas &lt;dbl&gt;,
-## #   tfidf_text_around &lt;dbl&gt;, tfidf_text_bear &lt;dbl&gt;, tfidf_text_birds &lt;dbl&gt;,
-## #   tfidf_text_birth &lt;dbl&gt;, tfidf_text_black &lt;dbl&gt;, tfidf_text_body &lt;dbl&gt;,
-## #   tfidf_text_breed &lt;dbl&gt;, tfidf_text_can &lt;dbl&gt;, tfidf_text_common &lt;dbl&gt;,
-## #   tfidf_text_despite &lt;dbl&gt;, tfidf_text_diet &lt;dbl&gt;, tfidf_text_different &lt;dbl&gt;,
+##    lifestyle mean_weight diet  tfidf_text_able tfidf_text_afri…
+##    &lt;fct&gt;           &lt;dbl&gt; &lt;fct&gt;           &lt;dbl&gt;            &lt;dbl&gt;
+##  1 Nocturnal       70    Omni…         0.0433            0.0252
+##  2 &lt;NA&gt;            NA    Unkn…         0                 0.0310
+##  3 Diurnal          4.5  Carn…         0.0249            0     
+##  4 &lt;NA&gt;            NA    Unkn…         0.0329            0     
+##  5 Diurnal       4500    Herb…         0.0127            0.0344
+##  6 Nocturnal        2.95 Omni…         0.00595           0.0162
+##  7 Diurnal       1950    Herb…         0.0163            0.0221
+##  8 Crepuscu…        2.95 Omni…         0.0114            0.0231
+##  9 Diurnal          3.5  Carn…         0                 0.0175
+## 10 Crepuscu…       26.5  Carn…         0.00401           0.0218
+## # … with 449 more rows, and 98 more variables: tfidf_text_african &lt;dbl&gt;,
+## #   tfidf_text_along &lt;dbl&gt;, tfidf_text_also &lt;dbl&gt;,
+## #   tfidf_text_although &lt;dbl&gt;, tfidf_text_animal &lt;dbl&gt;,
+## #   tfidf_text_animals &lt;dbl&gt;, tfidf_text_appearance &lt;dbl&gt;,
+## #   tfidf_text_areas &lt;dbl&gt;, tfidf_text_around &lt;dbl&gt;,
+## #   tfidf_text_bear &lt;dbl&gt;, tfidf_text_birds &lt;dbl&gt;,
+## #   tfidf_text_birth &lt;dbl&gt;, tfidf_text_black &lt;dbl&gt;,
+## #   tfidf_text_body &lt;dbl&gt;, tfidf_text_breed &lt;dbl&gt;, tfidf_text_can &lt;dbl&gt;,
+## #   tfidf_text_common &lt;dbl&gt;, tfidf_text_despite &lt;dbl&gt;,
+## #   tfidf_text_diet &lt;dbl&gt;, tfidf_text_different &lt;dbl&gt;,
 ## #   tfidf_text_dog &lt;dbl&gt;, tfidf_text_due &lt;dbl&gt;, tfidf_text_eat &lt;dbl&gt;,
-## #   tfidf_text_eggs &lt;dbl&gt;, tfidf_text_elephant &lt;dbl&gt;, tfidf_text_even &lt;dbl&gt;,
-## #   tfidf_text_fact &lt;dbl&gt;, tfidf_text_feet &lt;dbl&gt;, tfidf_text_female &lt;dbl&gt;,
-## #   tfidf_text_females &lt;dbl&gt;, tfidf_text_fish &lt;dbl&gt;, tfidf_text_food &lt;dbl&gt;,
-## #   tfidf_text_found &lt;dbl&gt;, tfidf_text_fur &lt;dbl&gt;, tfidf_text_generally &lt;dbl&gt;,
-## #   tfidf_text_habitat &lt;dbl&gt;, tfidf_text_however &lt;dbl&gt;, tfidf_text_human &lt;dbl&gt;,
-## #   tfidf_text_humans &lt;dbl&gt;, tfidf_text_hunt &lt;dbl&gt;, tfidf_text_hunting &lt;dbl&gt;,
-## #   tfidf_text_including &lt;dbl&gt;, tfidf_text_insects &lt;dbl&gt;, tfidf_text_just &lt;dbl&gt;,
-## #   tfidf_text_known &lt;dbl&gt;, tfidf_text_large &lt;dbl&gt;, tfidf_text_larger &lt;dbl&gt;,
+## #   tfidf_text_eggs &lt;dbl&gt;, tfidf_text_elephant &lt;dbl&gt;,
+## #   tfidf_text_even &lt;dbl&gt;, tfidf_text_fact &lt;dbl&gt;, tfidf_text_feet &lt;dbl&gt;,
+## #   tfidf_text_female &lt;dbl&gt;, tfidf_text_females &lt;dbl&gt;,
+## #   tfidf_text_fish &lt;dbl&gt;, tfidf_text_food &lt;dbl&gt;, tfidf_text_found &lt;dbl&gt;,
+## #   tfidf_text_fur &lt;dbl&gt;, tfidf_text_generally &lt;dbl&gt;,
+## #   tfidf_text_habitat &lt;dbl&gt;, tfidf_text_however &lt;dbl&gt;,
+## #   tfidf_text_human &lt;dbl&gt;, tfidf_text_humans &lt;dbl&gt;,
+## #   tfidf_text_hunt &lt;dbl&gt;, tfidf_text_hunting &lt;dbl&gt;,
+## #   tfidf_text_including &lt;dbl&gt;, tfidf_text_insects &lt;dbl&gt;,
+## #   tfidf_text_just &lt;dbl&gt;, tfidf_text_known &lt;dbl&gt;,
+## #   tfidf_text_large &lt;dbl&gt;, tfidf_text_larger &lt;dbl&gt;,
 ## #   tfidf_text_life &lt;dbl&gt;, tfidf_text_like &lt;dbl&gt;, tfidf_text_live &lt;dbl&gt;,
 ## #   tfidf_text_long &lt;dbl&gt;, tfidf_text_make &lt;dbl&gt;, tfidf_text_male &lt;dbl&gt;,
 ## #   tfidf_text_males &lt;dbl&gt;, tfidf_text_many &lt;dbl&gt;, tfidf_text_may &lt;dbl&gt;,
-## #   tfidf_text_means &lt;dbl&gt;, tfidf_text_monkey &lt;dbl&gt;, tfidf_text_months &lt;dbl&gt;,
-## #   tfidf_text_much &lt;dbl&gt;, tfidf_text_name &lt;dbl&gt;, tfidf_text_natural &lt;dbl&gt;,
-## #   tfidf_text_number &lt;dbl&gt;, tfidf_text_often &lt;dbl&gt;, tfidf_text_old &lt;dbl&gt;,
-## #   tfidf_text_one &lt;dbl&gt;, tfidf_text_penguin &lt;dbl&gt;, tfidf_text_people &lt;dbl&gt;,
-## #   tfidf_text_population &lt;dbl&gt;, tfidf_text_populations &lt;dbl&gt;,
-## #   tfidf_text_predators &lt;dbl&gt;, tfidf_text_prey &lt;dbl&gt;, tfidf_text_range &lt;dbl&gt;,
+## #   tfidf_text_means &lt;dbl&gt;, tfidf_text_monkey &lt;dbl&gt;,
+## #   tfidf_text_months &lt;dbl&gt;, tfidf_text_much &lt;dbl&gt;,
+## #   tfidf_text_name &lt;dbl&gt;, tfidf_text_natural &lt;dbl&gt;,
+## #   tfidf_text_number &lt;dbl&gt;, tfidf_text_often &lt;dbl&gt;,
+## #   tfidf_text_old &lt;dbl&gt;, tfidf_text_one &lt;dbl&gt;, tfidf_text_penguin &lt;dbl&gt;,
+## #   tfidf_text_people &lt;dbl&gt;, tfidf_text_population &lt;dbl&gt;,
+## #   tfidf_text_populations &lt;dbl&gt;, tfidf_text_predators &lt;dbl&gt;,
+## #   tfidf_text_prey &lt;dbl&gt;, tfidf_text_range &lt;dbl&gt;,
 ## #   tfidf_text_rhino &lt;dbl&gt;, tfidf_text_sea &lt;dbl&gt;, tfidf_text_size &lt;dbl&gt;,
-## #   tfidf_text_small &lt;dbl&gt;, tfidf_text_smaller &lt;dbl&gt;, tfidf_text_south &lt;dbl&gt;,
-## #   tfidf_text_species &lt;dbl&gt;, tfidf_text_tend &lt;dbl&gt;, tfidf_text_thought &lt;dbl&gt;,
-## #   tfidf_text_three &lt;dbl&gt;, tfidf_text_throughout &lt;dbl&gt;, tfidf_text_tiger &lt;dbl&gt;,
-## #   tfidf_text_time &lt;dbl&gt;, tfidf_text_today &lt;dbl&gt;, tfidf_text_trees &lt;dbl&gt;,
-## #   tfidf_text_two &lt;dbl&gt;, tfidf_text_usually &lt;dbl&gt;, tfidf_text_water &lt;dbl&gt;,
+## #   tfidf_text_small &lt;dbl&gt;, tfidf_text_smaller &lt;dbl&gt;,
+## #   tfidf_text_south &lt;dbl&gt;, tfidf_text_species &lt;dbl&gt;,
+## #   tfidf_text_tend &lt;dbl&gt;, tfidf_text_thought &lt;dbl&gt;,
+## #   tfidf_text_three &lt;dbl&gt;, tfidf_text_throughout &lt;dbl&gt;,
+## #   tfidf_text_tiger &lt;dbl&gt;, tfidf_text_time &lt;dbl&gt;,
+## #   tfidf_text_today &lt;dbl&gt;, tfidf_text_trees &lt;dbl&gt;, tfidf_text_two &lt;dbl&gt;,
+## #   tfidf_text_usually &lt;dbl&gt;, tfidf_text_water &lt;dbl&gt;,
 ## #   tfidf_text_well &lt;dbl&gt;, tfidf_text_white &lt;dbl&gt;, tfidf_text_wild &lt;dbl&gt;,
-## #   tfidf_text_world &lt;dbl&gt;, tfidf_text_year &lt;dbl&gt;, tfidf_text_years &lt;dbl&gt;,
-## #   tfidf_text_young &lt;dbl&gt;
+## #   tfidf_text_world &lt;dbl&gt;, tfidf_text_year &lt;dbl&gt;,
+## #   tfidf_text_years &lt;dbl&gt;, tfidf_text_young &lt;dbl&gt;
 ```
 
-<div class="countdown" id="timer_5f7fdfaa" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5f80215a" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
 ---
 
-# Your turn #8 - result
+### Your turn #8 - result
 
 Insert `step_ngram()` into recipe after tokenization. Play around with `num_tokens = ` and `min_num_tokens = `
 
 
 ```r
-rec_spec &lt;- recipe(diet ~ text + lifestyle + mean_weight,
+rec_spec &lt;- recipe(diet ~ .,
                    data = animals_training) %&gt;%
   step_tokenize(text) %&gt;%
   step_ngram(text, min_num_tokens = 1, num_tokens = 2) %&gt;%
@@ -1108,57 +1142,79 @@ rec_spec &lt;- recipe(diet ~ text + lifestyle + mean_weight,
 
 rec_spec %&gt;%
   prep() %&gt;%
-  juice() %&gt;%
+  bake(new_data = NULL) %&gt;%
   names()
 ```
 
+---
+
+### Your turn #8 - result
+
+
 ```
-##   [1] "lifestyle"             "mean_weight"           "diet"                 
-##   [4] "tfidf_text_able"       "tfidf_text_able_to"    "tfidf_text_african"   
-##   [7] "tfidf_text_along"      "tfidf_text_also"       "tfidf_text_although"  
-##  [10] "tfidf_text_and_the"    "tfidf_text_animal"     "tfidf_text_animals"   
-##  [13] "tfidf_text_are_also"   "tfidf_text_areas"      "tfidf_text_around"    
-##  [16] "tfidf_text_as_a"       "tfidf_text_as_the"     "tfidf_text_birds"     
-##  [19] "tfidf_text_black"      "tfidf_text_body"       "tfidf_text_can"       
-##  [22] "tfidf_text_common"     "tfidf_text_diet"       "tfidf_text_different" 
-##  [25] "tfidf_text_due"        "tfidf_text_due_to"     "tfidf_text_eat"       
-##  [28] "tfidf_text_eggs"       "tfidf_text_even"       "tfidf_text_female"    
-##  [31] "tfidf_text_females"    "tfidf_text_fish"       "tfidf_text_food"      
-##  [34] "tfidf_text_for_the"    "tfidf_text_found"      "tfidf_text_found_in"  
-##  [37] "tfidf_text_from_the"   "tfidf_text_habitat"    "tfidf_text_have_been" 
-##  [40] "tfidf_text_however"    "tfidf_text_humans"     "tfidf_text_in_a"      
-##  [43] "tfidf_text_in_the"     "tfidf_text_including"  "tfidf_text_is_a"      
-##  [46] "tfidf_text_is_the"     "tfidf_text_it_is"      "tfidf_text_known"     
-##  [49] "tfidf_text_known_to"   "tfidf_text_large"      "tfidf_text_like"      
-##  [52] "tfidf_text_live"       "tfidf_text_long"       "tfidf_text_male"      
-##  [55] "tfidf_text_males"      "tfidf_text_many"       "tfidf_text_may"       
-##  [58] "tfidf_text_months"     "tfidf_text_much"       "tfidf_text_name"      
-##  [61] "tfidf_text_natural"    "tfidf_text_of_a"       "tfidf_text_of_the"    
-##  [64] "tfidf_text_of_their"   "tfidf_text_often"      "tfidf_text_old"       
-##  [67] "tfidf_text_on_the"     "tfidf_text_one"        "tfidf_text_one_of"    
-##  [70] "tfidf_text_penguin"    "tfidf_text_population" "tfidf_text_predators" 
-##  [73] "tfidf_text_prey"       "tfidf_text_range"      "tfidf_text_sea"       
-##  [76] "tfidf_text_size"       "tfidf_text_small"      "tfidf_text_species"   
-##  [79] "tfidf_text_species_of" "tfidf_text_such_as"    "tfidf_text_that_are"  
-##  [82] "tfidf_text_that_they"  "tfidf_text_the_water"  "tfidf_text_the_wild"  
-##  [85] "tfidf_text_the_world"  "tfidf_text_there_are"  "tfidf_text_they_are"  
-##  [88] "tfidf_text_thought"    "tfidf_text_throughout" "tfidf_text_time"      
-##  [91] "tfidf_text_to_be"      "tfidf_text_to_the"     "tfidf_text_today"     
-##  [94] "tfidf_text_two"        "tfidf_text_up_to"      "tfidf_text_water"     
-##  [97] "tfidf_text_well"       "tfidf_text_white"      "tfidf_text_wild"      
-## [100] "tfidf_text_with_the"   "tfidf_text_world"      "tfidf_text_years"     
+##   [1] "lifestyle"             "mean_weight"          
+##   [3] "diet"                  "tfidf_text_able"      
+##   [5] "tfidf_text_able_to"    "tfidf_text_african"   
+##   [7] "tfidf_text_along"      "tfidf_text_also"      
+##   [9] "tfidf_text_although"   "tfidf_text_and_the"   
+##  [11] "tfidf_text_animal"     "tfidf_text_animals"   
+##  [13] "tfidf_text_are_also"   "tfidf_text_areas"     
+##  [15] "tfidf_text_around"     "tfidf_text_as_a"      
+##  [17] "tfidf_text_as_the"     "tfidf_text_birds"     
+##  [19] "tfidf_text_black"      "tfidf_text_body"      
+##  [21] "tfidf_text_can"        "tfidf_text_common"    
+##  [23] "tfidf_text_diet"       "tfidf_text_different" 
+##  [25] "tfidf_text_due"        "tfidf_text_due_to"    
+##  [27] "tfidf_text_eat"        "tfidf_text_eggs"      
+##  [29] "tfidf_text_even"       "tfidf_text_female"    
+##  [31] "tfidf_text_females"    "tfidf_text_fish"      
+##  [33] "tfidf_text_food"       "tfidf_text_for_the"   
+##  [35] "tfidf_text_found"      "tfidf_text_found_in"  
+##  [37] "tfidf_text_from_the"   "tfidf_text_habitat"   
+##  [39] "tfidf_text_have_been"  "tfidf_text_however"   
+##  [41] "tfidf_text_humans"     "tfidf_text_in_a"      
+##  [43] "tfidf_text_in_the"     "tfidf_text_including" 
+##  [45] "tfidf_text_is_a"       "tfidf_text_is_the"    
+##  [47] "tfidf_text_it_is"      "tfidf_text_known"     
+##  [49] "tfidf_text_known_to"   "tfidf_text_large"     
+##  [51] "tfidf_text_like"       "tfidf_text_live"      
+##  [53] "tfidf_text_long"       "tfidf_text_male"      
+##  [55] "tfidf_text_males"      "tfidf_text_many"      
+##  [57] "tfidf_text_may"        "tfidf_text_months"    
+##  [59] "tfidf_text_much"       "tfidf_text_name"      
+##  [61] "tfidf_text_natural"    "tfidf_text_of_a"      
+##  [63] "tfidf_text_of_the"     "tfidf_text_of_their"  
+##  [65] "tfidf_text_often"      "tfidf_text_old"       
+##  [67] "tfidf_text_on_the"     "tfidf_text_one"       
+##  [69] "tfidf_text_one_of"     "tfidf_text_penguin"   
+##  [71] "tfidf_text_population" "tfidf_text_predators" 
+##  [73] "tfidf_text_prey"       "tfidf_text_range"     
+##  [75] "tfidf_text_sea"        "tfidf_text_size"      
+##  [77] "tfidf_text_small"      "tfidf_text_species"   
+##  [79] "tfidf_text_species_of" "tfidf_text_such_as"   
+##  [81] "tfidf_text_that_are"   "tfidf_text_that_they" 
+##  [83] "tfidf_text_the_water"  "tfidf_text_the_wild"  
+##  [85] "tfidf_text_the_world"  "tfidf_text_there_are" 
+##  [87] "tfidf_text_they_are"   "tfidf_text_thought"   
+##  [89] "tfidf_text_throughout" "tfidf_text_time"      
+##  [91] "tfidf_text_to_be"      "tfidf_text_to_the"    
+##  [93] "tfidf_text_today"      "tfidf_text_two"       
+##  [95] "tfidf_text_up_to"      "tfidf_text_water"     
+##  [97] "tfidf_text_well"       "tfidf_text_white"     
+##  [99] "tfidf_text_wild"       "tfidf_text_with_the"  
+## [101] "tfidf_text_world"      "tfidf_text_years"     
 ## [103] "tfidf_text_young"
 ```
 
 ---
 
-# Your turn #8 - result
+### Your turn #8 - result
 
 Order matters!
 
 
 ```r
-rec_spec &lt;- recipe(diet ~ text + lifestyle + mean_weight,
+rec_spec &lt;- recipe(diet ~ .,
                    data = animals_training) %&gt;%
   step_tokenize(text) %&gt;%
   step_stopwords(text) %&gt;%
@@ -1168,45 +1224,67 @@ rec_spec &lt;- recipe(diet ~ text + lifestyle + mean_weight,
 
 rec_spec %&gt;%
   prep() %&gt;%
-  juice() %&gt;%
+  bake(new_data = NULL) %&gt;%
   names()
 ```
 
+---
+
+### Your turn #8 - result
+
+
 ```
-##   [1] "lifestyle"              "mean_weight"            "diet"                  
-##   [4] "tfidf_text_able"        "tfidf_text_africa"      "tfidf_text_african"    
-##   [7] "tfidf_text_along"       "tfidf_text_also"        "tfidf_text_although"   
-##  [10] "tfidf_text_animal"      "tfidf_text_animals"     "tfidf_text_appearance" 
-##  [13] "tfidf_text_areas"       "tfidf_text_around"      "tfidf_text_bear"       
-##  [16] "tfidf_text_birds"       "tfidf_text_birth"       "tfidf_text_black"      
-##  [19] "tfidf_text_body"        "tfidf_text_breed"       "tfidf_text_can"        
-##  [22] "tfidf_text_common"      "tfidf_text_despite"     "tfidf_text_diet"       
-##  [25] "tfidf_text_different"   "tfidf_text_dog"         "tfidf_text_due"        
-##  [28] "tfidf_text_eat"         "tfidf_text_eggs"        "tfidf_text_elephant"   
-##  [31] "tfidf_text_even"        "tfidf_text_fact"        "tfidf_text_feet"       
-##  [34] "tfidf_text_female"      "tfidf_text_females"     "tfidf_text_fish"       
-##  [37] "tfidf_text_food"        "tfidf_text_found"       "tfidf_text_fur"        
-##  [40] "tfidf_text_generally"   "tfidf_text_habitat"     "tfidf_text_however"    
-##  [43] "tfidf_text_human"       "tfidf_text_humans"      "tfidf_text_hunt"       
-##  [46] "tfidf_text_hunting"     "tfidf_text_including"   "tfidf_text_insects"    
-##  [49] "tfidf_text_just"        "tfidf_text_known"       "tfidf_text_large"      
-##  [52] "tfidf_text_larger"      "tfidf_text_life"        "tfidf_text_like"       
-##  [55] "tfidf_text_live"        "tfidf_text_long"        "tfidf_text_make"       
-##  [58] "tfidf_text_male"        "tfidf_text_males"       "tfidf_text_many"       
-##  [61] "tfidf_text_may"         "tfidf_text_means"       "tfidf_text_monkey"     
-##  [64] "tfidf_text_months"      "tfidf_text_much"        "tfidf_text_name"       
-##  [67] "tfidf_text_natural"     "tfidf_text_number"      "tfidf_text_often"      
-##  [70] "tfidf_text_old"         "tfidf_text_one"         "tfidf_text_penguin"    
-##  [73] "tfidf_text_people"      "tfidf_text_population"  "tfidf_text_populations"
-##  [76] "tfidf_text_predators"   "tfidf_text_prey"        "tfidf_text_range"      
-##  [79] "tfidf_text_rhino"       "tfidf_text_sea"         "tfidf_text_size"       
-##  [82] "tfidf_text_small"       "tfidf_text_smaller"     "tfidf_text_south"      
-##  [85] "tfidf_text_species"     "tfidf_text_tend"        "tfidf_text_thought"    
-##  [88] "tfidf_text_three"       "tfidf_text_throughout"  "tfidf_text_tiger"      
-##  [91] "tfidf_text_time"        "tfidf_text_today"       "tfidf_text_trees"      
-##  [94] "tfidf_text_two"         "tfidf_text_usually"     "tfidf_text_water"      
-##  [97] "tfidf_text_well"        "tfidf_text_white"       "tfidf_text_wild"       
-## [100] "tfidf_text_world"       "tfidf_text_year"        "tfidf_text_years"      
+##   [1] "lifestyle"              "mean_weight"           
+##   [3] "diet"                   "tfidf_text_able"       
+##   [5] "tfidf_text_africa"      "tfidf_text_african"    
+##   [7] "tfidf_text_along"       "tfidf_text_also"       
+##   [9] "tfidf_text_although"    "tfidf_text_animal"     
+##  [11] "tfidf_text_animals"     "tfidf_text_appearance" 
+##  [13] "tfidf_text_areas"       "tfidf_text_around"     
+##  [15] "tfidf_text_bear"        "tfidf_text_birds"      
+##  [17] "tfidf_text_birth"       "tfidf_text_black"      
+##  [19] "tfidf_text_body"        "tfidf_text_breed"      
+##  [21] "tfidf_text_can"         "tfidf_text_common"     
+##  [23] "tfidf_text_despite"     "tfidf_text_diet"       
+##  [25] "tfidf_text_different"   "tfidf_text_dog"        
+##  [27] "tfidf_text_due"         "tfidf_text_eat"        
+##  [29] "tfidf_text_eggs"        "tfidf_text_elephant"   
+##  [31] "tfidf_text_even"        "tfidf_text_fact"       
+##  [33] "tfidf_text_feet"        "tfidf_text_female"     
+##  [35] "tfidf_text_females"     "tfidf_text_fish"       
+##  [37] "tfidf_text_food"        "tfidf_text_found"      
+##  [39] "tfidf_text_fur"         "tfidf_text_generally"  
+##  [41] "tfidf_text_habitat"     "tfidf_text_however"    
+##  [43] "tfidf_text_human"       "tfidf_text_humans"     
+##  [45] "tfidf_text_hunt"        "tfidf_text_hunting"    
+##  [47] "tfidf_text_including"   "tfidf_text_insects"    
+##  [49] "tfidf_text_just"        "tfidf_text_known"      
+##  [51] "tfidf_text_large"       "tfidf_text_larger"     
+##  [53] "tfidf_text_life"        "tfidf_text_like"       
+##  [55] "tfidf_text_live"        "tfidf_text_long"       
+##  [57] "tfidf_text_make"        "tfidf_text_male"       
+##  [59] "tfidf_text_males"       "tfidf_text_many"       
+##  [61] "tfidf_text_may"         "tfidf_text_means"      
+##  [63] "tfidf_text_monkey"      "tfidf_text_months"     
+##  [65] "tfidf_text_much"        "tfidf_text_name"       
+##  [67] "tfidf_text_natural"     "tfidf_text_number"     
+##  [69] "tfidf_text_often"       "tfidf_text_old"        
+##  [71] "tfidf_text_one"         "tfidf_text_penguin"    
+##  [73] "tfidf_text_people"      "tfidf_text_population" 
+##  [75] "tfidf_text_populations" "tfidf_text_predators"  
+##  [77] "tfidf_text_prey"        "tfidf_text_range"      
+##  [79] "tfidf_text_rhino"       "tfidf_text_sea"        
+##  [81] "tfidf_text_size"        "tfidf_text_small"      
+##  [83] "tfidf_text_smaller"     "tfidf_text_south"      
+##  [85] "tfidf_text_species"     "tfidf_text_tend"       
+##  [87] "tfidf_text_thought"     "tfidf_text_three"      
+##  [89] "tfidf_text_throughout"  "tfidf_text_tiger"      
+##  [91] "tfidf_text_time"        "tfidf_text_today"      
+##  [93] "tfidf_text_trees"       "tfidf_text_two"        
+##  [95] "tfidf_text_usually"     "tfidf_text_water"      
+##  [97] "tfidf_text_well"        "tfidf_text_white"      
+##  [99] "tfidf_text_wild"        "tfidf_text_world"      
+## [101] "tfidf_text_year"        "tfidf_text_years"      
 ## [103] "tfidf_text_young"
 ```
 
@@ -1216,8 +1294,9 @@ rec_spec %&gt;%
 
 
 ```r
-rec_spec &lt;- recipe(diet ~ text + lifestyle + mean_weight, 
+rec_spec &lt;- recipe(diet ~ ., 
                    data = animals_training) %&gt;%
+  step_novel(lifestyle) %&gt;%
   step_unknown(lifestyle) %&gt;%
   step_other(lifestyle, threshold = 0.01) %&gt;%
   step_dummy(lifestyle) %&gt;%
@@ -1441,20 +1520,21 @@ It's `tune()` again! 😟
 
 # A grid of possible hyperparameters
 
+.pull-left[
 
 ```r
 param_grid &lt;- grid_regular(
   penalty(range = c(-4, 0)),
   max_tokens(range = c(100, 500)),
-  levels = c(penalty = 50, max_tokens = 4)
+  levels = c(penalty = 50, 
+             max_tokens = 4)
 )
+
+param_grid
 ```
+]
 
-
----
-
-# A grid of possible hyperparameters
-
+.pull-right[
 
 ```
 ## # A tibble: 200 x 2
@@ -1472,6 +1552,7 @@ param_grid &lt;- grid_regular(
 ## 10 0.000543        100
 ## # … with 190 more rows
 ```
+]
 
 ---
 
@@ -1491,26 +1572,21 @@ background-size: 60%
 
 ```r
 set.seed(123)
-animals_folds &lt;- vfold_cv(animals_training, v = 10, strata = diet)
+animals_folds &lt;- vfold_cv(animals_training, v = 5, strata = diet)
 
 animals_folds
 ```
 
 ```
-## #  10-fold cross-validation using stratification 
-## # A tibble: 10 x 2
-##    splits           id    
-##    &lt;list&gt;           &lt;chr&gt; 
-##  1 &lt;split [411/48]&gt; Fold01
-##  2 &lt;split [412/47]&gt; Fold02
-##  3 &lt;split [412/47]&gt; Fold03
-##  4 &lt;split [412/47]&gt; Fold04
-##  5 &lt;split [413/46]&gt; Fold05
-##  6 &lt;split [413/46]&gt; Fold06
-##  7 &lt;split [414/45]&gt; Fold07
-##  8 &lt;split [414/45]&gt; Fold08
-##  9 &lt;split [415/44]&gt; Fold09
-## 10 &lt;split [415/44]&gt; Fold10
+## #  5-fold cross-validation using stratification 
+## # A tibble: 5 x 2
+##   splits           id   
+##   &lt;list&gt;           &lt;chr&gt;
+## 1 &lt;split [365/94]&gt; Fold1
+## 2 &lt;split [367/92]&gt; Fold2
+## 3 &lt;split [367/92]&gt; Fold3
+## 4 &lt;split [368/91]&gt; Fold4
+## 5 &lt;split [369/90]&gt; Fold5
 ```
 
 ---
@@ -1602,7 +1678,8 @@ class: inverse, right, middle
 
 ---
 
-# Create a workflow
+.pull-left[
+## Create a workflow
 
 
 ```r
@@ -1612,15 +1689,21 @@ wf_spec &lt;- workflow() %&gt;%
 
 wf_spec
 ```
+]
+
+.pull-right[
 
 ```
-## ══ Workflow ═══════════════════════════════════════════════════════════════════════
+## ══ Workflow
+══════════════════════════════════════════════════════════════
 ## Preprocessor: Recipe
 ## Model: multinom_reg()
-## 
-## ── Preprocessor ───────────────────────────────────────────────────────────────────
-## 8 Recipe Steps
-## 
+##
+## ── Preprocessor
+──────────────────────────────────────────────────────────
+## 9 Recipe Steps
+##
+## ● step_novel()
 ## ● step_unknown()
 ## ● step_other()
 ## ● step_dummy()
@@ -1629,16 +1712,19 @@ wf_spec
 ## ● step_tokenize()
 ## ● step_tokenfilter()
 ## ● step_tfidf()
-## 
-## ── Model ──────────────────────────────────────────────────────────────────────────
-## Multinomial Regression Model Specification (classification)
-## 
+##
+## ── Model
+─────────────────────────────────────────────────────────────────
+## Multinomial Regression Model Specification
+(classification)
+##
 ## Main Arguments:
-##   penalty = tune()
-##   mixture = 1
-## 
+## penalty = tune()
+## mixture = 1
+##
 ## Computational engine: glmnet
 ```
+]
 
 ---
 
@@ -1667,28 +1753,16 @@ lasso_rs &lt;- tune_grid(
 
 
 ```
-## Warning: This tuning result has notes. Example notes on model fitting include:
-## recipe 1/4, model 1/1 (predictions): There are new levels in a factor: NA
-## recipe 1/4, model 1/1 (predictions): There are new levels in a factor: NA
-## recipe 4/4, model 1/1 (predictions): There are new levels in a factor: NA
-```
-
-```
 ## # Tuning results
-## # 10-fold cross-validation using stratification 
-## # A tibble: 10 x 5
-##    splits           id     .metrics           .notes           .predictions        
-##    &lt;list&gt;           &lt;chr&gt;  &lt;list&gt;             &lt;list&gt;           &lt;list&gt;              
-##  1 &lt;split [411/48]&gt; Fold01 &lt;tibble [400 × 6]&gt; &lt;tibble [4 × 1]&gt; &lt;tibble [9,600 × 10…
-##  2 &lt;split [412/47]&gt; Fold02 &lt;tibble [400 × 6]&gt; &lt;tibble [0 × 1]&gt; &lt;tibble [9,400 × 10…
-##  3 &lt;split [412/47]&gt; Fold03 &lt;tibble [400 × 6]&gt; &lt;tibble [0 × 1]&gt; &lt;tibble [9,400 × 10…
-##  4 &lt;split [412/47]&gt; Fold04 &lt;tibble [400 × 6]&gt; &lt;tibble [4 × 1]&gt; &lt;tibble [9,400 × 10…
-##  5 &lt;split [413/46]&gt; Fold05 &lt;tibble [400 × 6]&gt; &lt;tibble [0 × 1]&gt; &lt;tibble [9,200 × 10…
-##  6 &lt;split [413/46]&gt; Fold06 &lt;tibble [400 × 6]&gt; &lt;tibble [4 × 1]&gt; &lt;tibble [9,200 × 10…
-##  7 &lt;split [414/45]&gt; Fold07 &lt;tibble [400 × 6]&gt; &lt;tibble [5 × 1]&gt; &lt;tibble [9,000 × 10…
-##  8 &lt;split [414/45]&gt; Fold08 &lt;tibble [400 × 6]&gt; &lt;tibble [4 × 1]&gt; &lt;tibble [9,000 × 10…
-##  9 &lt;split [415/44]&gt; Fold09 &lt;tibble [400 × 6]&gt; &lt;tibble [0 × 1]&gt; &lt;tibble [8,800 × 10…
-## 10 &lt;split [415/44]&gt; Fold10 &lt;tibble [400 × 6]&gt; &lt;tibble [0 × 1]&gt; &lt;tibble [8,800 × 10…
+## # 5-fold cross-validation using stratification 
+## # A tibble: 5 x 5
+##   splits         id    .metrics         .notes         .predictions       
+##   &lt;list&gt;         &lt;chr&gt; &lt;list&gt;           &lt;list&gt;         &lt;list&gt;             
+## 1 &lt;split [365/9… Fold1 &lt;tibble [400 × … &lt;tibble [0 × … &lt;tibble [18,800 × …
+## 2 &lt;split [367/9… Fold2 &lt;tibble [400 × … &lt;tibble [0 × … &lt;tibble [18,400 × …
+## 3 &lt;split [367/9… Fold3 &lt;tibble [400 × … &lt;tibble [0 × … &lt;tibble [18,400 × …
+## 4 &lt;split [368/9… Fold4 &lt;tibble [400 × … &lt;tibble [0 × … &lt;tibble [18,200 × …
+## 5 &lt;split [369/9… Fold5 &lt;tibble [400 × … &lt;tibble [0 × … &lt;tibble [18,000 × …
 ```
 
 ---
@@ -1703,29 +1777,31 @@ collect_metrics(lasso_rs)
 
 ```
 ## # A tibble: 400 x 8
-##     penalty max_tokens .metric  .estimator  mean     n std_err .config         
-##       &lt;dbl&gt;      &lt;int&gt; &lt;chr&gt;    &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;           
-##  1 0.0001          100 accuracy multiclass 0.610    10  0.0276 Recipe1_Model001
-##  2 0.0001          100 roc_auc  hand_till  0.824    10  0.0174 Recipe1_Model001
-##  3 0.000121        100 accuracy multiclass 0.610    10  0.0262 Recipe1_Model002
-##  4 0.000121        100 roc_auc  hand_till  0.824    10  0.0176 Recipe1_Model002
-##  5 0.000146        100 accuracy multiclass 0.610    10  0.0265 Recipe1_Model003
-##  6 0.000146        100 roc_auc  hand_till  0.825    10  0.0173 Recipe1_Model003
-##  7 0.000176        100 accuracy multiclass 0.615    10  0.0259 Recipe1_Model004
-##  8 0.000176        100 roc_auc  hand_till  0.826    10  0.0172 Recipe1_Model004
-##  9 0.000212        100 accuracy multiclass 0.619    10  0.0258 Recipe1_Model005
-## 10 0.000212        100 roc_auc  hand_till  0.826    10  0.0173 Recipe1_Model005
+##     penalty max_tokens .metric  .estimator  mean     n std_err .config    
+##       &lt;dbl&gt;      &lt;int&gt; &lt;chr&gt;    &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;      
+##  1 0.0001          100 accuracy multiclass 0.565     5 0.0157  Recipe1_Mo…
+##  2 0.0001          100 roc_auc  hand_till  0.806     5 0.00639 Recipe1_Mo…
+##  3 0.000121        100 accuracy multiclass 0.565     5 0.0157  Recipe1_Mo…
+##  4 0.000121        100 roc_auc  hand_till  0.807     5 0.00638 Recipe1_Mo…
+##  5 0.000146        100 accuracy multiclass 0.565     5 0.0157  Recipe1_Mo…
+##  6 0.000146        100 roc_auc  hand_till  0.808     5 0.00633 Recipe1_Mo…
+##  7 0.000176        100 accuracy multiclass 0.565     5 0.0157  Recipe1_Mo…
+##  8 0.000176        100 roc_auc  hand_till  0.809     5 0.00638 Recipe1_Mo…
+##  9 0.000212        100 accuracy multiclass 0.569     5 0.0174  Recipe1_Mo…
+## 10 0.000212        100 roc_auc  hand_till  0.810     5 0.00669 Recipe1_Mo…
 ## # … with 390 more rows
 ```
 
 ---
+
+# Look at the tuning results 👀
 
 
 ```r
 autoplot(lasso_rs)
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-56-1.png" width="700px" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-64-1.png" width="700px" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -1739,13 +1815,13 @@ lasso_rs %&gt;%
 
 ```
 ## # A tibble: 5 x 8
-##   penalty max_tokens .metric .estimator  mean     n std_err .config         
-##     &lt;dbl&gt;      &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;           
-## 1 0.0233         500 roc_auc hand_till  0.930    10  0.0109 Recipe4_Model030
-## 2 0.00754        500 roc_auc hand_till  0.929    10  0.0112 Recipe4_Model024
-## 3 0.0160         500 roc_auc hand_till  0.929    10  0.0106 Recipe4_Model028
-## 4 0.00625        500 roc_auc hand_till  0.928    10  0.0112 Recipe4_Model023
-## 5 0.0281         500 roc_auc hand_till  0.928    10  0.0112 Recipe4_Model031
+##   penalty max_tokens .metric .estimator  mean     n std_err .config       
+##     &lt;dbl&gt;      &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;         
+## 1  0.0339        500 roc_auc hand_till  0.926     5 0.00728 Recipe4_Model…
+## 2  0.0409        500 roc_auc hand_till  0.925     5 0.00718 Recipe4_Model…
+## 3  0.0281        500 roc_auc hand_till  0.925     5 0.00828 Recipe4_Model…
+## 4  0.0233        500 roc_auc hand_till  0.924     5 0.00870 Recipe4_Model…
+## 5  0.0193        500 roc_auc hand_till  0.924     5 0.00928 Recipe4_Model…
 ```
 
 ---
@@ -1755,7 +1831,7 @@ lasso_rs %&gt;%
 
 Run you onw model and see what results you can find!
 
-<div class="countdown" id="timer_5f7fe33a" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5f801e8e" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -1775,12 +1851,12 @@ best_roc_auc
 ## # A tibble: 1 x 3
 ##   penalty max_tokens .config         
 ##     &lt;dbl&gt;      &lt;int&gt; &lt;chr&gt;           
-## 1  0.0233        500 Recipe4_Model030
+## 1  0.0339        500 Recipe4_Model032
 ```
 
 ---
 
-# Evaluate the best model 📏
+# Evaluate the best model 📐
 
 
 ```r
@@ -1789,25 +1865,26 @@ collect_predictions(lasso_rs, parameters = best_roc_auc)
 
 ```
 ## # A tibble: 459 x 11
-##    id    .pred_Carnivore .pred_Herbivore .pred_Omnivore .pred_Unknown  .row
-##    &lt;chr&gt;           &lt;dbl&gt;           &lt;dbl&gt;          &lt;dbl&gt;         &lt;dbl&gt; &lt;int&gt;
-##  1 Fold…          0.857           0.0381         0.0978       0.00693     6
-##  2 Fold…          0.340           0.434          0.194        0.0324      7
-##  3 Fold…          0.0265          0.0304         0.0458       0.897      12
-##  4 Fold…          0.556           0.146          0.259        0.0388     17
-##  5 Fold…          0.870           0.0743         0.0516       0.00468    30
-##  6 Fold…          0.153           0.354          0.471        0.0209     33
-##  7 Fold…          0.789           0.0352         0.169        0.00651    42
-##  8 Fold…          0.0767          0.119          0.623        0.182      48
-##  9 Fold…          0.944           0.0108         0.0367       0.00872    49
-## 10 Fold…          0.0387          0.0386         0.0613       0.861      51
-## # … with 449 more rows, and 5 more variables: max_tokens &lt;int&gt;, penalty &lt;dbl&gt;,
-## #   .pred_class &lt;fct&gt;, diet &lt;fct&gt;, .config &lt;chr&gt;
+##    id    .pred_Carnivore .pred_Herbivore .pred_Omnivore .pred_Unknown
+##    &lt;chr&gt;           &lt;dbl&gt;           &lt;dbl&gt;          &lt;dbl&gt;         &lt;dbl&gt;
+##  1 Fold1          0.124           0.0715         0.121        0.684  
+##  2 Fold1          0.821           0.0533         0.113        0.0127 
+##  3 Fold1          0.351           0.330          0.278        0.0402 
+##  4 Fold1          0.0496          0.0430         0.0915       0.816  
+##  5 Fold1          0.205           0.0415         0.0768       0.677  
+##  6 Fold1          0.468           0.179          0.305        0.0492 
+##  7 Fold1          0.352           0.196          0.420        0.0325 
+##  8 Fold1          0.149           0.0840         0.181        0.586  
+##  9 Fold1          0.829           0.108          0.0556       0.00688
+## 10 Fold1          0.139           0.636          0.206        0.0192 
+## # … with 449 more rows, and 6 more variables: .row &lt;int&gt;,
+## #   max_tokens &lt;int&gt;, penalty &lt;dbl&gt;, .pred_class &lt;fct&gt;, diet &lt;fct&gt;,
+## #   .config &lt;chr&gt;
 ```
 
 ---
 
-# Evaluate the best model 📏
+## Evaluate the best model 📏
 
 
 ```r
@@ -1816,11 +1893,15 @@ collect_predictions(lasso_rs, parameters = best_roc_auc) %&gt;%
   autoplot()
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-61-1.png" width="700px" style="display: block; margin: auto;" /&gt;
+---
+
+## Evaluate the best model 📏
+
+&lt;img src="index_files/figure-html/unnamed-chunk-70-1.png" width="700px" style="display: block; margin: auto;" /&gt;
 
 ---
 
-# Evaluate the best model 📏
+## Evaluate the best model 📏
 
 
 ```r
@@ -1829,6 +1910,12 @@ collect_predictions(lasso_rs, parameters = best_roc_auc) %&gt;%
   roc_curve(truth = diet, .pred_Carnivore:.pred_Unknown) %&gt;%
   autoplot()
 ```
+
+---
+
+## Evaluate the best model 📏
+
+&lt;img src="index_files/figure-html/unnamed-chunk-72-1.png" width="700px" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -1929,10 +2016,6 @@ final_fit &lt;- last_fit(
 )
 ```
 
-```
-## ! Resample1: model (predictions): There are new levels in a factor: NA
-```
-
 ---
 
 class: inverse, right, middle
@@ -1941,7 +2024,7 @@ class: inverse, right, middle
 
 ---
 
-# Evaluate on the **test** data 📏
+# Evaluate on the **test** data 📐
 
 
 ```r
@@ -1953,8 +2036,8 @@ final_fit %&gt;%
 ## # A tibble: 2 x 3
 ##   .metric  .estimator .estimate
 ##   &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;
-## 1 accuracy multiclass     0.785
-## 2 roc_auc  hand_till      0.910
+## 1 accuracy multiclass     0.768
+## 2 roc_auc  hand_till      0.912
 ```
 
 ---
@@ -1967,7 +2050,7 @@ final_fit %&gt;%
   autoplot(type = "heatmap")
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-69-1.png" width="700px" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-79-1.png" width="700px" style="display: block; margin: auto;" /&gt;
 
 ---
 
