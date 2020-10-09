@@ -5,6 +5,7 @@ author:
   url: https://www.hvitfeldt.me/
   affiliation: University of Southern California
   affiliation_url: https://www.usc.edu/
+  orcid_id: 0000-0002-0679-1945
 date: "2020-10-09"
 description: |
   1 day workshop at R/Pharma
