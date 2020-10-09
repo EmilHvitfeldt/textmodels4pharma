@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="author" content="Emil Hvitfeldt" />
     <meta name="date" content="2020-10-09" />
-    <script src="libs/header-attrs-2.3/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.4/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/countdown-0.3.5/countdown.css" rel="stylesheet" />
     <script src="libs/countdown-0.3.5/countdown.js"></script>
@@ -27,6 +27,15 @@ class: center, middle, title-slide
 
 
 
+<style>.orange {
+  color: #EF8633;
+}
+
+.blue {
+  color: #006766;
+}
+</style>
+
 # {animals} data package
 
 https://github.com/emilhvitfeldt/animals
@@ -42,7 +51,7 @@ Contains
 
 # Goal
 
-- Show how we can turn text into numbers
+Show how we can turn **text** into **numbers**
 
 
 --
@@ -59,11 +68,13 @@ Contains
 
 # Your turn #1
 
+.pull-left[
 Explore a couple of `text` descriptions
 
 
 ```r
 library(tidyverse)
+library(tidytext)
 library(animals)
 ```
 
@@ -75,8 +86,9 @@ animals %&gt;%
   slice(___) %&gt;%
   pull(text)
 ```
+]
 
-<div class="countdown" id="timer_5f7d75e6" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5f800918" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">02</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">30</span></code>
 </div>
 
@@ -292,6 +304,192 @@ fully understood.
 
 ---
 
+# Your turn #1 - Result
+
+.pull-left[
+Explore a couple of `text` descriptions
+
+
+```r
+library(tidyverse)
+library(tidytext)
+library(animals)
+```
+
+replace `___` with an interger
+
+
+```r
+animals %&gt;%
+  slice(3) %&gt;%
+  pull(text)
+```
+]
+
+.pull-right[
+
+```
+## Adelie Penguin Classification and Evolution
+## The Adelie Penguin is the smallest and most
+widely distributed species of Penguin in the
+Southern Ocean and is one of only two species of
+Penguin found on the Antarctic mainland (the
+other being the much larger Emperor Penguin). The
+Adelie Penguin was named in 1840 by French
+explorer Jules Dumont d'Urville who named the
+Penguin for his wife, Adelie. Adelie Penguins
+have adapted well to life in the Antarctic as
+these migratory Birds winter in the northern
+pack-ice before returning south to the Antarctic
+coast for the warmer summer months.
+## Adelie Penguin Anatomy and Appearance
+## The Adelie Penguin is one of the most easily
+identifiable Penguin species with a blue-black
+back and completely white chest and belly. The
+head and beak of the Adelie Penguin are both
+black, with a distinctive white ring around each
+eye. The strong, pink feet of the Adelie Penguin
+are tough and bumpy with nails that not only aid
+the Adelie Penguin in climbing the rocky cliffs
+to reach its nesting grounds, but also help to
+push them along when they are sliding (rowing)
+along the ice. Adelie Penguins also use their
+webbed feet along with their small flippers to
+propel them along when swimming in the cold
+waters.
+## Adelie Penguin Distribution and Habitat
+## The Adelie Penguin is one of the southern-most
+Birds in the world as it is found along the
+Antarctic coastline and on the islands close to
+it. During the winter months, the Adelie Penguins
+migrate north where they inhabit large platforms
+of ice and have better access to food. During the
+warmer summer months, the Adelie Penguins return
+south where they head for the coastal beaches in
+search of ice-free ground on the rocky slopes
+where they can build their nests. More than half
+a million Adelie Penguins have formed one of the
+largest animal colonies in the world on Ross
+Island, an island formed by the activities of
+four monstrous volcanoes in the Ross Sea.
+## Adelie Penguin Behaviour and Lifestyle
+## Like all species of Penguin, the Adelie
+Penguin is a highly sociable animal, gathering in
+large groups known as colonies, which often
+number thousands of Penguin individuals. Although
+Adelie Penguins are not known to be terribly
+territorial, it is not uncommon for adults to
+become aggressive over nesting sites, and have
+even been known to steal rocks from the nests of
+their neighbours. Adelie Penguins are also known
+to hunt in groups as it is thought to reduce the
+risk of being eaten by hungry predators. Adelie
+Penguins are constantly interacting with one
+another, with body language and specific eye
+movements thought to be the most common forms of
+communication.
+## Adelie Penguin Reproduction and Life Cycles
+## Adelie Penguins return to their breeding
+grounds during the Antarctic summer months of
+November and December. Their soft feet are well
+designed for walking on land making the trek to
+its nesting ground much easier as the Penguin
+fasts during this time. Adelie Penguin pairs mate
+for life in large colonies, with females laying
+two eggs a couple of days apart into a nest built
+from rocks. Both the male and female take it in
+turns to incubate their eggs while the other goes
+off to feed, for up to 10 days at a time. The
+Adelie Penguin chicks have an egg-tooth which is
+a bump on the top of their beaks, which helps
+them to break out of the egg. Once hatched, the
+parents still take it in turns to look after
+their young while the other goes off to gather
+food. After about a month, the chicks congregate
+in groups called crèches and are able to fend for
+themselves at sea when they are between 2 and 3
+months old.
+## Adelie Penguin Diet and Prey
+## Adelie Penguins are strong and capable
+swimmers, obtaining all of their food from the
+sea. These Penguins primarily feed on krill which
+are found throughout the Antarctic ocean, as well
+as Molluscs, Squid and small Fish. The record of
+fossilised eggshell accumulated in the Adelie
+Penguin colonies over the last 38,000 years
+reveals a sudden change from a Fish-based diet to
+Krill that started two hundred years ago. This is
+thought to be due to the decline of the Antarctic
+Fur Seal in the late 1700s and Baleen Whales in
+the twentieth century. The reduction of
+competition from these predators has resulted in
+there being an abundance of Krill, which the
+Adelie Penguins are now able to exploit as an
+easier source of food.
+## Adelie Penguin Predators and Threats
+## Adult Adelie Penguins have no land based
+predators due to the uncompromising conditions
+that they inhabit. In the water however, the
+biggest threat to the Adelie Penguin is the
+Leopard Seal, which is one of the southern-most
+species of Seal and a dominant predator in the
+Southern Ocean. These Penguins have learnt to
+avoid these predators by swimming in large groups
+and not walking on thin ice. The Killer Whale is
+the other main predator of the Adelie Penguin,
+although they normally hunt larger species of
+Penguin further north. South Polar Skuas are
+known to prey on the Adelie Penguin's eggs if
+left unguarded, along with chicks that have
+strayed from a group.
+## Adelie Penguin Interesting Facts and Features
+## Adelie Penguins inhabit one of the coldest
+environments on Earth and so have a thick layer
+of fat under their skin helping to keep them
+warm. Their feathers help to insulate them and
+provide a waterproof layer for extra protection.
+The Adelie Penguin is a highly efficient hunter
+and is able to eat up to 2kg of food per day,
+with a breeding colony thought to consume around
+9,000 tonnes of food over 24 hours. The flippers
+of the Adelie Penguin make them fantastic at
+swimming and they can dive to depths of 175
+meters in search of food. Adelie Penguins do not
+have teeth as such but instead have tooth-shaped
+barbs on their tongue and on the roof of their
+mouths. These barbs do not exist for chewing but
+instead assist the Penguin to swallow slippery
+prey.
+## Adelie Penguin Relationship with Humans
+## A visit to the Adelie Penguin colonies has
+long since been on the programme for tourists to
+the Antarctic, who marvel at the vast numbers of
+them nesting on the beaches and hunting in the
+surrounding waters. This has meant that Adelie
+Penguins are one of the most well-known of all
+Penguin species today. Early explorers however,
+also hunted the Penguins both for their meat and
+their eggs in order to survive in such
+uncompromising conditions.
+## Adelie Penguin Conservation Status and Life
+Today
+## Despite having been confined to living on
+coastal Antarctica, Adelie Penguins are one of
+the most common and widespread Penguins in the
+southern hemisphere. With more than 2.5 million
+breeding pairs found throughout southern
+Antarctica, the Adelie Penguin has adapted well
+to its polar habitat. Scientists have also been
+known to use Adelie Penguin nesting patterns as
+indicators of climate change, noticing that they
+are able to nest on beaches that were previously
+covered in ice. The Adelie Penguin is listed as
+Least Concern.
+##  
+```
+]
+
+---
 class: middle, center, inverse
 
 # 💫 TOKENIZATION 💫
@@ -368,7 +566,7 @@ animals %&gt;%
   count(___, sort = TRUE)
 ```
 
-<div class="countdown" id="timer_5f7d7896" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5f800b64" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">02</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">30</span></code>
 </div>
 
@@ -456,11 +654,10 @@ strsplit(token_example, "\\s")
 
 ```
 ## [[1]]
-##  [1] "Their"      "name"       "originates" "from"       "the"       
-##  [6] "Afrikaans"  "language"   "in"         "South"      "Africa"    
-## [11] "and"        "means"      "Earth"      "Pig,"       "due"       
-## [16] "to"         "their"      "long"       "snout"      "and"       
-## [21] "pig-like"   "body."
+##  [1] "Their"      "name"       "originates" "from"       "the"        "Afrikaans" 
+##  [7] "language"   "in"         "South"      "Africa"     "and"        "means"     
+## [13] "Earth"      "Pig,"       "due"        "to"         "their"      "long"      
+## [19] "snout"      "and"        "pig-like"   "body."
 ```
 
 ---
@@ -487,11 +684,10 @@ tokenize_words(token_example)
 
 ```
 ## [[1]]
-##  [1] "their"      "name"       "originates" "from"       "the"       
-##  [6] "afrikaans"  "language"   "in"         "south"      "africa"    
-## [11] "and"        "means"      "earth"      "pig"        "due"       
-## [16] "to"         "their"      "long"       "snout"      "and"       
-## [21] "pig"        "like"       "body"
+##  [1] "their"      "name"       "originates" "from"       "the"        "afrikaans" 
+##  [7] "language"   "in"         "south"      "africa"     "and"        "means"     
+## [13] "earth"      "pig"        "due"        "to"         "their"      "long"      
+## [19] "snout"      "and"        "pig"        "like"       "body"
 ```
 
 ---
@@ -518,12 +714,11 @@ spacy_tokenize(token_example)
 
 ```
 ## $text1
-##  [1] "Their"      "name"       "originates" "from"       "the"       
-##  [6] "Afrikaans"  "language"   "in"         "South"      "Africa"    
-## [11] "and"        "means"      "Earth"      "Pig"        ","         
-## [16] "due"        "to"         "their"      "long"       "snout"     
-## [21] "and"        "pig"        "-"          "like"       "body"      
-## [26] "."
+##  [1] "Their"      "name"       "originates" "from"       "the"        "Afrikaans" 
+##  [7] "language"   "in"         "South"      "Africa"     "and"        "means"     
+## [13] "Earth"      "Pig"        ","          "due"        "to"         "their"     
+## [19] "long"       "snout"      "and"        "pig"        "-"          "like"      
+## [25] "body"       "."
 ```
 
 ---
@@ -536,11 +731,11 @@ spacy_tokenize(token_example)
 ```
 ## [[1]]
 ## [1] "Their" "name" "originates" "from" "the"
-## [6] "Afrikaans" "language" "in" "South"
-"Africa"
-## [11] "and" "means" "Earth" "Pig," "due"
-## [16] "to" "their" "long" "snout" "and"
-## [21] "pig-like" "body."
+"Afrikaans"
+## [7] "language" "in" "South" "Africa" "and"
+"means"
+## [13] "Earth" "Pig," "due" "to" "their" "long"
+## [19] "snout" "and" "pig-like" "body."
 ```
 ]
 
@@ -552,12 +747,12 @@ spacy_tokenize(token_example)
 ```
 ## $text1
 ## [1] "Their" "name" "originates" "from" "the"
-## [6] "Afrikaans" "language" "in" "South"
-"Africa"
-## [11] "and" "means" "Earth" "Pig" ","
-## [16] "due" "to" "their" "long" "snout"
-## [21] "and" "pig" "-" "like" "body"
-## [26] "."
+"Afrikaans"
+## [7] "language" "in" "South" "Africa" "and"
+"means"
+## [13] "Earth" "Pig" "," "due" "to" "their"
+## [19] "long" "snout" "and" "pig" "-" "like"
+## [25] "body" "."
 ```
 ]
 
@@ -637,8 +832,8 @@ tokenize_ngrams("due to their long snout and pig-like body.", n = 2)
 
 ```
 ## [[1]]
-## [1] "due to"     "to their"   "their long" "long snout" "snout and" 
-## [6] "and pig"    "pig like"   "like body"
+## [1] "due to"     "to their"   "their long" "long snout" "snout and"  "and pig"   
+## [7] "pig like"   "like body"
 ```
 
 
@@ -649,11 +844,13 @@ tokenize_ngrams("due to their long snout and pig-like body.", n = 3)
 
 ```
 ## [[1]]
-## [1] "due to their" "to their long" "their long snout" "long snout and"
-## [5] "snout and pig" "and pig like" "pig like body"
+## [1] "due to their"     "to their long"    "their long snout" "long snout and"  
+## [5] "snout and pig"    "and pig like"     "pig like body"
 ```
 
 ---
+
+class: middle
 
 # Tokenization
 
@@ -676,41 +873,36 @@ stopwords(language = "en", source = "snowball")
 ```
 
 ```
-##   [1] "i"          "me"         "my"         "myself"     "we"        
-##   [6] "our"        "ours"       "ourselves"  "you"        "your"      
-##  [11] "yours"      "yourself"   "yourselves" "he"         "him"       
-##  [16] "his"        "himself"    "she"        "her"        "hers"      
-##  [21] "herself"    "it"         "its"        "itself"     "they"      
-##  [26] "them"       "their"      "theirs"     "themselves" "what"      
-##  [31] "which"      "who"        "whom"       "this"       "that"      
-##  [36] "these"      "those"      "am"         "is"         "are"       
-##  [41] "was"        "were"       "be"         "been"       "being"     
-##  [46] "have"       "has"        "had"        "having"     "do"        
-##  [51] "does"       "did"        "doing"      "would"      "should"    
-##  [56] "could"      "ought"      "i'm"        "you're"     "he's"      
-##  [61] "she's"      "it's"       "we're"      "they're"    "i've"      
-##  [66] "you've"     "we've"      "they've"    "i'd"        "you'd"     
-##  [71] "he'd"       "she'd"      "we'd"       "they'd"     "i'll"      
-##  [76] "you'll"     "he'll"      "she'll"     "we'll"      "they'll"   
-##  [81] "isn't"      "aren't"     "wasn't"     "weren't"    "hasn't"    
-##  [86] "haven't"    "hadn't"     "doesn't"    "don't"      "didn't"    
-##  [91] "won't"      "wouldn't"   "shan't"     "shouldn't"  "can't"     
-##  [96] "cannot"     "couldn't"   "mustn't"    "let's"      "that's"    
-## [101] "who's"      "what's"     "here's"     "there's"    "when's"    
-## [106] "where's"    "why's"      "how's"      "a"          "an"        
-## [111] "the"        "and"        "but"        "if"         "or"        
-## [116] "because"    "as"         "until"      "while"      "of"        
-## [121] "at"         "by"         "for"        "with"       "about"     
-## [126] "against"    "between"    "into"       "through"    "during"    
-## [131] "before"     "after"      "above"      "below"      "to"        
-## [136] "from"       "up"         "down"       "in"         "out"       
-## [141] "on"         "off"        "over"       "under"      "again"     
-## [146] "further"    "then"       "once"       "here"       "there"     
-## [151] "when"       "where"      "why"        "how"        "all"       
-## [156] "any"        "both"       "each"       "few"        "more"      
-## [161] "most"       "other"      "some"       "such"       "no"        
-## [166] "nor"        "not"        "only"       "own"        "same"      
-## [171] "so"         "than"       "too"        "very"       "will"
+##   [1] "i"          "me"         "my"         "myself"     "we"         "our"       
+##   [7] "ours"       "ourselves"  "you"        "your"       "yours"      "yourself"  
+##  [13] "yourselves" "he"         "him"        "his"        "himself"    "she"       
+##  [19] "her"        "hers"       "herself"    "it"         "its"        "itself"    
+##  [25] "they"       "them"       "their"      "theirs"     "themselves" "what"      
+##  [31] "which"      "who"        "whom"       "this"       "that"       "these"     
+##  [37] "those"      "am"         "is"         "are"        "was"        "were"      
+##  [43] "be"         "been"       "being"      "have"       "has"        "had"       
+##  [49] "having"     "do"         "does"       "did"        "doing"      "would"     
+##  [55] "should"     "could"      "ought"      "i'm"        "you're"     "he's"      
+##  [61] "she's"      "it's"       "we're"      "they're"    "i've"       "you've"    
+##  [67] "we've"      "they've"    "i'd"        "you'd"      "he'd"       "she'd"     
+##  [73] "we'd"       "they'd"     "i'll"       "you'll"     "he'll"      "she'll"    
+##  [79] "we'll"      "they'll"    "isn't"      "aren't"     "wasn't"     "weren't"   
+##  [85] "hasn't"     "haven't"    "hadn't"     "doesn't"    "don't"      "didn't"    
+##  [91] "won't"      "wouldn't"   "shan't"     "shouldn't"  "can't"      "cannot"    
+##  [97] "couldn't"   "mustn't"    "let's"      "that's"     "who's"      "what's"    
+## [103] "here's"     "there's"    "when's"     "where's"    "why's"      "how's"     
+## [109] "a"          "an"         "the"        "and"        "but"        "if"        
+## [115] "or"         "because"    "as"         "until"      "while"      "of"        
+## [121] "at"         "by"         "for"        "with"       "about"      "against"   
+## [127] "between"    "into"       "through"    "during"     "before"     "after"     
+## [133] "above"      "below"      "to"         "from"       "up"         "down"      
+## [139] "in"         "out"        "on"         "off"        "over"       "under"     
+## [145] "again"      "further"    "then"       "once"       "here"       "there"     
+## [151] "when"       "where"      "why"        "how"        "all"        "any"       
+## [157] "both"       "each"       "few"        "more"       "most"       "other"     
+## [163] "some"       "such"       "no"         "nor"        "not"        "only"      
+## [169] "own"        "same"       "so"         "than"       "too"        "very"      
+## [175] "will"
 ```
 
 ---
@@ -761,7 +953,7 @@ animals %&gt;%
 anti_join(stop_words) %&gt;%
 ```
 
-<div class="countdown" id="timer_5f7d77a1" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5f8009ef" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">02</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">30</span></code>
 </div>
 
@@ -769,6 +961,7 @@ anti_join(stop_words) %&gt;%
 
 # Your turn #3 - result
 
+.pull-left[
 
 ```r
 animals %&gt;%
@@ -776,6 +969,9 @@ animals %&gt;%
   anti_join(stop_words, by = "word") %&gt;%
   count(word, sort = TRUE)
 ```
+]
+
+.pull-right[
 
 ```
 ## # A tibble: 1,471 x 2
@@ -793,12 +989,9 @@ animals %&gt;%
 ## 10 penguin     40
 ## # … with 1,461 more rows
 ```
+]
 
----
 
-class: center, middle
-
-&lt;img src="index_files/figure-html/unnamed-chunk-32-1.png" width="700px" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -811,7 +1004,7 @@ class: center, middle
 - herself
 ]
 
-<div class="countdown" id="timer_5f7d7988" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5f8009be" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">00</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">30</span></code>
 </div>
 
@@ -841,7 +1034,7 @@ class: center, middle
 - system1
 ]
 
-<div class="countdown" id="timer_5f7d76b3" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5f800a7d" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">00</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">30</span></code>
 </div>
 
@@ -871,7 +1064,7 @@ class: center, middle
 - statistically
 ]
 
-<div class="countdown" id="timer_5f7d789a" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5f800905" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">00</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">30</span></code>
 </div>
 
@@ -891,6 +1084,8 @@ class: center, middle
 ]
 
 ---
+
+class: middle
 
 # Stop words
 
@@ -913,8 +1108,6 @@ class: center, middle
 - You can create your own stop word list
 
 
---
-
 ---
 
 class: inverse, center, middle
@@ -923,7 +1116,9 @@ class: inverse, center, middle
 
 ---
 
-- See [Chapter 3](https://smltar.com/stopwords.html) for more! 🛑
+class: middle
+
+### See [Chapter 3](https://smltar.com/stopwords.html) for more! 🛑
 
 ---
 
@@ -935,7 +1130,11 @@ class: inverse, center, middle
 
 # Stemming
 
-Some words are similar (teacher, teachers, teachings, teach) but will be counted seperately
+--
+
+Some words are .orange[similar] (teacher, teachers, teachings, teach) but will be counted .orange[separately]
+
+--
 
 Stemming is the act of removing characters from the end of a word to get the "stem" of the word
 
@@ -981,170 +1180,37 @@ animals %&gt;%
 
 ---
 
-- See [Chapter 4](https://smltar.com/stemming.html) for more! 🌷
+class: middle
+
+### See [Chapter 4](https://smltar.com/stemming.html) for more! 🌷
 
 ---
 
-# Spacy - more advanced preprocessing
-
-
+## Spacy - more advanced preprocessing
 
 
 ```r
 library(spacyr)
-
 spacy_parse(animals$text)
 ```
 
+
 ```
-##     doc_id sentence_id token_id          token          lemma   pos entity
-## 1    text1           1        1       Aardvark       aardvark PROPN  ORG_B
-## 2    text1           1        2 Classification classification PROPN  ORG_I
-## 3    text1           1        3            and            and CCONJ  ORG_I
-## 4    text1           1        4      Evolution      evolution PROPN  ORG_I
-## 5    text1           1        5             \n             \n SPACE  ORG_I
-## 6    text1           1        6      Aardvarks      aardvarks PROPN  ORG_I
-## 7    text1           1        7            are             be  VERB       
-## 8    text1           1        8          small          small   ADJ       
-## 9    text1           1        9            pig            pig  NOUN       
-## 10   text1           1       10              -              - PUNCT       
-## 11   text1           1       11           like           like   ADJ       
-## 12   text1           1       12        mammals         mammal  NOUN       
-## 13   text1           1       13           that           that   ADJ       
-## 14   text1           1       14            are             be  VERB       
-## 15   text1           1       15          found           find  VERB       
-## 16   text1           1       16     inhabiting        inhabit  VERB       
-## 17   text1           1       17              a              a   DET       
-## 18   text1           1       18           wide           wide   ADJ       
-## 19   text1           1       19          range          range  NOUN       
-## 20   text1           1       20             of             of   ADP       
-## 21   text1           1       21      different      different   ADJ       
-## 22   text1           1       22       habitats        habitat  NOUN       
-## 23   text1           1       23     throughout     throughout   ADP       
-## 24   text1           1       24         Africa         africa PROPN  LOC_B
-## 25   text1           1       25              ,              , PUNCT       
-## 26   text1           1       26          south          south  NOUN       
-## 27   text1           1       27             of             of   ADP       
-## 28   text1           1       28            the            the   DET       
-## 29   text1           1       29         Sahara         sahara PROPN  LOC_B
-## 30   text1           1       30              .              . PUNCT       
-## 31   text1           2        1           They         -PRON-  PRON       
-## 32   text1           2        2            are             be  VERB       
-## 33   text1           2        3         mostly         mostly   ADV       
-## 34   text1           2        4       solitary       solitary   ADJ       
-## 35   text1           2        5            and            and CCONJ       
-## 36   text1           2        6          spend          spend  VERB       
-## 37   text1           2        7          their         -PRON-   ADJ       
-## 38   text1           2        8           days            day  NOUN       
-## 39   text1           2        9       sleeping          sleep  VERB       
-## 40   text1           2       10             in             in   ADP       
-## 41   text1           2       11    underground    underground   ADJ       
-## 42   text1           2       12        burrows         burrow  NOUN       
-## 43   text1           2       13             to             to  PART       
-## 44   text1           2       14        protect        protect  VERB       
-## 45   text1           2       15           them         -PRON-  PRON       
-## 46   text1           2       16           from           from   ADP       
-## 47   text1           2       17            the            the   DET       
-## 48   text1           2       18           heat           heat  NOUN       
-## 49   text1           2       19             of             of   ADP       
-## 50   text1           2       20            the            the   DET       
-## 51   text1           2       21        African        african   ADJ NORP_B
-## 52   text1           2       22            sun            sun  NOUN       
-## 53   text1           2       23              ,              , PUNCT       
-## 54   text1           2       24       emerging         emerge  VERB       
-## 55   text1           2       25             in             in   ADP       
-## 56   text1           2       26            the            the   DET       
-## 57   text1           2       27         cooler           cool   ADJ       
-## 58   text1           2       28        evening        evening  NOUN       
-## 59   text1           2       29             to             to  PART       
-## 60   text1           2       30         search         search  VERB       
-## 61   text1           2       31            for            for   ADP       
-## 62   text1           2       32           food           food  NOUN       
-## 63   text1           2       33              .              . PUNCT       
-## 64   text1           3        1          Their         -PRON-   ADJ       
-## 65   text1           3        2           name           name  NOUN       
-## 66   text1           3        3     originates      originate  VERB       
-## 67   text1           3        4           from           from   ADP       
-## 68   text1           3        5            the            the   DET       
-## 69   text1           3        6      Afrikaans      afrikaans PROPN NORP_B
-## 70   text1           3        7       language       language  NOUN       
-## 71   text1           3        8             in             in   ADP       
-## 72   text1           3        9          South          south PROPN  GPE_B
-## 73   text1           3       10         Africa         africa PROPN  GPE_I
-## 74   text1           3       11            and            and CCONJ       
-## 75   text1           3       12          means           mean  VERB       
-## 76   text1           3       13          Earth          earth PROPN  LOC_B
-## 77   text1           3       14            Pig            pig PROPN  LOC_I
-## 78   text1           3       15              ,              , PUNCT       
-## 79   text1           3       16            due            due   ADP       
-## 80   text1           3       17             to             to   ADP       
-## 81   text1           3       18          their         -PRON-   ADJ       
-## 82   text1           3       19           long           long   ADJ       
-## 83   text1           3       20          snout          snout  NOUN       
-## 84   text1           3       21            and            and CCONJ       
-## 85   text1           3       22            pig            pig  NOUN       
-## 86   text1           3       23              -              - PUNCT       
-## 87   text1           3       24           like           like   ADJ       
-## 88   text1           3       25           body           body  NOUN       
-## 89   text1           3       26              .              . PUNCT       
-## 90   text1           4        1      Aardvarks       aardvark  NOUN       
-## 91   text1           4        2            are             be  VERB       
-## 92   text1           4        3         unique         unique   ADJ       
-## 93   text1           4        4          among          among   ADP       
-## 94   text1           4        5        animals         animal  NOUN       
-## 95   text1           4        6             as             as   ADP       
-## 96   text1           4        7           they         -PRON-  PRON       
-## 97   text1           4        8            are             be  VERB       
-## 98   text1           4        9            the            the   DET       
-## 99   text1           4       10           only           only   ADJ       
-## 100  text1           4       11      surviving        survive  VERB       
-## 101  text1           4       12        species         specie  NOUN       
-## 102  text1           4       13             in             in   ADP       
-## 103  text1           4       14          their         -PRON-   ADJ       
-## 104  text1           4       15         animal         animal  NOUN       
-## 105  text1           4       16         family         family  NOUN       
-## 106  text1           4       17              .              . PUNCT       
-## 107  text1           5        1          Until          until   ADP       
-## 108  text1           5        2       recently       recently   ADV       
-## 109  text1           5        3             it         -PRON-  PRON       
-## 110  text1           5        4            was             be  VERB       
-## 111  text1           5        5         widely         widely   ADV       
-## 112  text1           5        6       believed        believe  VERB       
-## 113  text1           5        7           that           that   ADP       
-## 114  text1           5        8           they         -PRON-  PRON       
-## 115  text1           5        9           were             be  VERB       
-## 116  text1           5       10           most           most   ADV       
-## 117  text1           5       11        closely        closely   ADV       
-## 118  text1           5       12        related        related   ADJ       
-## 119  text1           5       13             to             to   ADP       
-## 120  text1           5       14          other          other   ADJ       
-## 121  text1           5       15   insectivores    insectivore  NOUN       
-## 122  text1           5       16           such           such   ADJ       
-## 123  text1           5       17             as             as   ADP       
-## 124  text1           5       18     armadillos      armadillo  NOUN       
-## 125  text1           5       19            and            and CCONJ       
-## 126  text1           5       20      pangolins       pangolin  NOUN       
-## 127  text1           5       21            but            but CCONJ       
-## 128  text1           5       22           this           this   DET       
-## 129  text1           5       23             is             be  VERB       
-## 130  text1           5       24            not            not   ADV       
-## 131  text1           5       25            the            the   DET       
-## 132  text1           5       26           case           case  NOUN       
-## 133  text1           5       27           with           with   ADP       
-## 134  text1           5       28          their         -PRON-   ADJ       
-## 135  text1           5       29        closest          close   ADJ       
-## 136  text1           5       30         living         living  NOUN       
-## 137  text1           5       31      relatives       relative  NOUN       
-## 138  text1           5       32       actually       actually   ADV       
-## 139  text1           5       33        thought          think  VERB       
-## 140  text1           5       34             to             to  PART       
-## 141  text1           5       35             be             be  VERB       
-## 142  text1           5       36      elephants       elephant  NOUN       
-##  [ reached 'max' / getOption("max.print") -- omitted 11220 rows ]
+## # A tibble: 11,362 x 7
+##    doc_id sentence_id token_id token            lemma            pos   entity 
+##    &lt;chr&gt;        &lt;int&gt;    &lt;int&gt; &lt;chr&gt;            &lt;chr&gt;            &lt;chr&gt; &lt;chr&gt;  
+##  1 text1            1        1 "Aardvark"       "aardvark"       PROPN "ORG_B"
+##  2 text1            1        2 "Classification" "classification" PROPN "ORG_I"
+##  3 text1            1        3 "and"            "and"            CCONJ "ORG_I"
+##  4 text1            1        4 "Evolution"      "evolution"      PROPN "ORG_I"
+##  5 text1            1        5 "\n"             "\n"             SPACE "ORG_I"
+##  6 text1            1        6 "Aardvarks"      "aardvarks"      PROPN "ORG_I"
+##  7 text1            1        7 "are"            "be"             VERB  ""     
+##  8 text1            1        8 "small"          "small"          ADJ   ""     
+##  9 text1            1        9 "pig"            "pig"            NOUN  ""     
+## 10 text1            1       10 "-"              "-"              PUNCT ""     
+## # … with 11,352 more rows
 ```
-
-
-
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

@@ -51,7 +51,6 @@ knit_hooks$set(output = function(x, options) {
 
 opts_chunk$set(
   echo = TRUE,
-  linewidth = 80,
   fig.width = 7, 
   fig.align = 'center',
   fig.asp = 0.618, # 1 / phi
@@ -62,6 +61,21 @@ opts_chunk$set(
 library(sass)
 sass(sass_file("theme.sass"), output = "theme.css")
 library(countdown)
+```
+
+```{r, echo=FALSE}
+library(flair)
+orange <- "#EF8633"
+blue <- "#006766"
+
+sass(list(
+  list(orange = orange,
+       blue = blue),
+  "
+  .orange {color: $orange}
+  .blue {color: $blue}
+  "
+))
 ```
 
 # {animals} data package
@@ -79,7 +93,7 @@ Contains
 
 # Goal
 
-- Show how we can turn text into numbers
+Show how we can turn **text** into **numbers**
 
 
 --
@@ -96,10 +110,12 @@ Contains
 
 # Your turn #1
 
+.pull-left[
 Explore a couple of `text` descriptions
 
 ```{r}
 library(tidyverse)
+library(tidytext)
 library(animals)
 ```
 
@@ -110,6 +126,7 @@ animals %>%
   slice(___) %>%
   pull(text)
 ```
+]
 
 ```{r, echo=FALSE}
 countdown(2, 30)
@@ -148,6 +165,36 @@ animals %>%
 
 ---
 
+# Your turn #1 - Result
+
+.pull-left[
+Explore a couple of `text` descriptions
+
+```{r}
+library(tidyverse)
+library(tidytext)
+library(animals)
+```
+
+replace `___` with an interger
+
+```{r, eval=FALSE}
+animals %>%
+  slice(3) %>%
+  pull(text)
+```
+]
+
+.pull-right[
+```{r, echo=FALSE, linewidth = 50}
+animals %>%
+  slice(3) %>%
+  pull(text) %>%
+  cat()
+```
+]
+
+---
 class: middle, center, inverse
 
 # `r emo::ji("dizzy")` TOKENIZATION `r emo::ji("dizzy")`
@@ -183,7 +230,7 @@ class: middle, center, inverse
 We can use `unnest_tokens()` from {tidytext} to turn `text` into `word`s
 
 .pull-left[
-```{r, eval = FALSE}
+```{r unnest_tokens, eval = FALSE}
 animals %>%
   select(text) %>%
   unnest_tokens(word, text)
@@ -260,7 +307,7 @@ strsplit(token_example, "\\s")
 # Tokenization: [tokenizers](https://docs.ropensci.org/tokenizers/) package
 
 
-```{r}
+```{r, linewidth = 80}
 token_example
 ```
 
@@ -275,7 +322,7 @@ tokenize_words(token_example)
 # Tokenization: [spaCy](https://spacy.io/) library
 
 
-```{r}
+```{r, linewidth = 80}
 token_example
 ```
 
@@ -379,6 +426,8 @@ tokenize_ngrams("due to their long snout and pig-like body.", n = 3)
 
 ---
 
+class: middle
+
 # Tokenization
 
 See [Chapter 2](https://smltar.com/tokenization.html) for more!
@@ -435,24 +484,25 @@ countdown(2, 30)
 
 # Your turn #3 - result
 
-```{r}
+.pull-left[
+```{r, eval=FALSE}
 animals %>%
   unnest_tokens(word, text) %>%
   anti_join(stop_words, by = "word") %>%
   count(word, sort = TRUE)
 ```
+]
 
----
-
-class: center, middle
-
-```{r echo=FALSE}
-library(UpSetR)
-fromList(list(smart = stopwords(source = "smart"),
-              snowball = stopwords(source = "snowball"),
-              iso = stopwords(source = "stopwords-iso"))) %>%
-  upset(empty.intersections = "on")
+.pull-right[
+```{r, echo=FALSE}
+animals %>%
+  unnest_tokens(word, text) %>%
+  anti_join(stop_words, by = "word") %>%
+  count(word, sort = TRUE)
 ```
+]
+
+
 
 ---
 
@@ -546,6 +596,8 @@ countdown(minutes = 0, seconds = 30)
 
 ---
 
+class: middle
+
 # Stop words
 
 
@@ -567,8 +619,6 @@ countdown(minutes = 0, seconds = 30)
 - You can create your own stop word list
 
 
---
-
 ---
 
 class: inverse, center, middle
@@ -577,7 +627,9 @@ class: inverse, center, middle
 
 ---
 
-- See [Chapter 3](https://smltar.com/stopwords.html) for more! `r emo::ji("stop_sign")`
+class: middle
+
+### See [Chapter 3](https://smltar.com/stopwords.html) for more! `r emo::ji("stop_sign")`
 
 ---
 
@@ -589,7 +641,11 @@ class: inverse, center, middle
 
 # Stemming
 
-Some words are similar (teacher, teachers, teachings, teach) but will be counted seperately
+--
+
+Some words are .orange[similar] (teacher, teachers, teachings, teach) but will be counted .orange[separately]
+
+--
 
 Stemming is the act of removing characters from the end of a word to get the "stem" of the word
 
@@ -625,21 +681,20 @@ animals %>%
 
 ---
 
-- See [Chapter 4](https://smltar.com/stemming.html) for more! `r emo::ji("tulip")`
+class: middle
+
+### See [Chapter 4](https://smltar.com/stemming.html) for more! `r emo::ji("tulip")`
 
 ---
 
-# Spacy - more advanced preprocessing
+## Spacy - more advanced preprocessing
 
-```{r, echo=FALSE}
-animals <- animals::animals[1:10, ]
-```
-
-```{r}
+```{r, eval=FALSE}
 library(spacyr)
-
 spacy_parse(animals$text)
 ```
 
-
-
+```{r, echo=FALSE}
+library(spacyr)
+as_tibble(spacy_parse(animals$text))
+```
