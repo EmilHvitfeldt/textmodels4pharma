@@ -36,16 +36,16 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Welcome  
 
-These are the materials for the [R/Pharma](https://rinpharma.com/) workshop Predictive modeling with text using tidy data principles, by Emil Hvitfeldt.
+These are the materials for the [R/Pharma](https://rinpharma.com/) workshop Predictive modeling with text using tidy data principles, by Emil Hvitfeldt. In this workshop will you learn:
 
-## Prework
-
-TODO
-
+- Basics of text mining with [tidytext](https://github.com/juliasilge/tidytext)
+- The effect of text preprocessing
+- How to fit a predictive model in [tidymodels](https://www.tidymodels.org/)
+- Use [textrecipes](https://textrecipes.tidymodels.org/) to construct features form text
 
 ## Links
 
-+ Link to this website: <https://rstd.io/tip>
++ Link to this website: <https://textmodels.netlify.app/>
 
 + Link to Supervised Machine Learning for Text Analysis in R book: <https://smltar.com/>
 

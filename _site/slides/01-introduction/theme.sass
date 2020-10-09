@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Montserrat)
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,700')
 
 $title-color: #101645
 $title-sub-color: #333333
@@ -17,10 +17,9 @@ a, a > code
   text-decoration: none
 
 strong
-  color: #000000
-
+  color: #0fa923
+  font-weight: 700
 em
-  color: #08519C
   font-style: normal
   font-weight: bold
 
@@ -28,6 +27,15 @@ del
   color: #E5E5E5
   text-decoration: none
   font-weight: bold
+
+.footnote
+  bottom: 0em
+  font-size: 75%
+  position: fixed
+  top: 90%
+  left: -1%
+  text-align: right
+  width: 100%
 
 /* General slides */
 
@@ -78,21 +86,47 @@ img, video, iframe
 li
   padding: 10px
   display: block
+  list-style-position: inside
+  text-indent: -0.7em
 
 li::before
   content: "- "
   font-weight: bold
 
+/* Inverse slides */
+
+$inverse-color: #d2eaca
+$inverse-color-bold: #3bb114
+
+.inverse h1
+  color: $inverse-color
+  strong
+    color: $inverse-color-bold
+
+.inverse h2
+  color: $inverse-color
+  strong
+    color: $inverse-color-bold
+
+.inverse h3
+  color: $inverse-color
+  strong
+    color: $inverse-color-bold
+
+.inverse .remark-inline-code
+  background: transparent
+
+
 /* Title slide */
 
 .title-slide
-  background-color: #FFFFFF
+  background-color: #1D1E1A
 
-.title-slide .remark-slide-number
+.remark-slide-number
   display: none
 
 .title-slide h1
-  color: $title-color
+  color: $inverse-color-bold
   font-size: 72px
   text-shadow: none
   font-family: $main-font
@@ -100,7 +134,7 @@ li::before
   vertical-align: bottom
 
 .title-slide h2
-  color: $title-color
+  color: $inverse-color
   text-shadow: none
   font-family: $main-font
   font-size: 48px
@@ -108,7 +142,7 @@ li::before
   font-weight: bold
 
 .title-slide h3
-  color: $title-sub-color
+  color: $inverse-color
   text-shadow: none
   font-family: $main-font
   font-size: 36px
@@ -116,7 +150,7 @@ li::before
   margin-bottom: 10px
 
 .title-slide h4
-  color: $title-sub-color
+  color: $inverse-color
   text-shadow: none
   font-family: $main-font
   font-size: 24px

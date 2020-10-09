@@ -1,11 +1,11 @@
 ---
 title: "Introduction"
-subtitle: "This is a subtitle"
+subtitle: "R/Pharma 2020 Text modeling workshop"
 author: "Emil Hvitfeldt"
-date: "2019-1-29 (Change this date)"
+date: "2020-10-09"
 output:
   xaringan::moon_reader:
-    css: ["theme.css"]
+    css: ["theme.css", "default"]
     lib_dir: libs
     nature:
       beforeInit: "macros.js"
@@ -62,30 +62,87 @@ library(sass)
 sass(sass_file("theme.sass"), output = "theme.css")
 ```
 
-# This is the first title 
+# Workshop Information
 
-Adding some text
+TODO add url
 
-```{r}
-11 + 2 + 4
-```
-
-Lorem ipsum dolor sit amet, *consectetur* adipiscing elit
-
-Lorem ipsum dolor sit amet, **consectetur** adipiscing elit
-
-Lorem ipsum dolor sit amet, ~~consectetur~~ adipiscing elit
-
-> Lorem ipsum dolor sit amet, consectetur adipiscing elit
+All information will be located here
 
 ---
 
-# This is h1
+class: middle
 
-## This is h2
+# About me
 
-### This is h3
+### `r icon::fa("github")` [EmilHvitfeldt](https://github.com/EmilHvitfeldt/)
+### `r icon::fa("twitter")` [@Emil_Hvitfeldt](https://twitter.com/Emil_Hvitfeldt)
+### `r icon::fa("linkedin")` [emilhvitfeldt](linkedin.com/in/emilhvitfeldt/)
+### `r icon::fa("laptop")` [www.hvitfeldt.me](www.hvitfeldt.me)
 
-#### This is h4
+---
 
-##### This is h5
+.pull-left[
+## Text mining with R
+
+Julia Silge and David Robinson
+
+Great introduction to text mining and {tidytext}
+
+https://www.tidytextmining.com/
+]
+
+.pull-right[
+![:scale 80%](images/text-mining-with-r-cover.png)
+]
+
+
+---
+
+### Supervised Machine Learning for Text Analysis in R
+
+Emil Hvitfeldt and Julia Silge  
+
+In depth exploration of the effect text preprocessing  
+
+Predictive modeling case studies
+
+https://smltar.com/
+
+---
+
+# Workshop outline
+
+1. Introduction
+2. Text mining
+3. Predictive Modeling
+
+---
+
+# Workshop outline
+
+1. **Introduction**
+2. Text mining
+3. Predictive Modeling
+
+---
+
+# We will be following a strict Code of Conduct
+
+TODO find out about code of conduct
+
+---
+
+# Interactive workshop
+
+We will stay in one Zoom Room
+
+will have small problems for you to work on every so often
+
+Chat participation is welcomed as well
+
+---
+
+# Breaks
+
+There will be a break from XX:00 to XX:10 regardless of where we are in the material
+

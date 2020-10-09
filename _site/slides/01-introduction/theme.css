@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Montserrat);
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,700");
 /* General */
 body {
   font-family: Montserrat;
@@ -10,11 +10,11 @@ a, a > code {
 }
 
 strong {
-  color: #000000;
+  color: #0fa923;
+  font-weight: 700;
 }
 
 em {
-  color: #08519C;
   font-style: normal;
   font-weight: bold;
 }
@@ -23,6 +23,16 @@ del {
   color: #E5E5E5;
   text-decoration: none;
   font-weight: bold;
+}
+
+.footnote {
+  bottom: 0em;
+  font-size: 75%;
+  position: fixed;
+  top: 90%;
+  left: -1%;
+  text-align: right;
+  width: 100%;
 }
 
 /* General slides */
@@ -79,6 +89,8 @@ img, video, iframe {
 li {
   padding: 10px;
   display: block;
+  list-style-position: inside;
+  text-indent: -0.7em;
 }
 
 li::before {
@@ -86,17 +98,46 @@ li::before {
   font-weight: bold;
 }
 
-/* Title slide */
-.title-slide {
-  background-color: #FFFFFF;
+/* Inverse slides */
+.inverse h1 {
+  color: #d2eaca;
 }
 
-.title-slide .remark-slide-number {
+.inverse h1 strong {
+  color: #3bb114;
+}
+
+.inverse h2 {
+  color: #d2eaca;
+}
+
+.inverse h2 strong {
+  color: #3bb114;
+}
+
+.inverse h3 {
+  color: #d2eaca;
+}
+
+.inverse h3 strong {
+  color: #3bb114;
+}
+
+.inverse .remark-inline-code {
+  background: transparent;
+}
+
+/* Title slide */
+.title-slide {
+  background-color: #1D1E1A;
+}
+
+.remark-slide-number {
   display: none;
 }
 
 .title-slide h1 {
-  color: #101645;
+  color: #3bb114;
   font-size: 72px;
   text-shadow: none;
   font-family: Montserrat;
@@ -105,7 +146,7 @@ li::before {
 }
 
 .title-slide h2 {
-  color: #101645;
+  color: #d2eaca;
   text-shadow: none;
   font-family: Montserrat;
   font-size: 48px;
@@ -114,7 +155,7 @@ li::before {
 }
 
 .title-slide h3 {
-  color: #333333;
+  color: #d2eaca;
   text-shadow: none;
   font-family: Montserrat;
   font-size: 36px;
@@ -123,7 +164,7 @@ li::before {
 }
 
 .title-slide h4 {
-  color: #333333;
+  color: #d2eaca;
   text-shadow: none;
   font-family: Montserrat;
   font-size: 24px;

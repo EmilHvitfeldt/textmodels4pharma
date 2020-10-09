@@ -9,4 +9,10 @@ navbar:
       href: index.html
     - text: "Slides"
       href: slides.html
-output: distill::distill_article
+    - icon: fab fa-github
+      href: https://github.com/EmilHvitfeldt/textmodels4pharma
+creative_commons: CC BY-SA
+repository_url: https://github.com/EmilHvitfeldt/textmodels4pharma
+output:
+  distill::distill_article:
+    css: styles.css

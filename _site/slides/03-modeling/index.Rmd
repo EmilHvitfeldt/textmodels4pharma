@@ -1,14 +1,13 @@
 ---
-title: "Predictive modeling with text using tidy data principles"
-subtitle: "useR2020"
-author: "Julia Silge & Emil Hvitfeldt"
-date: "2019-7-24"
+title: "Modeling"
+subtitle: "R/Pharma 2020 Text modeling workshop"
+author: "Emil Hvitfeldt"
+date: "2020-10-09"
 output:
   xaringan::moon_reader:
-    css: ["default", "theme.css"]
+    css: ["theme.css", "default"]
     lib_dir: libs
     nature:
-      highlightLanguage: "r"
       beforeInit: "macros.js"
       ratio: "16:9"
       highlightStyle: github
@@ -70,7 +69,7 @@ knit_hooks$set(output = function(x, options) {
 
 opts_chunk$set(
   echo = TRUE,
-  cache = TRUE,
+  cache = FALSE,
   fig.width = 7, 
   fig.align = 'center',
   fig.asp = 0.618, # 1 / phi
@@ -84,78 +83,18 @@ sass(sass_file("theme.sass"), output = "theme.css")
 set.seed(1234)
 library(ggplot2)
 theme_set(theme_minimal())
+library(countdown) 
 ```
 
-class: center, middle
-
-# Hello!
-
-.pull-left[
-<img style="border-radius: 50%;" src="https://github.com/EmilHvitfeldt.png" width="150px"/>  
-[`r icon::fa("github")` @EmilHvitfeldt](https://github.com/EmilHvitfeldt)  
-[`r icon::fa("twitter")` @Emil_Hvitfeldt](https://twitter.com/Emil_Hvitfeldt)  
-[`r icon::fa("link")` hvitfeldt.me](https://www.hvitfeldt.me/)
-]
-
-.pull-right[
-<img style="border-radius: 50%;" src="https://github.com/juliasilge.png" width="150px"/>  
-[`r icon::fa("github")` @juliasilge](https://github.com/juliasilge)  
-[`r icon::fa("twitter")` @juliasilge](https://twitter.com/juliasilge)  
-[`r icon::fa("link")` juliasilge.com](https://juliasilge.com)
-]
-
----
-
-# Plan for today
-
---
-
-- We will walk through our case study using slides and live coding
-
-
-
---
-
-
-- After the tutorial, use the [materials on GitHub](https://github.com/EmilHvitfeldt/useR2020-text-modeling-tutorial) and YouTube recording to run the code yourself `r emo::ji("muscle")`
-
----
-
 # Text as data
 
-Let's look at complaints submitted to the [United States Consumer Financial Protection Bureau (CFPB)](https://www.consumerfinance.gov/data-research/consumer-complaints/).
-
---
-
-
-- An individual experiences a problem `r emo::ji("weary")` with a consumer financial product or service, like a bank, loan, or credit card `r emo::ji("moneybag")`
-
-
---
-
-
-- They submit a **complaint** to the CFPB explaining what happened `r emo::ji("rage")`
-
-
---
-
-
-- This complaint is sent to the company, which can respond or dispute
-
-
----
-
-# Text as data
-
-Let's look at complaints submitted to the [United States Consumer Financial Protection Bureau (CFPB)](https://www.consumerfinance.gov/data-research/consumer-complaints/).
+Let's take a look at the data again
 
 ```{r R.options = list(width = 80), message=FALSE}
 library(tidyverse)
 library(animals)
 
-animals
-
-names(animals)
+glimpse(animals)
 ```
 
 ---
@@ -206,15 +145,40 @@ library(textrecipes)
 
 # Modeling workflow
 
-![](https://rviews.rstudio.com/post/2019-06-14-a-gentle-intro-to-tidymodels_files/figure-html/tidymodels.png)
+![](images/tidymodels-textrecipes.png)
 
 ---
 
-# smltar.com
+.pull-left[
+# Modeling task
 
-```{r echo=FALSE, out.width="100%"}
-knitr::include_url("https://smltar.com/")
+You are a new zoo keeper and your job is to figure out what to feed each animal based on a written description and some other metrics
+]
+
+--
+
+.pull-right[
+## Question
+
+Is this a realistic problem to have?
+
+Would it be a good use-case for Machine learning?
+
+```{r, echo=FALSE}
+countdown(2, 0)
 ```
+
+]
+
+---
+
+# Notes
+
+- This could be better handled by an expert
+- Disastrous results with misclassifications
+- Overlap between classes
+- Has an "unknown" field
+- Uses both numeric/factor variables and text variables
 
 ---
 
@@ -222,7 +186,6 @@ knitr::include_url("https://smltar.com/")
 
 ```{r, echo=FALSE}
 animals %>%
-  mutate(diet = fct_rev(fct_infreq(factor(diet)))) %>%
   ggplot(aes(y = diet)) +
   geom_bar() +
   labs(x = NULL, y = NULL)
@@ -275,18 +238,69 @@ all_split
 
 # Data splitting
 
-```{r}
-animals <- animals::animals %>%
-  select(diet, text) %>%
-  mutate(diet = if_else(diet %in% c("Omnivore", "Carnivore"), diet, "Other"),
-         diet = factor(trimws(diet)))
+## With {yardstick}
 
+```{r}
 set.seed(1234)
 animals_split <- initial_split(animals)
 
 animals_training <- training(animals_split)
 animals_testing <- testing(animals_split)
 ```
+
+---
+
+# Your turn #4
+
+Specify stratification variable `diet` and extract the `testing()` and `training()` dataset
+
+```{r, eval=FALSE}
+set.seed(1234)
+animals_split <- initial_split(animals, strata = ___)
+
+animals_split
+
+animals_training <- ___(animals_split)
+animals_testing <- ___(animals_split)
+```
+
+---
+
+# Your turn #4 - results
+
+Setting `strata = diet` makes sure that the proportions of diet is preserved in the split
+
+```{r}
+set.seed(1234)
+animals_split <- initial_split(animals, strata = diet)
+
+animals_split
+
+animals_training <- training(animals_split)
+animals_testing <- testing(animals_split)
+```
+
+---
+
+class: inverse
+
+# What mistake have we made already?
+
+```{r, echo=FALSE}
+countdown(2, 0)
+```
+
+
+---
+
+class: inverse
+
+# What mistake have we made already?
+
+## We did EDA on the whole dataset
+
+## By not restricting to training set => data leakage
+
 
 ---
 
@@ -319,202 +333,510 @@ names(animals)
 
 ---
 
-# Which of these variables can we use?
+## variables
 
-```{r}
-names(animals_training)
-```
+Response: `diet`
 
----
+Categorical: `lifecycle`
 
-# Which of these variables can we use?
+Numeric: `mean_weight`
 
-- `date_received`
-- `tags`
-- `consumer_complaint_narrative` == `r emo::ji("page_with_curl")`
+Text: `text`
 
 ---
 
-# Preprocessing specification
-
-```{r}
-rec_spec <- recipe(diet ~ text, animals_training) %>%
-  # Tokenize to words
-  step_tokenize(text) %>%
-  # Remove stopwords
-  step_stopwords(text) %>%
-  # Remove less frequent words
-  step_tokenfilter(text) %>%
-  # Calculate term frequencies
-  step_tf(text, weight_scheme = "binary")
-```
-
----
-
-# Feature engineering
-
-```{r}
-rec_spec <- recipe(diet ~ text, animals_training) %>%
-  # Tokenize to words
-  step_tokenize(text) %>%
-  # Remove stopwords
-  step_stopwords(text) %>%
-  # Remove less frequent words
-  step_tokenfilter(text) %>%
-  # Calculate term frequencies
-  step_tf(text, weight_scheme = "binary")
-```
+# Categorical: lifestyle
 
 --
+
+.pull-left[
+```{r, eval=FALSE}
+animals_training %>%
+  count(lifestyle) %>%
+  ggplot(aes(n, lifestyle)) +
+  geom_col()
+```
+]
+
+.pull-right[
+```{r, echo=FALSE}
+animals_training %>%
+  count(lifestyle) %>%
+  ggplot(aes(n, lifestyle)) +
+  geom_col()
+```
+]
+
+---
+
+# How should we deal with lifestyle?
+
+- Missing values
+- many categories
+
+```{r, echo=FALSE}
+countdown(2, 0)
+```
+
+---
+
+# recipes
+
+Flexible and reproducible preprocessing framework
+
+---
+
+# How to build a recipe
+
+1. Start the recipe()
+2. Define the variables involved
+3. Describe preprocessing step-by-step
+
+---
+
+# recipe()
+
+Creates a recipe for a set of variables
+
+```{r, eval=FALSE}
+recipe(reponse ~ ., data = data_set)
+```
+
+---
+
+# recipe()
+
+Creates a recipe for a set of variables
+
+```{r}
+recipe(diet ~ text + lifestyle + mean_weight, data = animals_training)
+```
+
+---
+
+# step_*()
+
+Complete list at https://recipes.tidymodels.org/reference/
+
+---
+
+# lifestyle steps
+
+`step_unknown()` will replace missing values with `unknown` level
+
+```{r}
+rec_spec <- recipe(diet ~ text + lifestyle + mean_weight, 
+                   data = animals_training) %>%
+  step_unknown(lifestyle) %>%
+  prep()
+
+rec_spec
+```
+
+---
+
+# lifestyle steps
+
+`step_other()` will pool together low frequency values
+
+---
+
+## Your turn #5
+
+Specify variables and play around with the threshold, default is 0.05
+
+```{r, eval=FALSE}
+rec_spec <- recipe(diet ~ text + lifestyle + mean_weight, 
+                   data = animals_training) %>%
+  step_unknown(lifestyle) %>%
+  step_other(___, threshold = ___)
+
+rec_spec %>%
+  tidy(2)
+```
+
+---
+
+## Your turn #5 - result
+
+Specify variables and play around with the threshold, default is 0.05
+
+```{r}
+rec_spec <- recipe(diet ~ text + lifestyle + mean_weight, 
+                   data = animals_training) %>%
+  step_unknown(lifestyle) %>%
+  step_other(lifestyle, threshold = 0.05)
+
+rec_spec %>%
+  prep() %>%
+  tidy()
+```
+
+---
+
+## Your turn #5 - result
+
+Specify variables and play around with the threshold, default is 0.05
+
+```{r}
+rec_spec <- recipe(diet ~ text + lifestyle + mean_weight, 
+                   data = animals_training) %>%
+  step_unknown(lifestyle) %>%
+  step_other(lifestyle, threshold = 0.05) 
+
+rec_spec %>%
+  prep() %>%
+  tidy(2)
+```
+
+---
+
+## Your turn #5 - result
+
+Specify variables and play around with the threshold, default is 0.05
+
+```{r}
+rec_spec <- recipe(diet ~ text + lifestyle + mean_weight, 
+                   data = animals_training) %>%
+  step_unknown(lifestyle) %>%
+  step_other(lifestyle, threshold = 0.1) %>%
+  prep()
+
+rec_spec %>%
+  tidy(2)
+```
+
+---
+
+## Your turn #5 - result
+
+Specify variables and play around with the threshold, default is 0.05
+
+```{r}
+rec_spec <- recipe(diet ~ text + lifestyle + mean_weight, 
+                   data = animals_training) %>%
+  step_unknown(lifestyle) %>%
+  step_other(lifestyle, threshold = 0.01) %>%
+  prep()
+
+rec_spec %>%
+  tidy(2)
+```
+
+---
+
+## Dummifying
+
+Specify variables and play around with the threshold, default is 0.05
+
+```{r}
+rec_spec <- recipe(diet ~ text + lifestyle + mean_weight, 
+                   data = animals_training) %>%
+  step_unknown(lifestyle) %>%
+  step_other(lifestyle, threshold = 0.01) %>%
+  step_dummy(lifestyle)
+
+rec_spec
+```
+
+---
+
+# Numeric - mean_weight
+
+```{r}
+animals_training %>%
+  ggplot(aes(mean_weight)) +
+  geom_histogram()
+```
+
+---
+
+# Numeric - mean_weight
+
+```{r}
+animals_training %>%
+  ggplot(aes(mean_weight)) +
+  geom_histogram() +
+  scale_x_log10()
+```
+
+---
+
+```{r}
+rec_spec <- recipe(diet ~ text + lifestyle + mean_weight, 
+                   data = animals_training) %>%
+  step_unknown(lifestyle) %>%
+  step_other(lifestyle, threshold = 0.01) %>%
+  step_dummy(lifestyle) %>%
+  step_log(mean_weight) %>%
+  step_meanimpute(mean_weight)
+```
+
+---
+
+# Text preprocessing workflow
+
+- turn text into tokens
+- modify/filter tokens
+- count tokens
+
+---
+
+# Text preprocessing workflow - tokenize
+
+```{r}
+recipe(diet ~ text + lifestyle + mean_weight, 
+                   data = animals_training) %>%
+  # Tokenize to words
+  step_tokenize(text) %>%
+  # Remove stopwords
+  step_stopwords(text) %>%
+  # Remove less frequent words
+  step_tokenfilter(text, max_tokens = 100) %>%
+  # Calculate term frequencies
+  step_tf(text)
+```
+
+---
+
+# Text preprocessing workflow - modify tokens
+
+```{r}
+recipe(diet ~ text + lifestyle + mean_weight, 
+                   data = animals_training) %>%
+  # Tokenize to words
+  step_tokenize(text) %>%
+  # Remove stopwords
+  step_stopwords(text) %>%
+  # Remove less frequent words
+  step_tokenfilter(text, max_tokens = 100) %>%
+  # Calculate term frequencies
+  step_tf(text)
+```
+
+---
+
+# Text preprocessing workflow - count tokens
+
+```{r}
+recipe(diet ~ text + lifestyle + mean_weight, 
+                   data = animals_training) %>%
+  # Tokenize to words
+  step_tokenize(text) %>%
+  # Remove stopwords
+  step_stopwords(text) %>%
+  # Remove less frequent words
+  step_tokenfilter(text, max_tokens = 100) %>%
+  # Calculate term frequencies
+  step_tf(text)
+```
+
+---
+
+# Your turn #6
+
+play around with the arguments in step_tokenfilter() and see what results we get
+
+```{r, eval=FALSE}
+rec_spec <- recipe(diet ~ text + lifestyle + mean_weight, 
+                   data = animals_training) %>%
+  # Tokenize to words
+  step_tokenize(text) %>%
+  # Remove stopwords
+  step_stopwords(text) %>%
+  # Remove less frequent words
+  step_tokenfilter(text, max_tokens = 100) %>%
+  # Calculate term frequencies
+  step_tf(text)
+
+rec_spec %>%
+  prep() %>%
+  juice()
+```
+
+```{r, echo=FALSE}
+countdown(3, 0)
+```
+
+---
+
+# Your turn #6 - result
+
+play around with the arguments in step_tokenfilter() and see what results we get
+
+```{r}
+rec_spec <- recipe(diet ~ text + lifestyle + mean_weight, 
+                   data = animals_training) %>%
+  # Tokenize to words
+  step_tokenize(text) %>%
+  # Remove stopwords
+  step_stopwords(text) %>%
+  # Remove less frequent words
+  step_tokenfilter(text, max_tokens = 100) %>%
+  # Calculate term frequencies
+  step_tf(text)
+
+rec_spec %>%
+  prep() %>%
+  juice()
+```
+
+---
+
+# Your turn #6 - result
+
+If we don't filter the tokens then we get a very large number of columns
+
+```{r}
+rec_spec <- recipe(diet ~ text + lifestyle + mean_weight, 
+                   data = animals_training) %>%
+  # Tokenize to words
+  step_tokenize(text) %>%
+  # Remove stopwords
+  step_stopwords(text) %>%
+  # Remove less frequent words
+  #step_tokenfilter(text, max_tokens = 100) %>%
+  # Calculate term frequencies
+  step_tf(text)
+
+rec_spec %>%
+  prep() %>%
+  juice()
+```
+
+---
+
+# Your turn #7
+
+Swap `step_tf()` with `step_tfidf()` and see the change
+
+```{r, eval=FALSE}
+rec_spec <- recipe(diet ~ text + lifestyle + mean_weight, 
+                   data = animals_training) %>%
+  # Tokenize to words
+  step_tokenize(text) %>%
+  # Remove stopwords
+  step_stopwords(text) %>%
+  # Remove less frequent words
+  step_tokenfilter(text, max_tokens = 100) %>%
+  # Calculate term frequencies
+  step_tf(text)
+
+rec_spec %>%
+  prep() %>%
+  juice()
+```
+
+```{r, echo=FALSE}
+countdown(2, 0)
+```
+
+---
+
+# Your turn #7 - result
+
+Swap `step_tf()` with `step_tfidf()` and see the change
+
+```{r}
+rec_spec <- recipe(diet ~ text + lifestyle + mean_weight,
+                   data = animals_training) %>%
+  # Tokenize to words
+  step_tokenize(text) %>%
+  # Remove stopwords
+  step_stopwords(text) %>%
+  # Remove less frequent words
+  step_tokenfilter(text, max_tokens = 100) %>%
+  # Calculate term frequencies
+  step_tfidf(text)
+
+rec_spec %>%
+  prep() %>%
+  juice()
+```
+
+---
+
+# Your turn #8
+
+Insert `step_ngram()` into recipe after tokenization. Play around with `num_tokens = ` and `min_num_tokens = `
+
+```{r}
+rec_spec <- recipe(diet ~ text + lifestyle + mean_weight,
+                   data = animals_training) %>%
+  step_tokenize(text) %>%
+  step_stopwords(text) %>%
+  step_tokenfilter(text, max_tokens = 100) %>%
+  step_tfidf(text)
+
+rec_spec %>%
+  prep() %>%
+  juice()
+```
+
+```{r, echo=FALSE}
+countdown(3, 0)
+```
+
+---
+
+# Your turn #8 - result
+
+Insert `step_ngram()` into recipe after tokenization. Play around with `num_tokens = ` and `min_num_tokens = `
+
+```{r}
+rec_spec <- recipe(diet ~ text + lifestyle + mean_weight,
+                   data = animals_training) %>%
+  step_tokenize(text) %>%
+  step_ngram(text, min_num_tokens = 1, num_tokens = 2) %>%
+  step_stopwords(text) %>%
+  step_tokenfilter(text, max_tokens = 100) %>%
+  step_tfidf(text)
+
+rec_spec %>%
+  prep() %>%
+  juice() %>%
+  names()
+```
+
+---
+
+# Your turn #8 - result
+
+Order matters!
+
+```{r}
+rec_spec <- recipe(diet ~ text + lifestyle + mean_weight,
+                   data = animals_training) %>%
+  step_tokenize(text) %>%
+  step_stopwords(text) %>%
+  step_ngram(text, min_num_tokens = 1, num_tokens = 2) %>%
+  step_tokenfilter(text, max_tokens = 100) %>%
+  step_tfidf(text)
+
+rec_spec %>%
+  prep() %>%
+  juice() %>%
+  names()
+```
+
+---
+
+# Final recipe
+
+```{r}
+rec_spec <- recipe(diet ~ text + lifestyle + mean_weight, 
+                   data = animals_training) %>%
+  step_unknown(lifestyle) %>%
+  step_other(lifestyle, threshold = 0.01) %>%
+  step_dummy(lifestyle) %>%
+  step_log(mean_weight) %>%
+  step_meanimpute(mean_weight) %>%
+  step_tokenize(text) %>%
+  step_tokenfilter(text, max_tokens = tune()) %>%
+  step_tfidf(text)
+```
 
 Also, what does `tune()` mean here? `r emo::ji("thinking")`
-
----
-
-class: inverse, right, middle
-
-# You can **combine** text and non-text features in your model
-
----
-
-# Feature engineering: handling dates
-
-```{r}
-#recipe(product ~ date_received + tags + text,
-#    data = complaints_train
-#  ) %>%
-#  step_date(date_received, features = c("month", "dow"), role = "dates") %>%
-#  step_rm(date_received)
-```
-
----
-
-# Feature engineering: categorical data
-
-```{r}
-#recipe(product ~ date_received + tags + text,
-#    data = complaints_train
-#  ) %>%
-#  step_unknown(tags) %>%
-#  step_dummy(tags)
-```
-
----
-
-class: inverse, right, middle
-
-# You can **combine** text and non-text features in your model
-
-
----
-
-# Feature engineering: text
-
-```{r eval=FALSE}
-# recipe(product ~ date_received + tags + text,
-#     data = complaints_train
-#   ) %>%
-#   step_tokenize(text) %>%
-#   step_stopwords(text) %>%
-#   step_ngram(text, num_tokens = 3, min_num_tokens = 1) %>%
-#   step_tokenfilter(text, max_tokens = tune(), min_times = 5) %>%
-#   step_tfidf(text)
-```
-
----
-
-# Feature engineering: text
-
-```{r echo=FALSE}
-# recipe(product ~ date_received + tags + text,
-#     data = complaints_train
-#   ) %>%
-#   step_tokenize(text) %>%
-#   step_stopwords(text) %>%
-#   step_ngram(text, num_tokens = 3, min_num_tokens = 1) %>%
-#   step_tokenfilter(text, max_tokens = tune(), min_times = 5) %>%
-#   step_tfidf(text)
-```
-
-
----
-
-class: inverse, right, middle
-
-# How do we create **features** from **natural language**?
-
-
----
-
-# From natural language to ML features
-
-```{r R.options=list(quanteda_print_dfm_max_ndoc = 0, quanteda_print_dfm_max_nfeat = 0)}
-library(tidytext)
-
-animals %>%
-  mutate(id = row_number()) %>%
-  unnest_tokens(word, text) %>%
-  anti_join(get_stopwords(), by = "word") %>%
-  count(id, word) %>%
-  bind_tf_idf(word, id, n) %>%
-  cast_dfm(id, word, tf_idf)
-```
-
----
-
-class: inverse, center, middle
-
-# `r emo::ji("stop_sign")` STOP WORDS `r emo::ji("stop_sign")`
-
----
-
-# Stop words
-
-```{r}
-library(stopwords)
-stopwords()
-```
-
-
----
-
-class: center, middle
-
-```{r echo=FALSE}
-library(UpSetR)
-fromList(list(smart = stopwords(source = "smart"),
-              snowball = stopwords(source = "snowball"),
-              iso = stopwords(source = "stopwords-iso"))) %>%
-  upset(empty.intersections = "on")
-```
-
----
-
-# Stop words
-
-
---
-
-
-- Stop words are context specific
-
-
---
-
-
-- Stop word lexicons can have bias
-
-
---
-
-
-- You can create your own stop word list
-
-
---
-
-
-- See [Chapter 3](https://smltar.com/stopwords.html) for more! `r emo::ji("stop_sign")`
 
 ---
 
@@ -663,7 +985,6 @@ lasso_spec <- multinom_reg(penalty = tune(), mixture = 1) %>%
   set_mode("classification") %>%
   set_engine("glmnet")
 
-
 lasso_spec
 ```
 
@@ -698,8 +1019,8 @@ It's `tune()` again! `r emo::ji("worried")`
 ```{r}
 param_grid <- grid_regular(
   penalty(range = c(-4, 0)),
-  max_tokens(range = c(500, 2000)),
-  levels = 50
+  max_tokens(range = c(100, 500)),
+  levels = c(penalty = 50, max_tokens = 4)
 )
 ```
 
@@ -829,6 +1150,8 @@ class: inverse, right, middle
 wf_spec <- workflow() %>%
   add_recipe(rec_spec) %>%
   add_model(lasso_spec)
+
+wf_spec
 ```
 
 ---
@@ -841,13 +1164,13 @@ class: inverse, right, middle
 
 ## Time to tune! `r emo::ji("zap")`
 
-```{r}
+```{r, message=FALSE}
 set.seed(42)
 lasso_rs <- tune_grid(
   wf_spec,
   resamples = animals_folds,
-  grid = select(param_grid, -max_tokens), 
-  control = control_grid(save_pred = TRUE)
+  grid = param_grid, 
+  control = control_grid(save_pred = TRUE, verbose = TRUE)
 ) 
 ```
 
@@ -858,187 +1181,6 @@ lasso_rs <- tune_grid(
 ```{r echo=FALSE}
 lasso_rs
 ```
-
----
-class: middle, center, inverse
-
-# `r emo::ji("dizzy")` TOKENIZATION `r emo::ji("dizzy")`
-
----
-
-# Tokenization
-
-- The process of splitting text in smaller pieces of text (_tokens_)
-
-
---
-
-
-- Most common token == word, but sometimes we tokenize in a different way
-
-
---
-
-
-- An essential part of most text analyses
-
-
---
-
-
-- Many options to take into consideration 
-
----
-
-# Tokenization: whitespace
-
-```{r, echo=FALSE}
-token_example <- "I am a long-time victim of identity theft. This debt doesn't belong to me."
-```
-
-```{r}
-token_example
-```
-
---
-
-```{r}
-strsplit(token_example, "\\s")
-```
-
----
-
-# Tokenization: [tokenizers](https://docs.ropensci.org/tokenizers/) package
-
-
-```{r}
-token_example
-```
-
-```{r}
-library(tokenizers)
-
-tokenize_words(token_example)
-```
-
----
-
-# Tokenization: [spaCy](https://spacy.io/) library
-
-
-```{r}
-token_example
-```
-
-```{r, eval=FALSE}
-library(spacyr)
-
-spacy_tokenize(token_example)
-```
-
-```{r echo=FALSE}
-list(c("I", "am", "a", "long", "-", "time", "victim", 
-"of", "identity", "theft", ".", "This", "debt", "does", "n't", 
-"belong", "to", "me", "."))
-```
-
----
-
-whitespace
-
-```{r, echo=FALSE}
-strsplit(token_example, "\\s")
-```
-
-tokenizers package
-
-```{r, echo=FALSE}
-tokenize_words(token_example)
-```
-
-spaCy library
-
-```{r echo=FALSE}
-list(c("I", "am", "a", "long", "-", "time", "victim", 
-"of", "identity", "theft", ".", "This", "debt", "does", "n't", 
-"belong", "to", "me", "."))
-```
-
----
-
-# Tokenization considerations
-
-- Should we turn UPPERCASE letters to lowercase?
-
-
---
-
-
-- How should we handle punctuation`r emo::ji("interrobang")`
-
-
---
-
-
-- What about non-word characters _inside_ words?
-
-
---
-
-
-- Should compound words be split or multi-word ideas be kept together?
-
----
-
-class: inverse, right, middle
-
-## Tokenization for English text is typically **much easier** than other languages.
-
----
-
-# N-grams
-
-## A sequence of `n` sequential tokens
-
---
-
-
-- Captures words that appear together often
-
-
---
-
-
-- Can detect negations ("not happy")
-
-
---
-
-
-- Larger cardinality
-
-
----
-
-```{r}
-tokenize_ngrams(token_example, n = 1)
-```
-
-
-```{r}
-tokenize_ngrams(token_example, n = 2)
-```
-
-
-```{r}
-tokenize_ngrams(token_example, n = 3)
-```
-
----
-
-# Tokenization
-
-See [Chapter 2](https://smltar.com/tokenization.html) for more!
 
 ---
 
@@ -1066,6 +1208,18 @@ lasso_rs %>%
 
 ---
 
+# Your turn #9
+
+
+Run you onw model and see what results you can find!
+
+```{r, echo=FALSE}
+countdown(10, 0)
+```
+
+
+---
+
 # The **best** `r emo::ji("first")` hyperparameters 
 
 ```{r}
@@ -1086,27 +1240,21 @@ collect_predictions(lasso_rs, parameters = best_roc_auc)
 
 # Evaluate the best model `r emo::ji("ruler")`
 
-```{r, eval=FALSE}
-# collect_predictions(lasso_rs, parameters = best_roc_auc) %>%
-#   group_by(id) %>%
-#   roc_curve(truth = diet, .pred_Carnivore) %>%
-#   autoplot()
+```{r}
+collect_predictions(lasso_rs, parameters = best_roc_auc) %>%
+  roc_curve(truth = diet, .pred_Carnivore:.pred_Unknown) %>%
+  autoplot()
 ```
 
 ---
 
 # Evaluate the best model `r emo::ji("ruler")`
 
-```{r, echo=FALSE}
-# collect_predictions(lasso_rs, parameters = best_roc_auc) %>%
-#   group_by(id) %>%
-#   roc_curve(truth = product, .pred_Carnivore) %>%
-#   autoplot() +
-#   labs(
-#     color = NULL,
-#     title = "Receiver operator curve for US Consumer Finance Complaints",
-#     subtitle = "Each resample fold is shown in a different color"
-#   )
+```{r, eval=FALSE}
+collect_predictions(lasso_rs, parameters = best_roc_auc) %>%
+  group_by(id) %>%
+  roc_curve(truth = diet, .pred_Carnivore:.pred_Unknown) %>%
+  autoplot()
 ```
 
 ---
@@ -1137,7 +1285,7 @@ library(vip)
 wf_spec_final %>%
   fit(animals_training) %>%
   pull_workflow_fit() %>%
-  vi(lambda = best_roc_auc$penalty) %>%
+  vi() %>%
   filter(!str_detect(Variable, "tfidf")) %>%
   filter(Importance != 0)
 ```
@@ -1150,7 +1298,7 @@ wf_spec_final %>%
 vi_data <- wf_spec_final %>%
   fit(animals_training) %>%
   pull_workflow_fit() %>%
-  vi(lambda = best_roc_auc$penalty) %>%
+  vi() %>%
   mutate(Variable = str_remove_all(Variable, "tfidf_text_")) %>%
   filter(Importance != 0)
 ```
@@ -1161,74 +1309,6 @@ vi_data <- wf_spec_final %>%
 
 ```{r}
 vi_data
-```
-
----
-
-class: center, middle
-
-```{r, echo=FALSE}
-max_imp <- log(max(abs(vi_data$Importance)))
-
-log_neg <- function(x) {
-  sign(x) * log(abs(x))
-}
-
-range01 <- function(x) {
-  (log_neg(x) + (max_imp)) / (max_imp + max_imp)
-}
-
-color_fun <- scales::colour_ramp(rev(scico::scico(256, palette = "tofino", begin = 0, end = 1)))
-
-highlighter <- function(x, sign) {
-  if(is.na(sign)) {
-    htmltools::span(x)
-  } else {
-    htmltools::span(htmltools::tags$em(x), style = glue::glue('color:{color_fun(range01(sign))};'))
-  }
-}
-```
-
-```{r, echo=FALSE}
-vi_data %>%
-  mutate(
-    Importance = abs(Importance)
-    ) %>%
-  filter(Importance != 0) %>%
-  group_by(Sign) %>%
-  top_n(20, Importance) %>%
-  ungroup() %>%
-  mutate(Sign = factor(Sign, c("POS", "NEG"), c("Other", "Credit"))) %>%
-  ggplot(aes(
-    x = Importance,
-    y = fct_reorder(Variable, Importance),
-    fill = Sign
-  )) +
-  geom_col(show.legend = FALSE) +
-  scale_x_continuous(expand = c(0, 0)) +
-  scale_fill_manual(values = color_fun(c(0.8, 0.2))) +
-  facet_wrap(~Sign, scales = "free") +
-  labs(
-    y = NULL
-  )
-```
-
----
-
-## Credit Complaint #1
-
-<span, style = 'color:green;'>Credit</span>
-<span, style = 'color:black;'>And</span>
-<span, style = 'color:blue;'>Other</span>
-
-```{r, echo=FALSE}
-animals_training %>%
-  slice(1) %>%
-  tidytext::unnest_tokens(words, text) %>%
-  left_join(vi_data, by = c("words" = "Variable")) %>%
-  mutate(words = map2(words, Importance, highlighter)) %>%
-  pull(words) %>%
-  htmltools::div()
 ```
 
 ---
@@ -1276,16 +1356,9 @@ class: center, middle
 
 ##[smltar.com](https://smltar.com/)
 
-.pull-left[
 <img style="border-radius: 50%;" src="https://github.com/EmilHvitfeldt.png" width="150px"/>  
-[`r icon::fa("github")` @EmilHvitfeldt](https://github.com/EmilHvitfeldt)  
-[`r icon::fa("twitter")` @Emil_Hvitfeldt](https://twitter.com/Emil_Hvitfeldt)  
-[`r icon::fa("link")` hvitfeldt.me](https://www.hvitfeldt.me/)
-]
+### `r icon::fa("github")` [EmilHvitfeldt](https://github.com/EmilHvitfeldt/)
+### `r icon::fa("twitter")` [@Emil_Hvitfeldt](https://twitter.com/Emil_Hvitfeldt)
+### `r icon::fa("linkedin")` [emilhvitfeldt](linkedin.com/in/emilhvitfeldt/)
+### `r icon::fa("laptop")` [www.hvitfeldt.me](www.hvitfeldt.me)
 
-.pull-right[
-<img style="border-radius: 50%;" src="https://github.com/juliasilge.png" width="150px"/>  
-[`r icon::fa("github")` @juliasilge](https://github.com/juliasilge)  
-[`r icon::fa("twitter")` @juliasilge](https://twitter.com/juliasilge)  
-[`r icon::fa("link")` juliasilge.com](https://juliasilge.com)
-]
