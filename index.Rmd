@@ -43,6 +43,14 @@ These are the materials for the [R/Pharma](https://rinpharma.com/) workshop Pred
 - How to fit a predictive model in [tidymodels](https://www.tidymodels.org/)
 - Use [textrecipes](https://textrecipes.tidymodels.org/) to construct features form text
 
+## Slides
+
++ [01: Introduction](slides/01-introduction/index.html)
+
++ [02: Text Mining](slides/02-text-mining/index.html)
+
++ [03: Modeling](slides/03-modeling/index.html)
+
 ## Links
 
 + Link to this website: <https://textmodels.netlify.app/>
@@ -50,7 +58,6 @@ These are the materials for the [R/Pharma](https://rinpharma.com/) workshop Pred
 + Link to Supervised Machine Learning for Text Analysis in R book: <https://smltar.com/>
 
 + Link to Text Mining with R book: <https://www.tidytextmining.com/>
-
 
 ## Acknowledgments {.appendix}
 

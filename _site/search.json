@@ -11,15 +11,8 @@
         }
       ],
       "date": "2020-10-09",
-      "contents": "\n\n\n\nWelcome\nThese are the materials for the R/Pharma workshop Predictive modeling with text using tidy data principles, by Emil Hvitfeldt. In this workshop will you learn:\nBasics of text mining with tidytext\nThe effect of text preprocessing\nHow to fit a predictive model in tidymodels\nUse textrecipes to construct features form text\nLinks\nLink to this website: https://textmodels.netlify.app/\nLink to Supervised Machine Learning for Text Analysis in R book: https://smltar.com/\nLink to Text Mining with R book: https://www.tidytextmining.com/\nAcknowledgments\nThis is website made with the distill package.\n\n\n\n",
-      "last_modified": "2020-10-08T22:55:08-07:00"
-    },
-    {
-      "path": "slides.html",
-      "title": "Slides",
-      "author": [],
-      "contents": "\n\n\n\n\n\n\nfitvids('.shareagain', {players: 'iframe'});\n\n\nFirst set of slides. These slides introduces the instructor, the material being taught and general guidelines. This is being seperated into their own slides for ease of access.Full screen link\n\n\n\nfitvids('.shareagain', {players: 'iframe'});\n\n\nSecond set of slides. These slides will introduce the data set we will be using and to do some rudimentary text mining to get us familiar with the data.Full screen link\n\n\n\nfitvids('.shareagain', {players: 'iframe'});\n\n\nThird and final set of slides. These slides will showcase how we can use tidymodels and textrecipes to build predictive models that use text as features.full screen link\n\n\n\n",
-      "last_modified": "2020-10-08T22:55:08-07:00"
+      "contents": "\n\n\n\nWelcome\nThese are the materials for the R/Pharma workshop Predictive modeling with text using tidy data principles, by Emil Hvitfeldt. In this workshop will you learn:\nBasics of text mining with tidytext\nThe effect of text preprocessing\nHow to fit a predictive model in tidymodels\nUse textrecipes to construct features form text\nSlides\n01: Introduction\n02: Text Mining\n03: Modeling\nLinks\nLink to this website: https://textmodels.netlify.app/\nLink to Supervised Machine Learning for Text Analysis in R book: https://smltar.com/\nLink to Text Mining with R book: https://www.tidytextmining.com/\nAcknowledgments\nThis is website made with the distill package.\n\n\n\n",
+      "last_modified": "2020-10-08T23:03:44-07:00"
     }
   ],
   "collections": []

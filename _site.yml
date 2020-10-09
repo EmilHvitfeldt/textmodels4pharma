@@ -8,7 +8,15 @@ navbar:
     - text: "Home"
       href: index.html
     - text: "Slides"
-      href: slides.html
+      menu:
+        - text: "01: Introduction"
+          href: slides/01-introduction/index.html
+        - text: "---"
+        - text: "02: Text Mining"
+          href: slides/02-text-mining/index.html
+        - text: "---"
+        - text: "03: Modeling"
+          href: slides/03-modeling/index.html
     - icon: fab fa-github
       href: https://github.com/EmilHvitfeldt/textmodels4pharma
 creative_commons: CC BY-SA
