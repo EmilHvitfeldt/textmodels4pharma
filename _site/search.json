@@ -12,7 +12,7 @@
       ],
       "date": "2020-10-09",
       "contents": "\n\n\n\nWelcome\nThese are the materials for the R/Pharma workshop Predictive modeling with text using tidy data principles, by Emil Hvitfeldt. In this workshop will you learn:\nBasics of text mining with tidytext\nThe effect of text preprocessing\nHow to fit a predictive model in tidymodels\nUse textrecipes to construct features form text\nSlides\n01: Introduction\n02: Text Mining\n03: Modeling\nLinks\nLink to this website: https://textmodels.netlify.app/\nLink to Supervised Machine Learning for Text Analysis in R book: https://smltar.com/\nLink to Text Mining with R book: https://www.tidytextmining.com/\nAcknowledgments\nThis is website made with the distill package.\n\n\n\n",
-      "last_modified": "2020-10-08T23:03:44-07:00"
+      "last_modified": "2020-10-09T01:25:04-07:00"
     }
   ],
   "collections": []

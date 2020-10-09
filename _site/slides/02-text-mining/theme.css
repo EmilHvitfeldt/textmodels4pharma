@@ -10,7 +10,7 @@ a, a > code {
 }
 
 strong {
-  color: #0fa923;
+  color: #142eb1;
   font-weight: 700;
 }
 
@@ -100,36 +100,40 @@ li::before {
 
 /* Inverse slides */
 .inverse h1 {
-  color: #d2eaca;
+  color: #cad1ea;
 }
 
 .inverse h1 strong {
-  color: #3bb114;
+  color: #142eb1;
 }
 
 .inverse h2 {
-  color: #d2eaca;
+  color: #cad1ea;
 }
 
 .inverse h2 strong {
-  color: #3bb114;
+  color: #142eb1;
 }
 
 .inverse h3 {
-  color: #d2eaca;
+  color: #cad1ea;
 }
 
 .inverse h3 strong {
-  color: #3bb114;
+  color: #142eb1;
 }
 
 .inverse .remark-inline-code {
   background: transparent;
 }
 
+.inverse {
+  background: #1b1a1e;
+}
+
 /* Title slide */
 .title-slide {
-  background-color: #1D1E1A;
+  background-color: #1b1a1e;
 }
 
 .remark-slide-number {
@@ -137,7 +141,7 @@ li::before {
 }
 
 .title-slide h1 {
-  color: #3bb114;
+  color: #142eb1;
   font-size: 72px;
   text-shadow: none;
   font-family: Montserrat;
@@ -146,7 +150,7 @@ li::before {
 }
 
 .title-slide h2 {
-  color: #d2eaca;
+  color: #cad1ea;
   text-shadow: none;
   font-family: Montserrat;
   font-size: 48px;
@@ -155,7 +159,7 @@ li::before {
 }
 
 .title-slide h3 {
-  color: #d2eaca;
+  color: #cad1ea;
   text-shadow: none;
   font-family: Montserrat;
   font-size: 36px;
@@ -164,7 +168,7 @@ li::before {
 }
 
 .title-slide h4 {
-  color: #d2eaca;
+  color: #cad1ea;
   text-shadow: none;
   font-family: Montserrat;
   font-size: 24px;
