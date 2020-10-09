@@ -51,6 +51,7 @@ knit_hooks$set(output = function(x, options) {
 
 opts_chunk$set(
   echo = TRUE,
+  linewidth = 80,
   fig.width = 7, 
   fig.align = 'center',
   fig.asp = 0.618, # 1 / phi
@@ -60,32 +61,585 @@ opts_chunk$set(
 ```{r, echo = FALSE}
 library(sass)
 sass(sass_file("theme.sass"), output = "theme.css")
+library(countdown)
 ```
 
-# This is the first title 
+# {animals} data package
 
-Adding some text
+https://github.com/emilhvitfeldt/animals
 
-```{r}
-11 + 2 + 4
-```
+Toy dataset of over 500 animals
 
-Lorem ipsum dolor sit amet, *consectetur* adipiscing elit
+Contains
 
-Lorem ipsum dolor sit amet, **consectetur** adipiscing elit
-
-Lorem ipsum dolor sit amet, ~~consectetur~~ adipiscing elit
-
-> Lorem ipsum dolor sit amet, consectetur adipiscing elit
+- `text` variable with medium long text descripting the animals
+- Multiple metrics such as `diet` and `lifestyle`
 
 ---
 
-# This is h1
+# Goal
 
-## This is h2
+- Show how we can turn text into numbers
 
-### This is h3
 
-#### This is h4
+--
 
-##### This is h5
+
+- Tokenization
+- stop words
+- n-grams
+- tf-idf
+- stemming
+- spacy
+
+---
+
+# Your turn #1
+
+Explore a couple of `text` descriptions
+
+```{r}
+library(tidyverse)
+library(animals)
+```
+
+replace `___` with an interger
+
+```{r, eval=FALSE}
+animals %>%
+  slice(___) %>%
+  pull(text)
+```
+
+```{r, echo=FALSE}
+countdown(2, 30)
+```
+
+---
+
+# Your turn #1 - Result
+
+.pull-left[
+Explore a couple of `text` descriptions
+
+```{r}
+library(tidyverse)
+library(tidytext)
+library(animals)
+```
+
+replace `___` with an interger
+
+```{r, eval=FALSE}
+animals %>%
+  slice(1) %>%
+  pull(text)
+```
+]
+
+.pull-right[
+```{r, echo=FALSE, linewidth = 50}
+animals %>%
+  slice(1) %>%
+  pull(text) %>%
+  cat()
+```
+]
+
+---
+
+class: middle, center, inverse
+
+# `r emo::ji("dizzy")` TOKENIZATION `r emo::ji("dizzy")`
+
+---
+
+# Tokenization
+
+- The process of splitting text in smaller pieces of text (_tokens_)
+
+
+--
+
+
+- Most common token == word, but sometimes we tokenize in a different way
+
+
+--
+
+
+- An essential part of most text analyses
+
+
+--
+
+
+- Many options to take into consideration 
+
+---
+
+# Tokenization
+
+We can use `unnest_tokens()` from {tidytext} to turn `text` into `word`s
+
+.pull-left[
+```{r, eval = FALSE}
+animals %>%
+  select(text) %>%
+  unnest_tokens(word, text)
+```
+]
+
+.pull-right[
+```{r, echo = FALSE}
+animals %>%
+  select(text) %>%
+  unnest_tokens(word, text)
+```
+]
+
+---
+
+# Your turn #2
+
+We can look at the most frequent tokens by using `count()`
+
+```{r, eval=FALSE}
+animals %>%
+  unnest_tokens(output = ___, input = text) %>%
+  count(___, sort = TRUE)
+```
+
+```{r, echo=FALSE}
+countdown(2, 30)
+```
+
+---
+
+# Your turn #2 - results
+
+We can look at the most frequent tokens by using `count()`
+
+```{r}
+animals %>%
+  unnest_tokens(output = word, input = text)
+```
+
+---
+
+# Your turn #2 - results
+
+We can look at the most frequent tokens by using `count()`
+
+```{r}
+animals %>%
+  unnest_tokens(output = word, input = text) %>%
+  count(word, sort = TRUE)
+```
+
+---
+
+# Tokenization: whitespace
+
+```{r, echo=FALSE}
+token_example <- "Their name originates from the Afrikaans language in South Africa and means Earth Pig, due to their long snout and pig-like body."
+```
+
+```{r, linewidth = 80}
+token_example
+```
+
+--
+
+```{r}
+strsplit(token_example, "\\s")
+```
+
+---
+
+# Tokenization: [tokenizers](https://docs.ropensci.org/tokenizers/) package
+
+
+```{r}
+token_example
+```
+
+```{r}
+library(tokenizers)
+
+tokenize_words(token_example)
+```
+
+---
+
+# Tokenization: [spaCy](https://spacy.io/) library
+
+
+```{r}
+token_example
+```
+
+```{r warning=FALSE, message=FALSE}
+library(spacyr)
+
+spacy_tokenize(token_example)
+```
+
+---
+
+.pull-left[
+
+# whitespace
+
+```{r, echo=FALSE, linewidth = 50}
+strsplit(token_example, "\\s")
+```
+]
+
+.pull-right[
+
+# spaCy library
+
+```{r echo=FALSE, message=FALSE, , linewidth = 50}
+spacy_tokenize(token_example)
+```
+]
+
+---
+
+# Tokenization considerations
+
+- Should we turn UPPERCASE letters to lowercase?
+
+
+--
+
+
+- How should we handle punctuation`r emo::ji("interrobang")`
+
+
+--
+
+
+- What about non-word characters _inside_ words?
+
+
+--
+
+
+- Should compound words be split or multi-word ideas be kept together?
+
+---
+
+class: inverse, right, middle
+
+## Tokenization for English text is typically **much easier** than other languages.
+
+---
+
+# N-grams
+
+## A sequence of `n` sequential tokens
+
+--
+
+
+- Captures words that appear together often
+
+
+--
+
+
+- Can detect negations ("not happy")
+
+
+--
+
+
+- Larger cardinality
+
+
+---
+
+### N-grams for n = 1, 2, 3
+
+```{r}
+tokenize_ngrams("due to their long snout and pig-like body.", n = 1)
+```
+
+
+```{r}
+tokenize_ngrams("due to their long snout and pig-like body.", n = 2)
+```
+
+
+```{r}
+tokenize_ngrams("due to their long snout and pig-like body.", n = 3)
+```
+
+---
+
+# Tokenization
+
+See [Chapter 2](https://smltar.com/tokenization.html) for more!
+
+---
+
+class: inverse, center, middle
+
+# `r emo::ji("stop_sign")` STOP WORDS `r emo::ji("stop_sign")`
+
+---
+
+# Stop words
+
+```{r}
+library(stopwords)
+stopwords(language = "en", source = "snowball")
+```
+
+---
+
+# Stop words
+
+```{r}
+library(tidytext)
+stop_words
+```
+
+---
+
+# Your turn #3
+
+Unscramble this pipe to 
+
+- tokenize text tokens
+- remove stop words
+- count most frequent tokens
+
+```{r, eval=FALSE}
+unnest_tokens(word, text) %>%
+  
+count(word, sort = TRUE)
+
+animals %>%
+  
+anti_join(stop_words) %>%
+```
+
+```{r, echo=FALSE}
+countdown(2, 30)
+```
+
+---
+
+# Your turn #3 - result
+
+```{r}
+animals %>%
+  unnest_tokens(word, text) %>%
+  anti_join(stop_words, by = "word") %>%
+  count(word, sort = TRUE)
+```
+
+---
+
+class: center, middle
+
+```{r echo=FALSE}
+library(UpSetR)
+fromList(list(smart = stopwords(source = "smart"),
+              snowball = stopwords(source = "snowball"),
+              iso = stopwords(source = "stopwords-iso"))) %>%
+  upset(empty.intersections = "on")
+```
+
+---
+
+# funky stop words quiz #1
+
+.pull-left[
+- he's
+- she's
+- himself
+- herself
+]
+
+```{r, echo=FALSE}
+countdown(minutes = 0, seconds = 30)
+```
+
+---
+
+# funky stop words quiz #1
+
+.pull-left[
+- he's
+- .orange[she's]
+- himself
+- herself
+]
+
+.pull-right[
+.orange[she's] doesn't appear in the SMART list
+]
+
+---
+
+# funky stop words quiz #2
+
+.pull-left[
+- owl
+- bee
+- fify
+- system1
+]
+
+```{r, echo=FALSE}
+countdown(minutes = 0, seconds = 30)
+```
+
+---
+
+# funky stop words quiz #2
+
+.pull-left[
+- owl
+- bee
+- .orange[fify]
+- system1
+]
+
+.pull-right[
+.orange[fify] was left undetected for 3 years (2012 to 2015) in scikit-learn
+]
+
+---
+
+# funky stop words quiz #3
+
+.pull-left[
+- substantially
+- successfully
+- sufficiently
+- statistically
+]
+
+```{r, echo=FALSE}
+countdown(minutes = 0, seconds = 30)
+```
+
+---
+
+# funky stop words quiz #3
+
+.pull-left[
+- substantially
+- successfully
+- sufficiently
+- .orange[statistically]
+]
+
+.pull-right[
+.orange[statistically] doesn't appear in the Stopwords ISO list
+]
+
+---
+
+# Stop words
+
+
+--
+
+
+- Stop words are context specific
+
+
+--
+
+
+- Stop word lexicons can have bias
+
+
+--
+
+
+- You can create your own stop word list
+
+
+--
+
+---
+
+class: inverse, center, middle
+
+# `r emo::ji("stop_sign")` LOOK AT YOUR STOP WORDS `r emo::ji("stop_sign")`
+
+---
+
+- See [Chapter 3](https://smltar.com/stopwords.html) for more! `r emo::ji("stop_sign")`
+
+---
+
+class: inverse, center, middle
+
+# `r emo::ji("tulip")` STEMMING `r emo::ji("tulip")`
+
+---
+
+# Stemming
+
+Some words are similar (teacher, teachers, teachings, teach) but will be counted seperately
+
+Stemming is the act of removing characters from the end of a word to get the "stem" of the word
+
+--
+
+This task is HIGHLY language dependent
+
+---
+
+# Stemming
+
+.pull-left[
+```{r, eval=FALSE}
+library(SnowballC)
+
+animals %>%
+  unnest_tokens(word, text) %>%
+  mutate(word_stem = wordStem(word)) %>%
+  select(word, word_stem)
+```
+]
+
+.pull-right[
+```{r, echo=FALSE}
+library(SnowballC)
+
+animals %>%
+  unnest_tokens(word, text) %>%
+  mutate(word_stem = wordStem(word)) %>%
+  select(word, word_stem)
+```
+]
+
+---
+
+- See [Chapter 4](https://smltar.com/stemming.html) for more! `r emo::ji("tulip")`
+
+---
+
+# Spacy - more advanced preprocessing
+
+```{r, echo=FALSE}
+animals <- animals::animals[1:10, ]
+```
+
+```{r}
+library(spacyr)
+
+spacy_parse(animals$text)
+```
+
+
+
